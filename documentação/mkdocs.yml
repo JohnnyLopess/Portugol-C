@@ -1,0 +1,27 @@
+site_name: Documentação trabalho de compiladores
+nav:
+  - Início: index.md
+  - Sobre: sobre.md
+
+theme:
+  language: pt-BR
+  name: material
+  logo: 
+  features:
+    - navigation.tabs
+    - navigation.top
+  palette: 
+
+    # Palette toggle for light mode
+    - scheme: default
+      primary: blue
+      toggle:
+        icon: material/eye
+        name: Mudar para o modo escuro
+
+    # Palette toggle for dark mode
+    - scheme: slate
+      primary: blue
+      toggle:
+        icon: material/eye-outline
+        name: Mudar para o modo claro

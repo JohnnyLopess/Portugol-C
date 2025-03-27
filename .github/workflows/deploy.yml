@@ -24,4 +24,5 @@ jobs:
 
       - name: Construir e fazer deploy
         run: |
-          mkdocs gh-deploy --force
+          mkdocs gh-deploy --force -f documentação/mkdocs.yml
+

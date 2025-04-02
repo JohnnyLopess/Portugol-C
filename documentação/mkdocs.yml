@@ -1,27 +1,50 @@
-site_name: Documentação trabalho de compiladores
+repo_url: https://github.com/JohnnyLopess/Portugol-C
+repo_name: Compilador Portugol-C
+site_url: https://johnnylopess.github.io/Portugol-C/
+site_name: Compilador Portugol-C
+
 nav:
   - Início: index.md
-  - Sobre: sobre.md
+  - Sprints: sprints.md
+
+plugins:
+  - search:
+      lang:
+        - pt
+        - en
 
 theme:
-  language: pt-BR
   name: material
-  logo: 
+
   features:
     - navigation.tabs
     - navigation.top
+
+  language: pt-BR
+  logo: ../logo.png
+  favicon: ../assets/logo.png
   palette: 
 
     # Palette toggle for light mode
     - scheme: default
-      primary: blue
+      primary: green
       toggle:
-        icon: material/eye
+        icon: material/circle-half-full
         name: Mudar para o modo escuro
 
     # Palette toggle for dark mode
     - scheme: slate
-      primary: blue
+      primary: green
       toggle:
-        icon: material/eye-outline
+        icon: material/circle-half-full
         name: Mudar para o modo claro
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - def_list
+  - md_in_html
+  - footnotes
+  - pymdownx.caret
+  - pymdownx.details
+  - pymdownx.superfences

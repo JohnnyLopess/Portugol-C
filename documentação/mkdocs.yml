@@ -7,6 +7,8 @@ nav:
   - Início: index.md
   - Sprints: sprints.md
   - Escopo: escopo.md
+  - Resultados:
+      - Sprint 1: resultados/sprint1.md
 
 plugins:
   - search:

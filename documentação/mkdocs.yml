@@ -48,4 +48,4 @@ markdown_extensions:
   - footnotes
   - pymdownx.caret
   - pymdownx.details
-  
+  - pymdownx.superfences

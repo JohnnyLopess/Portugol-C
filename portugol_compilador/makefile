@@ -10,4 +10,4 @@ y.tab.c: yacc.y
 	bison -dy yacc.y
 
 clean:
-	rm -f compilador lex.yy.c y.tab.c y.tab.h
+	rm -f compilador lex.yy.c y.tab.c y.tab.h saida.c programa

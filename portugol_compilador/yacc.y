@@ -28,6 +28,8 @@ FILE *saida;
 %type <inteiro> tipo
 %type <str> expressao
 
+%left SOMA SUB
+
 %%
 
 programa:
@@ -76,7 +78,10 @@ leitura:
 
 escrita:
     ESCREVA ABREPAR ID FECHAPAR PONTOEVIRGULA {
-        fprintf(saida, "printf(\"%%d\", %s);\n", $3);
+        fprintf(saida, "printf(\"%%d\\n\", %s);\n", $3);
+    }
+    | ESCREVA ABREPAR expressao FECHAPAR PONTOEVIRGULA {
+        fprintf(saida, "printf(\"%%s\\n\", %s);\n", $3);
     }
 ;
 

@@ -6,6 +6,9 @@ site_name: Compilador Portugol-C
 nav:
   - Início: index.md
   - Sprints: sprints.md
+  - Escopo: escopo.md
+  - Resultados:
+      - Sprint 1: resultados/sprint1.md
 
 plugins:
   - search:
@@ -47,4 +50,9 @@ markdown_extensions:
   - footnotes
   - pymdownx.caret
   - pymdownx.details
+<<<<<<< HEAD
   - pymdownx.superfences
+=======
+  - pymdownx.superfences
+
+>>>>>>> sprint1

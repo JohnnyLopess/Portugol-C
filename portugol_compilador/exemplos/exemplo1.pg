@@ -1,0 +1,6 @@
+inicio
+    var x: inteiro;
+    leia(x);
+    escreva(x);
+    x = 5 + 2;
+fim

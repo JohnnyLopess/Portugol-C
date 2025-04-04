@@ -50,9 +50,4 @@ markdown_extensions:
   - footnotes
   - pymdownx.caret
   - pymdownx.details
-<<<<<<< HEAD
   - pymdownx.superfences
-=======
-  - pymdownx.superfences
-
->>>>>>> sprint1

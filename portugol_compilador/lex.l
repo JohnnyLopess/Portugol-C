@@ -26,8 +26,8 @@
 "real"          { yylval.str = strdup(yytext); return TIPO_REAL; }
 "caractere"     { yylval.str = strdup(yytext); return TIPO_CARACTERE; }
 
-"=="            { return COMPARA; }
-"="             { return IGUAL; }
+"=="            { printf("[TOKEN] COMPARA\n"); return COMPARA; }
+"="             { printf("[TOKEN] IGUAL\n"); return IGUAL; }
 "<>"            { return DIFERENTE; }
 "<="            { return MENOR_IGUAL; }
 ">="            { return MAIOR_IGUAL; }

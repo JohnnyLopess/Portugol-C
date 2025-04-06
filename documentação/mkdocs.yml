@@ -9,6 +9,7 @@ nav:
   - Escopo: escopo.md
   - Resultados:
       - Sprint 1: resultados/sprint1.md
+      - Sprint 2: resultados/sprint2.md
 
 plugins:
   - search:

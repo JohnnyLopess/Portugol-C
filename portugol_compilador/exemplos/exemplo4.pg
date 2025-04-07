@@ -1,0 +1,9 @@
+inicio
+var 
+    i: inteiro; 
+
+para i de 1 ate 10 faca
+    escreva(i);
+fimpara
+
+fim

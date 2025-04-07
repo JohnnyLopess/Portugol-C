@@ -26,6 +26,11 @@
 "real"          { yylval.str = strdup(yytext); return TIPO_REAL; }
 "caractere"     { yylval.str = strdup(yytext); return TIPO_CARACTERE; }
 
+"para"          {printf("[TOKEN] PARA\n"); return PARA;}
+"de"            {printf("[TOKEN] DE\n"); return DE;}
+"ate"           {printf("[TOKEN] ATE\n"); return ATE;}
+"fimpara"       {printf("[TOKEN] FIMPARA\n"); return FIMPARA;}
+
 "=="            { printf("[TOKEN] COMPARA\n"); return COMPARA; }
 "="             { printf("[TOKEN] IGUAL\n"); return IGUAL; }
 "<>"            { return DIFERENTE; }

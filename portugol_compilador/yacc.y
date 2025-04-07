@@ -27,6 +27,7 @@ FILE *saida;
 %token IGUAL COMPARA DIFERENTE MENOR MAIOR MENOR_IGUAL MAIOR_IGUAL
 %token SOMA SUB MUL DIV
 %token ABREPAR FECHAPAR PONTOEVIRGULA
+%token PARA DE ATE FIMPARA
 %token DOISPONTOS
 %token <str> NUM ID
 %type <codigo> programa bloco comando declaracao leitura escrita atribuicao
@@ -113,6 +114,28 @@ comando:
     free(bloco_indentado);
     $$ = temp;
 }
+       | PARA ID DE expressao ATE expressao FACA bloco FIMPARA {
+        char *temp = malloc(1000);
+        char *bloco_indentado = malloc(1000);
+        
+        // Processa o bloco do loop (usa $8, que é o bloco)
+        char *linha = strtok($8, "\n");
+        strcpy(bloco_indentado, "");
+        while (linha != NULL) {
+            char temp_linha[1000];
+            sprintf(temp_linha, "        %s\n", linha + 4);  // Remove 4 espaços
+            strcat(bloco_indentado, temp_linha);
+            linha = strtok(NULL, "\n");
+        }
+        
+        // Gera o for em C
+        sprintf(temp, 
+            "    for (%s = %s; %s <= %s; %s++) {\n%s    }\n", 
+            $2, $4.valor, $2, $6.valor, $2, bloco_indentado);
+        
+        free(bloco_indentado);
+        $$ = temp;
+    }
 ;
 
 declaracao:

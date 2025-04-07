@@ -2,52 +2,82 @@
 
 Este é o repositório do projeto da disciplina **Compiladores 1 (2025/1)**, ministrada pelo professor Dr. Sergio Freitas na UnB. Nosso grupo está desenvolvendo um **tradutor de Portugol para C**, utilizando as ferramentas **Flex** e **Bison**.
 
+## ⚙️ Ferramentas 
+
+### Bison
+
+Bison é uma ferramenta de geração de analisadores sintáticos (parsers) que trabalha em conjunto com o Flex. É o sucessor do Yacc (Yet Another Compiler Compiler) e é mantido pelo projeto GNU.
+
+#### Uso no Projeto Portugol → C
+
+- Definir a gramática da linguagem Portugol
+- Gerar código C equivalente
+- Tratar estruturas de controle 
+- Manipular expressões e declarações
+
+### Flex
+
+O Flex é uma ferramenta moderna que gera analisadores léxicos (scanners). É o sucessor do programa Lex original do Unix e é amplamente utilizado no desenvolvimento de compiladores.
+
+#### Uso no Projeto Portugol → C
+
+- Reconhecer tokens da linguagem Portugol (palavras-chave, identificadores, números)
+- Gerar o arquivo lex.yy.c que implementa o scanner
+- Integrar com o parser Bison para análise completa do código
+
 ## 📅 Organização por Sprints
 
 O desenvolvimento foi dividido em **6 sprints quinzenais**, iniciando em **02/04/2025** e terminando com a entrega final em **27/06/2025**. Utilizamos **issues** no GitHub para organizar as tarefas de cada sprint com critérios claros de aceitação (_definition of done_).
 
 ---
 
-## 🧩 Sprint 1 – Estrutura inicial + Scanner (02/04 a 16/04)
+## 🧩 Sprint 1 – Setup do Compilador e Primeiros Comandos (02/04 a 16/04)
 
 **Objetivos:**
 - Definir escopo da linguagem Portugol
 - Criar estrutura de pastas e arquivos
-- Implementar scanner com Flex
-- Testar tokens com arquivos de entrada
+- Configurar o ambiente de compilação com Flex, Bison e GCC.
+- Criar um compilador inicial que reconheça e traduza comandos básicos.
 
 **Critérios de Aceitação:**
 - Scanner reconhece tokens básicos
+- Ambiente compilável (makefile, main.c, lex.l, yacc.y)
+- Reconhecimento de:
+
+    - `inicio`, `fim`
+    - `var`, `declaração de variáveis`
+    - `leia`, `escreva`
+    - Atribuições e expressões aritméticas simples
+
+- Geração de `saida.c` com main, scanf, printf, etc.
 - Projeto compila com `make`
 - Arquivo `exemplo1.pg` funciona
 
----
-
-## 🧩 Sprint 2 – Parser básico + P1 (17/04 a 30/04)
-
-**Objetivos:**
-- Criar parser com Bison (`leia`, `escreva`, atribuições)
-- Iniciar análise sintática de expressões
-- Realizar a apresentação do P1
-
-**Critérios de Aceitação:**
-- Parser e scanner integrados
-- Estruturas básicas reconhecidas
-- Apresentação do P1 realizada
 
 ---
 
-## 🧩 Sprint 3 – AST + Tradução para C (01/05 a 15/05)
+## 🧩 Sprint 2 – Controle de Fluxo (Condicionais) (17/04 a 30/04)
 
 **Objetivos:**
-- Construção da AST
-- Início da geração de código C
-- Traduzir `leia`, `escreva`, `x = ...`
+Adicionar suporte à estrutura de decisão se ... entao ... senao ... fimse e operadores relacionais.
 
 **Critérios de Aceitação:**
-- AST funcional
-- Código C gerado corretamente
-- Documentação de uso do tradutor
+- Reconhecimento dos tokens:
+    - `se`, `entao`, `senao`, `fimse`
+    - `==`, `!=`, `<`, `>`, `<=`, `>=`
+- Tradução para `if (...) { ... } else { ... }`
+- Código com estruturas condicionais em Portugol é convertido corretamente para C.
+- `saida.c` compila e executa com a lógica esperada
+
+## 🧩 Sprint 3 – Estruturas de Repetição (enquanto ... faca ... fimenquanto) (01/05 a 15/05)
+
+**Objetivos:**
+Adicionar suporte à estrutura de repetição com tradução para while.
+
+**Critérios de Aceitação:**
+- `enquanto`, `faca`, `fimenquanto`
+- Laços enquanto são reconhecidos e traduzidos
+- Comandos internos são executados corretamente em saida.c
 
 ---
 
@@ -90,15 +120,6 @@ O desenvolvimento foi dividido em **6 sprints quinzenais**, iniciando em **02/04
 - Projeto entregue e funcional
 - Código C gerado compila corretamente
 - Casos de teste bem documentados
-
----
-
-## 🚀 Ferramentas Utilizadas
-
-- **Flex** (scanner)
-- **Bison** (parser)
-- **C** (back-end do tradutor)
-- **GitHub Projects** (gerenciamento de tarefas)
 
 ---
 

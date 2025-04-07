@@ -1,0 +1,12 @@
+inicio
+var
+  x : inteiro;
+
+x = 0;
+
+enquanto x < 10 faca
+  escreva(x);
+  x = x + 1;
+fimenquanto
+
+fim

@@ -66,16 +66,53 @@ comando:
     | leitura { $$ = $1; }
     | escrita { $$ = $1; }
     | atribuicao { $$ = $1; }
-    | SE expressao ENTAO bloco FIMSE {
-        char *temp = malloc(1000);
-        sprintf(temp, "    if (%s) {\n%s    }\n", $2.valor, $4);
-        $$ = temp;
-    }
     | SE expressao ENTAO bloco SENAO bloco FIMSE {
         char *temp = malloc(1000);
-        sprintf(temp, "    if (%s) {\n%s    } else {\n%s    }\n", $2.valor, $4, $6);
+        char *bloco_if = malloc(1000);
+        char *bloco_else = malloc(1000);
+        
+        // Processa o bloco if
+        char *linha_if = strtok($4, "\n");
+        strcpy(bloco_if, "");
+        while (linha_if != NULL) {
+            char temp_linha[1000];
+            sprintf(temp_linha, "        %s\n", linha_if + 4);
+            strcat(bloco_if, temp_linha);
+            linha_if = strtok(NULL, "\n");
+        }
+        
+        // Processa o bloco else
+        char *linha_else = strtok($6, "\n");
+        strcpy(bloco_else, "");
+        while (linha_else != NULL) {
+            char temp_linha[1000];
+            sprintf(temp_linha, "        %s\n", linha_else + 4);
+            strcat(bloco_else, temp_linha);
+            linha_else = strtok(NULL, "\n");
+        }
+        
+        sprintf(temp, "    if (%s) {\n%s    } else {\n%s    }\n", 
+                $2.valor, bloco_if, bloco_else);
+        
+        free(bloco_if);
+        free(bloco_else);
         $$ = temp;
     }
+    | ENQUANTO expressao FACA bloco FIMENQUANTO {
+    char *temp = malloc(1000);
+    char *bloco_indentado = malloc(1000);
+    char *linha = strtok($4, "\n");
+    strcpy(bloco_indentado, "");
+    while (linha != NULL) {
+        char temp_linha[1000];
+        sprintf(temp_linha, "        %s\n", linha + 4);
+        strcat(bloco_indentado, temp_linha);  // Fixed: trcat -> strcat
+        linha = strtok(NULL, "\n");
+    }
+    sprintf(temp, "    while (%s) {\n%s    }\n", $2.valor, bloco_indentado);
+    free(bloco_indentado);
+    $$ = temp;
+}
 ;
 
 declaracao:

@@ -1,6 +1,5 @@
 inicio
-var 
-    i: inteiro; 
+var: inteiro i;
 
 para i de 1 ate 10 faca
     escreva(i);

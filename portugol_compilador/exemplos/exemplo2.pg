@@ -1,13 +1,12 @@
 inicio
-var
-  x : inteiro;
+var: inteiro x;
 
 leia(x);
 
 se x == 5 entao
-  escreva(x);
+    escreva(x);
 senao
-  escreva(0);
+    escreva(0);
 fimse
 
 fim

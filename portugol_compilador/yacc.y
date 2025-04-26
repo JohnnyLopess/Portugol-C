@@ -6,8 +6,32 @@
 int yylex();
 void yyerror(const char *s);
 
-// Arquivo de saída em C
 FILE *saida;
+
+#define MAX_VARS 100
+
+struct variavel {
+    char nome[50];
+    int tipo;  
+};
+
+struct variavel variaveis[MAX_VARS];
+int num_vars = 0;
+
+int buscar_tipo_variavel(char *nome) {
+    for(int i = 0; i < num_vars; i++) {
+        if(strcmp(variaveis[i].nome, nome) == 0) {
+            return variaveis[i].tipo;
+        }
+    }
+    return -1;
+}
+
+// Add these variable type definitions
+#define TIPO_INT 0
+#define TIPO_FLOAT 1
+#define TIPO_CHAR 2
+
 %}
 
 %union {
@@ -29,7 +53,7 @@ FILE *saida;
 %token ABREPAR FECHAPAR PONTOEVIRGULA
 %token PARA DE ATE FIMPARA
 %token DOISPONTOS
-%token <str> NUM ID
+%token <str> NUM ID STRING
 %type <codigo> programa bloco comando declaracao leitura escrita atribuicao
 %type <inteiro> tipo
 %type <expr> expressao
@@ -139,25 +163,52 @@ comando:
 ;
 
 declaracao:
-    VAR ID DOISPONTOS tipo PONTOEVIRGULA {
+    VAR DOISPONTOS tipo ID PONTOEVIRGULA {
         char *temp = malloc(100);
-        if ($4 == 0) sprintf(temp, "    int %s;\n", $2);
-        else if ($4 == 1) sprintf(temp, "    float %s;\n", $2);
-        else if ($4 == 2) sprintf(temp, "    char %s;\n", $2);
+        // Store variable type information
+        strcpy(variaveis[num_vars].nome, $4);
+        variaveis[num_vars].tipo = $3;
+        num_vars++;
+        
+        switch($3) {
+            case TIPO_INT:
+                sprintf(temp, "    int %s;\n", $4);
+                break;
+            case TIPO_FLOAT:
+                sprintf(temp, "    float %s;\n", $4);
+                break;
+            case TIPO_CHAR:
+                sprintf(temp, "    char %s;\n", $4);
+                break;
+        }
         $$ = temp;
     }
 ;
 
 tipo:
-    TIPO_INTEIRO     { $$ = 0; }
-    | TIPO_REAL      { $$ = 1; }
-    | TIPO_CARACTERE { $$ = 2; }
+    TIPO_INTEIRO     { $$ = TIPO_INT; }
+    | TIPO_REAL      { $$ = TIPO_FLOAT; }
+    | TIPO_CARACTERE { $$ = TIPO_CHAR; }
 ;
 
 leitura:
     LEIA ABREPAR ID FECHAPAR PONTOEVIRGULA {
         char *temp = malloc(100);
-        sprintf(temp, "    scanf(\"%%d\", &%s);\n", $3);
+        int tipo = buscar_tipo_variavel($3);
+        
+        switch(tipo) {
+            case TIPO_INT:
+                sprintf(temp, "    scanf(\"%%d\", &%s);\n", $3);
+                break;
+            case TIPO_FLOAT:
+                sprintf(temp, "    scanf(\"%%f\", &%s);\n", $3);
+                break;
+            case TIPO_CHAR:
+                sprintf(temp, "    scanf(\" %%c\", &%s);\n", $3);
+                break;
+            default:
+                sprintf(temp, "    // Erro: variável %s não declarada\n", $3);
+        }
         $$ = temp;
     }
 ;
@@ -165,12 +216,42 @@ leitura:
 escrita:
     ESCREVA ABREPAR ID FECHAPAR PONTOEVIRGULA {
         char *temp = malloc(100);
-        sprintf(temp, "    printf(\"%%d\\n\", %s);\n", $3);
+        int tipo = buscar_tipo_variavel($3);
+        
+        switch(tipo) {
+            case TIPO_INT:
+                sprintf(temp, "    printf(\"%%d\\n\", %s);\n", $3);
+                break;
+            case TIPO_FLOAT:
+                sprintf(temp, "    printf(\"%%f\\n\", %s);\n", $3);
+                break;
+            case TIPO_CHAR:
+                sprintf(temp, "    printf(\"%%c\\n\", %s);\n", $3);
+                break;
+            default:
+                sprintf(temp, "    // Erro: variável %s não declarada\n", $3);
+        }
+        $$ = temp;
+    }
+    | ESCREVA ABREPAR STRING FECHAPAR PONTOEVIRGULA {
+        char *temp = malloc(100);
+        sprintf(temp, "    printf(%s);\n", $3);
         $$ = temp;
     }
     | ESCREVA ABREPAR expressao FECHAPAR PONTOEVIRGULA {
         char *temp = malloc(100);
-        sprintf(temp, "    printf(\"%%d\\n\", %s);\n", $3.valor);
+        if ($3.tipo == 1) {
+            sprintf(temp, "    printf(\"%%f\", %s);\n", $3.valor);
+        } else if ($3.tipo == 2) {
+            sprintf(temp, "    printf(\"%%c\", %s);\n", $3.valor);
+        } else {
+            sprintf(temp, "    printf(\"%%d\", %s);\n", $3.valor);
+        }
+        $$ = temp;
+    }
+    | ESCREVA ABREPAR NUM FECHAPAR PONTOEVIRGULA {
+        char *temp = malloc(100);
+        sprintf(temp, "    printf(\"%%s\", %s);\n", $3);
         $$ = temp;
     }
 ;

@@ -1,5 +1,5 @@
 inicio
-    var x: inteiro;
+    var: inteiro x;
     leia(x);
     escreva(x);
     x = 5 + 2;

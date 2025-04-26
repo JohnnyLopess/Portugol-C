@@ -1,12 +1,11 @@
 inicio
-var
-  x : inteiro;
+var: inteiro x;
 
 x = 0;
 
 enquanto x < 10 faca
-  escreva(x);
-  x = x + 1;
+    escreva(x);
+    x = x + 1;
 fimenquanto
 
 fim

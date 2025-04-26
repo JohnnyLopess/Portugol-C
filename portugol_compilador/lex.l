@@ -6,6 +6,12 @@
 
 %%
 
+\"[^\"]*\"      { 
+    yylval.str = strdup(yytext); 
+    printf("[TOKEN] STRING (%s)\n", yytext);
+    return STRING; 
+}
+
 "inicio"        { printf("[TOKEN] INICIO\n"); return INICIO; }
 "fim"           { printf("[TOKEN] FIM\n"); return FIM; }
 

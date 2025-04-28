@@ -131,62 +131,61 @@ O desenvolvimento foi dividido em **12 sprints semanais**, iniciando em **02/04/
 
 ---
 
-## 🧩 Sprint 8 – Tratamento de Erros e Robustez (07/05 a 13/05)
+## 🧩 Sprint 8 – Testes Avançados e Robustez Final (21/05 a 27/05)
 
 **Objetivos:**
-- Ajustar a geração do `scanf` e `printf` para cada tipo de variável.
-- Exibir mensagens apropriadas ao tipo (ex: `%d`, `%f`, `%c`).
-- Entregar no Teams (até 27/06)
+- Criar conjunto robusto de testes (programas maiores em Portugol).
+- Simular erros diversos para garantir que o tradutor responde corretamente.
 
 **Critérios de Aceitação:**
-- Leitura e escrita de variáveis de diferentes tipos funcionando corretamente.
+- Testes extensivos realizados e documentados.
+- Todos casos de teste passam ou geram erros corretos.
+
+---  
+
+## 🧩 Sprint 9 – Refatoração do Código (28/05 a 03/06)
+
+**Objetivos:**
+- Organizar e modularizar o código Flex e Bison.
+- Adicionar suporte à comentários.
+- Remover duplicações e melhorar a legibilidade.
+
+**Critérios de Aceitação:**
+- Código comentado, limpo e modular.
 
 ---
 
-## 🧩 Sprint 9 – Leitura e Escrita de Diferentes Tipos(Correção de Erros encontrados no desenvolvimento do POnto de Controle 1) (07/05 a 13/05)
+## 🧩 Sprint 10 – Testes de Integração (04/06 a 10/06)
 
 **Objetivos:**
-- Ajustar a geração do `scanf` e `printf` para cada tipo de variável.
-- Exibir mensagens apropriadas ao tipo (ex: `%d`, `%f`, `%c`).
-- Entregar no Teams (até 27/06)
+- Construir um conjunto de testes mais complexos (programas longos com múltiplas estruturas).
+- Verificar geração correta de código C em cenários reais.
 
 **Critérios de Aceitação:**
-- Leitura e escrita de variáveis de diferentes tipos funcionando corretamente.
+- Casos de teste maiores passam com sucesso.
 
 ---
 
-## 🧩 Sprint 10 – Leitura e Escrita de Diferentes Tipos(Correção de Erros encontrados no desenvolvimento do POnto de Controle 1) (07/05 a 13/05)
+## 🧩 Sprint 11 – Documentação Final (11/06 a 17/06)
 
 **Objetivos:**
-- Ajustar a geração do `scanf` e `printf` para cada tipo de variável.
-- Exibir mensagens apropriadas ao tipo (ex: `%d`, `%f`, `%c`).
-- Entregar no Teams (até 27/06)
+- Finalizar documentação do projeto.
+- Escrever relatórios de caso de teste, descrição do compilador e decisões de projeto.
 
 **Critérios de Aceitação:**
-- Leitura e escrita de variáveis de diferentes tipos funcionando corretamente.
+- Documentação entregue em formato padronizado.
 
 ---
 
-## 🧩 Sprint 11 – Leitura e Escrita de Diferentes Tipos(Correção de Erros encontrados no desenvolvimento do POnto de Controle 1) (07/05 a 13/05)
+## 🧩 Sprint 12 – Entrega e Ajustes Finais (18/06 a 27/06)
 
 **Objetivos:**
-- Ajustar a geração do `scanf` e `printf` para cada tipo de variável.
-- Exibir mensagens apropriadas ao tipo (ex: `%d`, `%f`, `%c`).
-- Entregar no Teams (até 27/06)
+- Revisar tudo.
+- Corrigir qualquer erro de última hora.
+- Submeter o projeto ao Teams.
 
 **Critérios de Aceitação:**
-- Leitura e escrita de variáveis de diferentes tipos funcionando corretamente.
-
----
-
-## 🧩 Sprint 12 – Leitura e Escrita de Diferentes Tipos(Correção de Erros encontrados no desenvolvimento do POnto de Controle 1) (07/05 a 13/05)
-
-**Objetivos:**
-- Ajustar a geração do `scanf` e `printf` para cada tipo de variável.
-- Exibir mensagens apropriadas ao tipo (ex: `%d`, `%f`, `%c`).
-- Entregar no Teams (até 27/06)
-
-**Critérios de Aceitação:**
-- Leitura e escrita de variáveis de diferentes tipos funcionando corretamente.
+- Projeto entregue e funcional até 27/06.
+- Testes finais aprovados.
 
 ---

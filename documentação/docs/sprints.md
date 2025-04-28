@@ -1,6 +1,6 @@
 # 📘 Projeto Tradutor Portugol → C
 
-Este é o repositório do projeto da disciplina **Compiladores 1 (2025/1)**, ministrada pelo professor Dr. Sergio Freitas na UnB. Nosso grupo está desenvolvendo um **tradutor de Portugol para C**, utilizando as ferramentas **Flex** e **Bison**.
+Este é o repositório do projeto da disciplina **Compiladores 1 (2025/1)**, ministrada pelo professor Dr. Sergio Freitas na UnB. O objetivo do projeto é desenvolver um tradutor de Portugol para C, utilizando as ferramentas Flex e Bison para construção dos analisadores léxico e sintático..
 
 ## ⚙️ Ferramentas 
 
@@ -25,108 +25,168 @@ O Flex é uma ferramenta moderna que gera analisadores léxicos (scanners). É o
 - Gerar o arquivo lex.yy.c que implementa o scanner
 - Integrar com o parser Bison para análise completa do código
 
+### GCC e Makefile
+
+- Ferramentas para compilar o código e automatizar o processo de build.
+
 ## 📅 Organização por Sprints
 
-O desenvolvimento foi dividido em **6 sprints quinzenais**, iniciando em **02/04/2025** e terminando com a entrega final em **27/06/2025**. Utilizamos **issues** no GitHub para organizar as tarefas de cada sprint com critérios claros de aceitação (_definition of done_).
+O desenvolvimento foi dividido em **12 sprints semanais**, iniciando em **02/04/2025** e terminando com a entrega final em **27/06/2025**. Utilizamos **issues** no GitHub para organizar as tarefas de cada sprint com critérios claros de aceitação (_definition of done_).
 
 ---
 
-## 🧩 Sprint 1 – Setup do Compilador e Primeiros Comandos (02/04 a 16/04)
+## 🧩 Sprint 1 – Estrutura Inicial e Comandos Básicos (02/04 a 08/04)
 
 **Objetivos:**
-- Definir escopo da linguagem Portugol
-- Criar estrutura de pastas e arquivos
-- Configurar o ambiente de compilação com Flex, Bison e GCC.
+- Definir escopo da linguagem Portugol suportada(UniVali).
+- Criar a estrutura inicial do projeto (pastas, Makefile, arquivos principais).
+- Configurar ambiente de desenvolvimento (Flex, Bison, GCC).
 - Criar um compilador inicial que reconheça e traduza comandos básicos.
-
-**Critérios de Aceitação:**
-- Scanner reconhece tokens básicos
-- Ambiente compilável (makefile, main.c, lex.l, yacc.y)
-- Reconhecimento de:
-
+- Implementar o reconhecimento e tradução dos seguintes elementos:
     - `inicio`, `fim`
     - `var`, `declaração de variáveis`
     - `leia`, `escreva`
-    - Atribuições e expressões aritméticas simples
+    - Atribuições e expressões aritméticas simples(`+`, `-`, `*`, `/`).
 
-- Geração de `saida.c` com main, scanf, printf, etc.
-- Projeto compila com `make`
-- Arquivo `exemplo1.pg` funciona
+**Critérios de Aceitação:**
+- Projeto compila corretamente usando `make`.
+- Geração de arquivo `saida.c` funcional.
+- Primeiro exemplo `exemplo1.pg`, que teste as funcionalidades implementadas, compilado e executado corretamente.
 
 
 ---
 
-## 🧩 Sprint 2 – Controle de Fluxo (Condicionais) (17/04 a 30/04)
+## 🧩 Sprint 2 – Implementação de Estruturas Condicionais (09/04 a 15/04)
 
 **Objetivos:**
-Adicionar suporte à estrutura de decisão se ... entao ... senao ... fimse e operadores relacionais.
-
-**Critérios de Aceitação:**
-- Reconhecimento dos tokens:
+- Adicionar suporte à estrutura condicional:
     - `se`, `entao`, `senao`, `fimse`
+- Implementar operadores relacionais:
     - `==`, `!=`, `<`, `>`, `<=`, `>=`
-- Tradução para `if (...) { ... } else { ... }`
+
+**Critérios de Aceitação:**
+- Condições corretamente analisadas e compiladas.
 - Código com estruturas condicionais em Portugol é convertido corretamente para C.
-- `saida.c` compila e executa com a lógica esperada
+- Segundo exemplo `exemplo2.pg`, que teste as funcionalidades implementadas, compilado e executado corretamente.
 
-## 🧩 Sprint 3 – Estruturas de Repetição (enquanto ... faca ... fimenquanto) (01/05 a 15/05)
+## 🧩 Sprint 3 – Implementação de Estruturas de Repetição: Enquanto (16/04 a 22/04)
 
 **Objetivos:**
-Adicionar suporte à estrutura de repetição com tradução para while.
+- Adicionar suporte às estruturas de repetição:
+    - `enquanto`, `faca`, `fimenquanto`
 
 **Critérios de Aceitação:**
-- `enquanto`, `faca`, `fimenquanto`
-- Laços enquanto são reconhecidos e traduzidos
-- Comandos internos são executados corretamente em saida.c
+
+- Laços de repetição são reconhecidos e compilados corretamente.
+- Terceiro exemplo `exemplo3.pg`, que teste as funcionalidades implementadas, compilado e executado corretamente.
 
 ---
 
-## 🧩 Sprint 4 – Controle de fluxo + P2 (16/05 a 30/05)
+## 🧩 Sprint 4 – Estruturas de Repetição: Para (23/04 a 29/04)
 
 **Objetivos:**
-- Implementar estruturas: `se`, `enquanto`, etc.
-- Traduzir controle de fluxo para C
-- Realizar a apresentação do P2
+- Adicionar suporte às estruturas de repetição:
+    - `para`, `de`, `ate`, `fimpara`
 
 **Critérios de Aceitação:**
-- Estruturas traduzidas corretamente
-- Código C legível e funcional
-- Apresentação do P2 realizada
+- Laços de repetição são reconhecidos e compilados corretamente.
+- Quarto exemplo `exemplo4.pg`, que teste as funcionalidades implementadas, compilado e executado corretamente.
 
 ---
 
-## 🧩 Sprint 5 – Tipagem e robustez (31/05 a 13/06)
+## 🧩 Sprint 5 – Tipagem de Variáveis(Correção de Erros encontrados no desenvolvimento do POnto de Controle 1) (30/04 a 06/05)
 
 **Objetivos:**
-- Adicionar verificação de variáveis
-- Tratar tipos e escopos simples
-- Melhorar mensagens de erro
+- Ampliar o suporte para novos tipos de dados:
+    - `inteiro`, `real` e `caractere`
+- Corrigir a regra de declaração de variáveis no analisador sintático.
 
 **Critérios de Aceitação:**
-- Verificação de variáveis não declaradas
-- Tratamento básico de tipos
-- Erros bem localizados e informativos
+- Declaração de variáveis com tipo funcionando corretamente.
+- Compilação correta no C (int, float, char).
 
 ---
 
-## 🧩 Sprint 6 – Finalização e entrega (14/06 a 27/06)
+## 🧩 Sprint 6 – Leitura e Escrita de Diferentes Tipos(Correção de Erros encontrados no desenvolvimento do POnto de Controle 1) (07/05 a 13/05)
 
 **Objetivos:**
-- Refatorar e organizar o código
-- Testar com múltiplos arquivos
+- Ajustar a geração do `scanf` e `printf` para cada tipo de variável.
+- Exibir mensagens apropriadas ao tipo (ex: `%d`, `%f`, `%c`).
 - Entregar no Teams (até 27/06)
 
 **Critérios de Aceitação:**
-- Projeto entregue e funcional
-- Código C gerado compila corretamente
-- Casos de teste bem documentados
+- Leitura e escrita de variáveis de diferentes tipos funcionando corretamente.
 
 ---
 
-## 👥 Participantes
+## 🧩 Sprint 7 – Análise Semântica Inicial (07/05 a 13/05)
 
-- (Adicione aqui os nomes dos integrantes do grupo)
+**Objetivos:**
+- Verificar se variáveis são declaradas antes do uso.
+- Implementar tabela de símbolos simples para armazenamento de identificadores e seus tipos.
+
+**Critérios de Aceitação:**
+- Erros de variáveis não declaradas detectados.
+- Execução abortada em caso de erro semântico.
 
 ---
 
-> Qualquer dúvida ou sugestão, entre em contato via [Issues](https://github.com/SEU_USUARIO/SEU_REPOSITORIO/issues).
+## 🧩 Sprint 8 – Tratamento de Erros e Robustez (07/05 a 13/05)
+
+**Objetivos:**
+- Ajustar a geração do `scanf` e `printf` para cada tipo de variável.
+- Exibir mensagens apropriadas ao tipo (ex: `%d`, `%f`, `%c`).
+- Entregar no Teams (até 27/06)
+
+**Critérios de Aceitação:**
+- Leitura e escrita de variáveis de diferentes tipos funcionando corretamente.
+
+---
+
+## 🧩 Sprint 9 – Leitura e Escrita de Diferentes Tipos(Correção de Erros encontrados no desenvolvimento do POnto de Controle 1) (07/05 a 13/05)
+
+**Objetivos:**
+- Ajustar a geração do `scanf` e `printf` para cada tipo de variável.
+- Exibir mensagens apropriadas ao tipo (ex: `%d`, `%f`, `%c`).
+- Entregar no Teams (até 27/06)
+
+**Critérios de Aceitação:**
+- Leitura e escrita de variáveis de diferentes tipos funcionando corretamente.
+
+---
+
+## 🧩 Sprint 10 – Leitura e Escrita de Diferentes Tipos(Correção de Erros encontrados no desenvolvimento do POnto de Controle 1) (07/05 a 13/05)
+
+**Objetivos:**
+- Ajustar a geração do `scanf` e `printf` para cada tipo de variável.
+- Exibir mensagens apropriadas ao tipo (ex: `%d`, `%f`, `%c`).
+- Entregar no Teams (até 27/06)
+
+**Critérios de Aceitação:**
+- Leitura e escrita de variáveis de diferentes tipos funcionando corretamente.
+
+---
+
+## 🧩 Sprint 11 – Leitura e Escrita de Diferentes Tipos(Correção de Erros encontrados no desenvolvimento do POnto de Controle 1) (07/05 a 13/05)
+
+**Objetivos:**
+- Ajustar a geração do `scanf` e `printf` para cada tipo de variável.
+- Exibir mensagens apropriadas ao tipo (ex: `%d`, `%f`, `%c`).
+- Entregar no Teams (até 27/06)
+
+**Critérios de Aceitação:**
+- Leitura e escrita de variáveis de diferentes tipos funcionando corretamente.
+
+---
+
+## 🧩 Sprint 12 – Leitura e Escrita de Diferentes Tipos(Correção de Erros encontrados no desenvolvimento do POnto de Controle 1) (07/05 a 13/05)
+
+**Objetivos:**
+- Ajustar a geração do `scanf` e `printf` para cada tipo de variável.
+- Exibir mensagens apropriadas ao tipo (ex: `%d`, `%f`, `%c`).
+- Entregar no Teams (até 27/06)
+
+**Critérios de Aceitação:**
+- Leitura e escrita de variáveis de diferentes tipos funcionando corretamente.
+
+---

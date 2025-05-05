@@ -57,6 +57,12 @@
     return ID;
 }
 
+\"[^\"\n]*\"  { 
+    yylval.str = strdup(yytext);
+    printf("[TOKEN] STRING (%s)\n", yytext);
+    return STRING; 
+}
+
 [ \t\n\r]+      ;   // Ignora espaços e quebras de linha
 "//".*          ;   // Ignora comentários de linha
 "{"[^}]*"}"     ;   // Ignora comentários de bloco

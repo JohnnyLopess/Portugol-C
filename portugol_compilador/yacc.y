@@ -29,7 +29,7 @@ FILE *saida;
 %token ABREPAR FECHAPAR PONTOEVIRGULA
 %token PARA DE ATE FIMPARA
 %token DOISPONTOS
-%token <str> NUM ID
+%token <str> NUM ID STRING
 %type <codigo> programa bloco comando declaracao leitura escrita atribuicao
 %type <inteiro> tipo
 %type <expr> expressao
@@ -170,7 +170,23 @@ escrita:
     }
     | ESCREVA ABREPAR expressao FECHAPAR PONTOEVIRGULA {
         char *temp = malloc(100);
-        sprintf(temp, "    printf(\"%%d\\n\", %s);\n", $3.valor);
+        sprintf(temp, "    printf(\"%%s\", %s);\n", $3.valor);
+        $$ = temp;
+    }
+    |
+    ESCREVA ABREPAR STRING FECHAPAR PONTOEVIRGULA {
+        char *temp = malloc(1000);
+        char *s_com_aspas = $3;
+        char *s_sem_aspas = NULL;
+
+        if (strlen(s_com_aspas) >= 2) {
+            s_sem_aspas = strdup(s_com_aspas + 1);
+            s_sem_aspas[strlen(s_sem_aspas) - 1] = '\0';
+        } else {
+            s_sem_aspas = strdup("");
+        }
+        sprintf(temp, "    printf(\"%s\");\n", s_sem_aspas);
+        free(s_sem_aspas);
         $$ = temp;
     }
 ;

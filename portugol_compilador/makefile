@@ -17,12 +17,13 @@ $(BUILD_DIR)/y.tab.c $(BUILD_DIR)/y.tab.h: $(SRC_DIR)/yacc.y
 
 run: all
 	@if [ -z "$(FILE)" ]; then \
-		echo "Erro: Você deve especificar o arquivo com FILE=<nome_do_arquivo>."; \
-		echo "Exemplo: make run FILE=exemplo5.pg"; \
+		echo "Erro: Você deve especificar o arquivo com FILE=<caminho_para_o_arquivo>."; \
 		exit 1; \
 	fi
-	./build/compilador < exemplos/$(FILE)
-	mv saida.c $(BUILD_DIR)/saida.c
+	cd $(BUILD_DIR) && ./compilador < ../$(FILE)
 
 clean:
 	rm -rf $(BUILD_DIR)/* ./compilador saida.c
+
+test:
+	bash testes/run_tests.sh

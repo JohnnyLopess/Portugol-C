@@ -1,9 +1,17 @@
-name: ci
+name: Compilador Portugol-C Tests
 
 on:
   push:
-    branches:
+    branches: 
       - main
+      - feature/ci-test
+    paths:
+      - 'portugol_compilador/**'
+      - '.github/workflows/compiler-tests.yml'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'portugol_compilador/**'
 
 permissions:
   contents: write

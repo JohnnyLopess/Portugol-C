@@ -1,0 +1,43 @@
+name: Compilador Portugol-C Tests
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'portugol_compilador/**'
+      - '.github/workflows/compiler-tests.yml'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'portugol_compilador/**'
+
+jobs:
+  build_and_test:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Instalar dependências
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y flex bison gcc make
+    
+    - name: Compilar o projeto
+      run: |
+        cd portugol_compilador
+        make
+    
+    - name: Executar testes
+      run: |
+        cd portugol_compilador
+        make test
+        
+    - name: Arquivar resultados dos testes (se houver falhas)
+      if: failure()
+      uses: actions/upload-artifact@v3
+      with:
+        name: test-outputs
+        path: |
+          portugol_compilador/build/test_outputs/
+          portugol_compilador/build/saida.c

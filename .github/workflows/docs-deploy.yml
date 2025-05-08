@@ -1,4 +1,4 @@
-name: Compilador Portugol-C Tests
+name: Documentation Deploy
 
 on:
   push:
@@ -6,12 +6,13 @@ on:
       - main
       - feature/ci-test
     paths:
-      - 'portugol_compilador/**'
-      - '.github/workflows/compiler-tests.yml'
+      - 'documentação/**'
+      - '.github/workflows/docs-deploy.yml'
   pull_request:
     branches: [ main ]
     paths:
-      - 'portugol_compilador/**'
+      - 'documentação/**'
+      - '.github/workflows/docs-deploy.yml'
 
 permissions:
   contents: write

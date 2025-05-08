@@ -2,7 +2,7 @@ name: Compilador Portugol-C Tests
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main, feature/ci-test ]
     paths:
       - 'portugol_compilador/**'
       - '.github/workflows/compiler-tests.yml'
@@ -12,7 +12,7 @@ on:
       - 'portugol_compilador/**'
 
 jobs:
-  build_and_test:
+  test:
     runs-on: ubuntu-latest
     
     steps:

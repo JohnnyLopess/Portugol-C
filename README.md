@@ -49,10 +49,10 @@ Para traduzir um arquivo de exemplo da pasta `exemplos`, siga os passos abaixo:
 1. Execute o comando:
 
 ```bash
-make run FILE=nome_exemplo.pg
+make run FILE=exemplos/nome_exemplo.pg
 ```
 
-2. O compilador irá gerar um arquivo chamado `saida.c` com o código equivalente em C.
+2. O compilador irá gerar um arquivo chamado `saida.c` dentro da pasta `build` com o código equivalente em C.
 
 3. Para compilar e executar o código traduzido, use os comandos:
 ```bash
@@ -61,16 +61,35 @@ gcc saida.c -o programa
 ```
 ### 4. 🧪 Executar os testes automatizados
 
-Para executar os `testes` automatizados na pasta testes, siga os passos abaixo:
+Para executar os testes automatizados, siga os passos abaixo:
 
-1. Certifique-se de que a pasta `testes` contém os arquivos de entrada (`.pg`) e os arquivos de saída esperada (`.expected`).
-2. Execute o comando:
+1. Execute o comando:
 ```bash
 make test
 ```
-3. O sistema irá executar cada arquivo `.pg` da pasta `testes`, comparar a saída gerada com o arquivo `.expected` e exibir o resultado:
-- ✅ Indica que o teste passou.
-- ❌ Indica que o teste falhou.
+
+2. O sistema irá:
+   - Compilar o compilador se necessário
+   - Executar cada arquivo `.pg` da pasta `testes/inputs`
+   - Gerar o código C correspondente em `build/test_outputs`
+   - Comparar o resultado com o arquivo esperado em `testes/expected`
+   - Exibir o resultado:
+     - ✅ Indica que o teste passou
+     - ❌ Indica que o teste falhou, mostrando as diferenças
+
+### 4.1 🧩 Adicionar novos casos de teste
+
+Para adicionar um novo caso de teste:
+
+1. Crie um arquivo de entrada na pasta `testes/inputs` com extensão `.pg`
+   - Exemplo: `testes/inputs/meu_teste.pg`
+
+2. Crie o arquivo com a saída esperada na pasta `testes/expected` com o mesmo nome base e extensão `.expected`
+   - Exemplo: `testes/expected/meu_teste.expected`
+
+3. Execute `make test` para verificar se o compilador gera o resultado esperado
+
+**Nota:** O compilador gera os arquivos de saída na pasta `build/saida.c` durante o teste, e esses são copiados para `build/test_outputs/nome_do_teste.c` para verificação.
 
 ### 5. 🧹 Limpar arquivos gerados
 Para remover os arquivos gerados automaticamente (como `lex.yy.c`, `y.tab.c`, `y.tab.h`, `saida.c`, etc.), execute:

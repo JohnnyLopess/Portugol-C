@@ -2,14 +2,13 @@ name: Compilador Portugol-C Tests
 
 on:
   push:
-    branches: [ main, feature/ci-test ]
     paths:
       - 'portugol_compilador/**'
       - '.github/workflows/compiler-tests.yml'
   pull_request:
-    branches: [ main ]
     paths:
       - 'portugol_compilador/**'
+      - '.github/workflows/compiler-tests.yml'
 
 jobs:
   test:
@@ -22,6 +21,11 @@ jobs:
       run: |
         sudo apt-get update
         sudo apt-get install -y flex bison gcc make
+    
+    - name: Preparar estrutura de diretórios
+      run: |
+        cd portugol_compilador
+        mkdir -p build/test_outputs
     
     - name: Compilar o projeto
       run: |

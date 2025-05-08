@@ -2,14 +2,10 @@ name: Documentation Deploy
 
 on:
   push:
-    branches: 
-      - main
-      - feature/ci-test
     paths:
       - 'documentação/**'
       - '.github/workflows/docs-deploy.yml'
   pull_request:
-    branches: [ main ]
     paths:
       - 'documentação/**'
       - '.github/workflows/docs-deploy.yml'
@@ -23,7 +19,7 @@ jobs:
 
     steps:
       - name: Checkout do código
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Configurar Python
         uses: actions/setup-python@v4

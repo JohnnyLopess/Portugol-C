@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "ast.h"
 
 int yylex();
 void yyerror(const char *s);
@@ -41,7 +42,7 @@ int buscar_tipo_variavel(char *nome) {
         char* valor;
         int tipo;
     } expr;
-    char* codigo;
+    struct AST* ast; // novo campo para AST
 }
 
 %token INICIO FIM LEIA ESCREVA VAR
@@ -54,7 +55,7 @@ int buscar_tipo_variavel(char *nome) {
 %token PARA DE ATE FIMPARA
 %token DOISPONTOS
 %token <str> NUM ID STRING
-%type <codigo> programa bloco comando declaracao leitura escrita atribuicao
+%type <ast> programa bloco comando declaracao leitura escrita atribuicao expressao
 %type <inteiro> tipo
 %type <expr> expressao
 
@@ -240,18 +241,15 @@ escrita:
     }
     | ESCREVA ABREPAR expressao FECHAPAR PONTOEVIRGULA {
         char *temp = malloc(100);
-        if ($3.tipo == 1) {
-            sprintf(temp, "    printf(\"%%f\", %s);\n", $3.valor);
-        } else if ($3.tipo == 2) {
-            sprintf(temp, "    printf(\"%%c\", %s);\n", $3.valor);
-        } else {
-            sprintf(temp, "    printf(\"%%d\", %s);\n", $3.valor);
-        }
+        if ($3.tipo == 0)
+            sprintf(temp, "    printf(\"%%d\\n\", %s);\n", $3.valor);
+        else
+            sprintf(temp, "    printf(\"%%s\\n\", %s);\n", $3.valor);
         $$ = temp;
     }
     | ESCREVA ABREPAR NUM FECHAPAR PONTOEVIRGULA {
         char *temp = malloc(100);
-        sprintf(temp, "    printf(\"%%s\", %s);\n", $3);
+        sprintf(temp, "    printf(\"%%d\\n\", %s);\n", $3);
         $$ = temp;
     }
 ;

@@ -71,9 +71,9 @@ void ast_gera_c(AST* no, FILE* saida, int nivel_indent) {
                 else if (tipo == 1)
                     fprintf(saida, "scanf(\"%%f\", &%s);\n", nome);
                 else if (tipo == 2)
-                    fprintf(saida, "scanf(\" %%c\", &%s);\n", nome);
+                    fprintf(saida, "scanf(\" %%c\", &%s);\n", nome); // espaço antes do %c
                 else
-                    fprintf(saida, "scanf(\"%%d\", &%s); // tipo desconhecido\n", nome);
+                    fprintf(saida, "scanf(\"%%d\", &%s);\n", nome); // padrão seguro, sem comentário
             }
             break;
 
@@ -93,7 +93,7 @@ void ast_gera_c(AST* no, FILE* saida, int nivel_indent) {
                     else if (tipo == 2)
                         fprintf(saida, "printf(\"%%c\\n\", %s);\n", no->filhos[0]->valor);
                     else
-                        fprintf(saida, "printf(\"%%d\\n\", %s); // tipo desconhecido\n", no->filhos[0]->valor);
+                        fprintf(saida, "printf(\"%%d\\n\", %s);\n", no->filhos[0]->valor); // padrão seguro, sem comentário
                 } else {
                     ast_gera_c(no->filhos[0], saida, 0);
                 }

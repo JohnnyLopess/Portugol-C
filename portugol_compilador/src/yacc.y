@@ -112,7 +112,9 @@ comando:
 
 declaracao:
     VAR DOISPONTOS tipo ID PONTOEVIRGULA {
-        // $3 é o tipo, $4 é o nome
+        strcpy(variaveis[num_vars].nome, $4);
+        variaveis[num_vars].tipo = $3;
+        num_vars++;
         AST* tipo_no = ast_cria(AST_ID, strdup($4), 0);
         AST* tipo_tipo = ast_cria(AST_NUM, strdup($3 == TIPO_INT ? "int" : $3 == TIPO_FLOAT ? "float" : "char"), 0);
         $$ = ast_cria(AST_DECLARACAO, NULL, 2, tipo_tipo, tipo_no);

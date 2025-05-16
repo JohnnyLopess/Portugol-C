@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "ast.h"
 
 int yylex();
 void yyerror(const char *s);
@@ -17,6 +18,8 @@ struct variavel {
 
 struct variavel variaveis[MAX_VARS];
 int num_vars = 0;
+
+AST* raiz_ast = NULL;
 
 int buscar_tipo_variavel(char *nome) {
     for(int i = 0; i < num_vars; i++) {
@@ -41,7 +44,7 @@ int buscar_tipo_variavel(char *nome) {
         char* valor;
         int tipo;
     } expr;
-    char* codigo;
+    struct AST* ast; // novo campo para AST
 }
 
 %token INICIO FIM LEIA ESCREVA VAR
@@ -54,9 +57,9 @@ int buscar_tipo_variavel(char *nome) {
 %token PARA DE ATE FIMPARA
 %token DOISPONTOS
 %token <str> NUM ID STRING
-%type <codigo> programa bloco comando declaracao leitura escrita atribuicao
+%type <ast> programa bloco comando declaracao leitura escrita atribuicao expressao
 %type <inteiro> tipo
-%type <expr> expressao
+
 
 %left SOMA SUB
 
@@ -64,124 +67,57 @@ int buscar_tipo_variavel(char *nome) {
 
 programa:
     INICIO bloco FIM {
-        saida = fopen("saida.c", "w");
-        fprintf(saida, "#include <stdio.h>\n\nint main() {\n");
-        fprintf(saida, "%s", $2);
-        fprintf(saida, "    return 0;\n}\n");
-        fclose(saida);
-        $$ = $2;
+        raiz_ast = ast_cria(AST_PROGRAMA, NULL, 1, $2);
+        $$ = raiz_ast;
     }
 ;
 
 bloco:
-    bloco comando {
-        char *temp = malloc(1000);
-        sprintf(temp, "%s%s", $1, $2);  // Remove \n extra
-        $$ = temp;
+    comando { 
+        $$ = ast_cria(AST_BLOCO, NULL, 1, $1); 
     }
-    | comando {
-        $$ = $1;
+    | bloco comando {
+        if (!$2) {
+            fprintf(stderr, "[ERRO] Comando nulo em bloco!\n");
+            $$ = $1; // Retorna o bloco anterior sem adicionar comando nulo
+        } else {
+            int n = $1->n_filhos + 1;
+            AST** filhos = malloc(sizeof(AST*) * n);
+            for (int i = 0; i < $1->n_filhos; i++) filhos[i] = $1->filhos[i];
+            filhos[n-1] = $2;
+            AST* novo_bloco = ast_cria(AST_BLOCO, NULL, 0); // cria vazio
+            novo_bloco->n_filhos = n;
+            novo_bloco->filhos = filhos;
+            $$ = novo_bloco;
+        }
     }
 ;
 
 comando:
-    declaracao { 
-        $$ = $1;
-    }
+    declaracao { $$ = $1; }
     | leitura { $$ = $1; }
     | escrita { $$ = $1; }
     | atribuicao { $$ = $1; }
     | SE expressao ENTAO bloco SENAO bloco FIMSE {
-        char *temp = malloc(1000);
-        char *bloco_if = malloc(1000);
-        char *bloco_else = malloc(1000);
-        
-        // Processa o bloco if
-        char *linha_if = strtok($4, "\n");
-        strcpy(bloco_if, "");
-        while (linha_if != NULL) {
-            char temp_linha[1000];
-            sprintf(temp_linha, "        %s\n", linha_if + 4);
-            strcat(bloco_if, temp_linha);
-            linha_if = strtok(NULL, "\n");
-        }
-        
-        // Processa o bloco else
-        char *linha_else = strtok($6, "\n");
-        strcpy(bloco_else, "");
-        while (linha_else != NULL) {
-            char temp_linha[1000];
-            sprintf(temp_linha, "        %s\n", linha_else + 4);
-            strcat(bloco_else, temp_linha);
-            linha_else = strtok(NULL, "\n");
-        }
-        
-        sprintf(temp, "    if (%s) {\n%s    } else {\n%s    }\n", 
-                $2.valor, bloco_if, bloco_else);
-        
-        free(bloco_if);
-        free(bloco_else);
-        $$ = temp;
+        $$ = ast_cria(AST_IF, NULL, 3, $2, $4, $6);
     }
     | ENQUANTO expressao FACA bloco FIMENQUANTO {
-    char *temp = malloc(1000);
-    char *bloco_indentado = malloc(1000);
-    char *linha = strtok($4, "\n");
-    strcpy(bloco_indentado, "");
-    while (linha != NULL) {
-        char temp_linha[1000];
-        sprintf(temp_linha, "        %s\n", linha + 4);
-        strcat(bloco_indentado, temp_linha);  // Fixed: trcat -> strcat
-        linha = strtok(NULL, "\n");
+        $$ = ast_cria(AST_WHILE, NULL, 2, $2, $4);
     }
-    sprintf(temp, "    while (%s) {\n%s    }\n", $2.valor, bloco_indentado);
-    free(bloco_indentado);
-    $$ = temp;
-}
-       | PARA ID DE expressao ATE expressao FACA bloco FIMPARA {
-        char *temp = malloc(1000);
-        char *bloco_indentado = malloc(1000);
-        
-        // Processa o bloco do loop (usa $8, que é o bloco)
-        char *linha = strtok($8, "\n");
-        strcpy(bloco_indentado, "");
-        while (linha != NULL) {
-            char temp_linha[1000];
-            sprintf(temp_linha, "        %s\n", linha + 4);  // Remove 4 espaços
-            strcat(bloco_indentado, temp_linha);
-            linha = strtok(NULL, "\n");
-        }
-        
-        // Gera o for em C
-        sprintf(temp, 
-            "    for (%s = %s; %s <= %s; %s++) {\n%s    }\n", 
-            $2, $4.valor, $2, $6.valor, $2, bloco_indentado);
-        
-        free(bloco_indentado);
-        $$ = temp;
+    | PARA ID DE expressao ATE expressao FACA bloco FIMPARA {
+        AST* id = ast_cria(AST_ID, strdup($2), 0);
+        $$ = ast_cria(AST_FOR, NULL, 4, id, $4, $6, $8);
     }
 ;
 
 declaracao:
     VAR DOISPONTOS tipo ID PONTOEVIRGULA {
-        char *temp = malloc(100);
-        // Store variable type information
         strcpy(variaveis[num_vars].nome, $4);
         variaveis[num_vars].tipo = $3;
         num_vars++;
-        
-        switch($3) {
-            case TIPO_INT:
-                sprintf(temp, "    int %s;\n", $4);
-                break;
-            case TIPO_FLOAT:
-                sprintf(temp, "    float %s;\n", $4);
-                break;
-            case TIPO_CHAR:
-                sprintf(temp, "    char %s;\n", $4);
-                break;
-        }
-        $$ = temp;
+        AST* tipo_no = ast_cria(AST_ID, strdup($4), 0);
+        AST* tipo_tipo = ast_cria(AST_NUM, strdup($3 == TIPO_INT ? "int" : $3 == TIPO_FLOAT ? "float" : "char"), 0);
+        $$ = ast_cria(AST_DECLARACAO, NULL, 2, tipo_tipo, tipo_no);
     }
 ;
 
@@ -193,133 +129,62 @@ tipo:
 
 leitura:
     LEIA ABREPAR ID FECHAPAR PONTOEVIRGULA {
-        char *temp = malloc(100);
-        int tipo = buscar_tipo_variavel($3);
-        
-        switch(tipo) {
-            case TIPO_INT:
-                sprintf(temp, "    scanf(\"%%d\", &%s);\n", $3);
-                break;
-            case TIPO_FLOAT:
-                sprintf(temp, "    scanf(\"%%f\", &%s);\n", $3);
-                break;
-            case TIPO_CHAR:
-                sprintf(temp, "    scanf(\" %%c\", &%s);\n", $3);
-                break;
-            default:
-                sprintf(temp, "    // Erro: variável %s não declarada\n", $3);
-        }
-        $$ = temp;
+        AST* id = ast_cria(AST_ID, strdup($3), 0);
+        $$ = ast_cria(AST_LEITURA, NULL, 1, id);
     }
 ;
 
 escrita:
     ESCREVA ABREPAR ID FECHAPAR PONTOEVIRGULA {
-        char *temp = malloc(100);
-        int tipo = buscar_tipo_variavel($3);
-        
-        switch(tipo) {
-            case TIPO_INT:
-                sprintf(temp, "    printf(\"%%d\\n\", %s);\n", $3);
-                break;
-            case TIPO_FLOAT:
-                sprintf(temp, "    printf(\"%%f\\n\", %s);\n", $3);
-                break;
-            case TIPO_CHAR:
-                sprintf(temp, "    printf(\"%%c\\n\", %s);\n", $3);
-                break;
-            default:
-                sprintf(temp, "    // Erro: variável %s não declarada\n", $3);
-        }
-        $$ = temp;
+        AST* id = ast_cria(AST_ID, strdup($3), 0);
+        $$ = ast_cria(AST_ESCRITA, NULL, 1, id);
     }
     | ESCREVA ABREPAR STRING FECHAPAR PONTOEVIRGULA {
-        char *temp = malloc(100);
-        sprintf(temp, "    printf(%s);\n", $3);
-        $$ = temp;
+        AST* str = ast_cria(AST_STRING, strdup($3), 0);
+        $$ = ast_cria(AST_ESCRITA, NULL, 1, str);
     }
     | ESCREVA ABREPAR expressao FECHAPAR PONTOEVIRGULA {
-        char *temp = malloc(100);
-        if ($3.tipo == 1) {
-            sprintf(temp, "    printf(\"%%f\", %s);\n", $3.valor);
-        } else if ($3.tipo == 2) {
-            sprintf(temp, "    printf(\"%%c\", %s);\n", $3.valor);
-        } else {
-            sprintf(temp, "    printf(\"%%d\", %s);\n", $3.valor);
-        }
-        $$ = temp;
+        $$ = ast_cria(AST_ESCRITA, NULL, 1, $3);
     }
     | ESCREVA ABREPAR NUM FECHAPAR PONTOEVIRGULA {
-        char *temp = malloc(100);
-        sprintf(temp, "    printf(\"%%s\", %s);\n", $3);
-        $$ = temp;
+        AST* num = ast_cria(AST_NUM, strdup($3), 0);
+        $$ = ast_cria(AST_ESCRITA, NULL, 1, num);
     }
 ;
 
 atribuicao:
     ID IGUAL expressao PONTOEVIRGULA {
-        char *temp = malloc(100);
-        sprintf(temp, "    %s = %s;\n", $1, $3.valor);
-        $$ = temp;
+        AST* id = ast_cria(AST_ID, strdup($1), 0);
+        $$ = ast_cria(AST_ATRIBUICAO, NULL, 2, id, $3);
     }
 ;
 
 expressao:
-    NUM {
-        $$.valor = strdup($1);
-        $$.tipo = 0;
-    }
-    | ID {
-        $$.valor = strdup($1);
-        $$.tipo = 0;
-    }
+    NUM { $$ = ast_cria(AST_NUM, strdup($1), 0); }
+    | ID { $$ = ast_cria(AST_ID, strdup($1), 0); }
     | expressao SOMA expressao {
-        char *temp = malloc(100);
-        sprintf(temp, "%s + %s", $1.valor, $3.valor);
-        $$.valor = temp;
-        $$.tipo = 0;
+        $$ = ast_cria(AST_EXPRESSAO, strdup("+"), 2, $1, $3);
     }
     | expressao SUB expressao {
-        char *temp = malloc(100);
-        sprintf(temp, "%s - %s", $1.valor, $3.valor);
-        $$.valor = temp;
-        $$.tipo = 0;
+        $$ = ast_cria(AST_EXPRESSAO, strdup("-"), 2, $1, $3);
     }
     | expressao COMPARA expressao {
-        char *temp = malloc(100);
-        sprintf(temp, "%s == %s", $1.valor, $3.valor);
-        $$.valor = temp;
-        $$.tipo = 0;
+        $$ = ast_cria(AST_EXPRESSAO, strdup("=="), 2, $1, $3);
     }
     | expressao MENOR expressao {
-        char *temp = malloc(100);
-        sprintf(temp, "%s < %s", $1.valor, $3.valor);
-        $$.valor = temp;
-        $$.tipo = 0;
+        $$ = ast_cria(AST_EXPRESSAO, strdup("<"), 2, $1, $3);
     }
     | expressao MAIOR expressao {
-        char *temp = malloc(100);
-        sprintf(temp, "%s > %s", $1.valor, $3.valor);
-        $$.valor = temp;
-        $$.tipo = 0;
+        $$ = ast_cria(AST_EXPRESSAO, strdup(">"), 2, $1, $3);
     }
     | expressao MENOR_IGUAL expressao {
-        char *temp = malloc(100);
-        sprintf(temp, "%s <= %s", $1.valor, $3.valor);
-        $$.valor = temp;
-        $$.tipo = 0;
+        $$ = ast_cria(AST_EXPRESSAO, strdup("<="), 2, $1, $3);
     }
     | expressao MAIOR_IGUAL expressao {
-        char *temp = malloc(100);
-        sprintf(temp, "%s >= %s", $1.valor, $3.valor);
-        $$.valor = temp;
-        $$.tipo = 0;
+        $$ = ast_cria(AST_EXPRESSAO, strdup(">="), 2, $1, $3);
     }
     | expressao DIFERENTE expressao {
-        char *temp = malloc(100);
-        sprintf(temp, "%s != %s", $1.valor, $3.valor);
-        $$.valor = temp;
-        $$.tipo = 0;
+        $$ = ast_cria(AST_EXPRESSAO, strdup("!="), 2, $1, $3);
     }
 ;
 

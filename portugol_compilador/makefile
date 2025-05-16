@@ -7,7 +7,7 @@ BUILD_DIR = build
 all: $(BUILD_DIR)/compilador
 
 $(BUILD_DIR)/compilador: $(BUILD_DIR)/lex.yy.c $(BUILD_DIR)/y.tab.c $(SRC_DIR)/main.c
-	$(CC) -o $@ $^
+	$(CC) -Isrc -o $@ $^ $(SRC_DIR)/ast.c
 
 $(BUILD_DIR)/lex.yy.c: $(SRC_DIR)/lex.l
 	$(LEX) -o $@ $<

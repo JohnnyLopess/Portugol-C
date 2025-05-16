@@ -35,7 +35,7 @@ O desenvolvimento foi dividido em **12 sprints semanais**, iniciando em **02/04/
 
 ---
 
-## 🧩 Sprint 1 – Estrutura Inicial e Comandos Básicos (02/04 a 08/04)
+## 🧩 Sprint 1 –Setup do Compilador e Primeiros Comandos (30/03 - 05/04)
 
 **Objetivos:**
 - Definir escopo da linguagem Portugol suportada(UniVali).
@@ -56,7 +56,7 @@ O desenvolvimento foi dividido em **12 sprints semanais**, iniciando em **02/04/
 
 ---
 
-## 🧩 Sprint 2 – Implementação de Estruturas Condicionais (09/04 a 15/04)
+## 🧩 Sprint 2 – Controle de Fluxo(Condicionais) (06/04 - 12/04)
 
 **Objetivos:**
 - Adicionar suporte à estrutura condicional:
@@ -69,7 +69,7 @@ O desenvolvimento foi dividido em **12 sprints semanais**, iniciando em **02/04/
 - Código com estruturas condicionais em Portugol é convertido corretamente para C.
 - Segundo exemplo `exemplo2.pg`, que teste as funcionalidades implementadas, compilado e executado corretamente.
 
-## 🧩 Sprint 3 – Implementação de Estruturas de Repetição: Enquanto (16/04 a 22/04)
+## 🧩 Sprint 3 – Estrutura de Repetição(enquanto…faca…fimenquanto) (13/04 - 19/04)
 
 **Objetivos:**
 - Adicionar suporte às estruturas de repetição:
@@ -94,7 +94,7 @@ O desenvolvimento foi dividido em **12 sprints semanais**, iniciando em **02/04/
 
 ---
 
-## 🧩 Sprint 5 – Tipagem de Variáveis(Correção de Erros encontrados no desenvolvimento do POnto de Controle 1) (30/04 a 06/05)
+## 🧩 Sprint 5 – Tipagem e Robustez + P1 (27/04 - 03/05)
 
 **Objetivos:**
 - Ampliar o suporte para novos tipos de dados:
@@ -107,23 +107,56 @@ O desenvolvimento foi dividido em **12 sprints semanais**, iniciando em **02/04/
 
 ---
 
-## 🧩 Sprint 6 – Leitura e Escrita de Diferentes Tipos(Correção de Erros encontrados no desenvolvimento do POnto de Controle 1) (07/05 a 13/05)
+## 🧩 Sprint 6 – Sistema de Testes Automatizados (04/05 - 10/05)
 
 **Objetivos:**
-- Ajustar a geração do `scanf` e `printf` para cada tipo de variável.
-- Exibir mensagens apropriadas ao tipo (ex: `%d`, `%f`, `%c`).
-- Entregar no Teams (até 27/06)
+- implementar um sistema de testes automatizados completo para o compilador Portugol-C que permite verificar se a geração de código C está funcionando conforme o esperado.
 
 **Critérios de Aceitação:**
-- Leitura e escrita de variáveis de diferentes tipos funcionando corretamente.
+- Sistema de Testes Automatizados funcionando corretamente.
 
 ---
 
-## 🧩 Sprint 7 – Análise Semântica Inicial (07/05 a 13/05)
+## 🧩 Sprint 7 – AST (11/05 - 17/05)
+
+**Objetivos:**
+- Construção da Árvore de Derivação Sintática
+
+---
+
+## 🧩 Sprint 8 – Recursos Avançados do Portugol (18/05 - 24/05)
+
+**Objetivos:**
+- Implementar recursos “senão se” e “switch/case (escolha, caso, fimcaso) ”
+
+**Critérios de Aceitação:**
+- Implementar casos de testes para cada um dos recursos
+- Todos testes devem estar funcionando
+---  
+
+## 🧩 Sprint 9 – Comentários em Portugol ((25/05 - 31/05))
+
+**Objetivos:**
+- Conversão de comentários do Portugol (//, /* */) para C.
+
+**Critérios de Aceitação:**
+- Código comentado, limpo e modular.
+- IMplementação de casos de teste
+
+---
+
+## 🧩 Sprint 10 – Novos Tipos + P2 (01/06 a 07/06)
+
+**Objetivos:**
+- Reconhecimento e tratamento dos tipos null e lógico (booleano) e apresentação do P2
+---
+
+## 🧩 Sprint 11 – Análise Semântica, Tabela de Símbolos + Disponibilização do GitHub 
 
 **Objetivos:**
 - Verificar se variáveis são declaradas antes do uso.
 - Implementar tabela de símbolos simples para armazenamento de identificadores e seus tipos.
+- Disponibilizar Repositório.
 
 **Critérios de Aceitação:**
 - Erros de variáveis não declaradas detectados.
@@ -131,61 +164,17 @@ O desenvolvimento foi dividido em **12 sprints semanais**, iniciando em **02/04/
 
 ---
 
-## 🧩 Sprint 8 – Testes Avançados e Robustez Final (21/05 a 27/05)
+## 🧩 Sprint 12 – Correções e Integração Final (15/06 - 21/06)
 
 **Objetivos:**
-- Criar conjunto robusto de testes (programas maiores em Portugol).
-- Simular erros diversos para garantir que o tradutor responde corretamente.
+- Correção de bugs e inconsistências
+- Organização do código final
+- Últimos testes com múltiplos arquivos .pg
 
-**Critérios de Aceitação:**
-- Testes extensivos realizados e documentados.
-- Todos casos de teste passam ou geram erros corretos.
 
----  
-
-## 🧩 Sprint 9 – Refatoração do Código (28/05 a 03/06)
+## 🧩 Sprint 13 – Entrega e Apresentação Final (22/06 - 28/06)
 
 **Objetivos:**
-- Organizar e modularizar o código Flex e Bison.
-- Adicionar suporte à comentários.
-- Remover duplicações e melhorar a legibilidade.
-
-**Critérios de Aceitação:**
-- Código comentado, limpo e modular.
-
----
-
-## 🧩 Sprint 10 – Testes de Integração (04/06 a 10/06)
-
-**Objetivos:**
-- Construir um conjunto de testes mais complexos (programas longos com múltiplas estruturas).
-- Verificar geração correta de código C em cenários reais.
-
-**Critérios de Aceitação:**
-- Casos de teste maiores passam com sucesso.
-
----
-
-## 🧩 Sprint 11 – Documentação Final (11/06 a 17/06)
-
-**Objetivos:**
-- Finalizar documentação do projeto.
-- Escrever relatórios de caso de teste, descrição do compilador e decisões de projeto.
-
-**Critérios de Aceitação:**
-- Documentação entregue em formato padronizado.
-
----
-
-## 🧩 Sprint 12 – Entrega e Ajustes Finais (18/06 a 27/06)
-
-**Objetivos:**
-- Revisar tudo.
-- Corrigir qualquer erro de última hora.
-- Submeter o projeto ao Teams.
-
-**Critérios de Aceitação:**
-- Projeto entregue e funcional até 27/06.
-- Testes finais aprovados.
+- Preparação para entrega do projeto, entrevista/apresentação finals
 
 ---

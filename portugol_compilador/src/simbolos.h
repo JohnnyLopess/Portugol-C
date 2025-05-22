@@ -1,15 +1,14 @@
 #ifndef SIMBOLOS_H
 #define SIMBOLOS_H
 
-#define MAX_VARS 100
+typedef struct simbolo {
+    char nome[32];
+    int tipo; 
+    struct simbolo *proximo;
+} Simbolo;
 
-typedef struct {
-    char nome[50];
-    int tipo;
-} Variavel;
-
-void simbolos_init();
-int simbolos_adiciona(const char* nome, int tipo);
-int simbolos_busca_tipo(const char* nome);
+void inserirSimbolo(char *nome, int tipo); 
+Simbolo *buscarSimbolo(char *nome);
+void imprimirTabela();
 
 #endif

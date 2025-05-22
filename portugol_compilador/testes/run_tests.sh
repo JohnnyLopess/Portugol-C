@@ -13,7 +13,7 @@ mkdir -p "$OUTPUT_DIR"
 PASSOU=0
 FALHOU=0
 
-echo "🧪 Iniciando testes automatizados..."
+echo "Iniciando testes automatizados..."
 
 for input in "$INPUT_DIR"/*.pg; do
     base=$(basename "$input" .pg)

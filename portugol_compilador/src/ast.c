@@ -3,9 +3,8 @@
 #include <stdlib.h>
 #include <stdarg.h>
 #include <string.h>
+#include "simbolos.h"
 
-// Função auxiliar para buscar tipo de variável (você já tem no yacc.y, pode mover para um .h)
-extern int buscar_tipo_variavel(char *nome);
 
 AST* ast_cria(ASTTipo tipo, char* valor, int n_filhos, ...) {
     printf("[DEBUG] Criando nó tipo=%d, valor=%s, n_filhos=%d\n", tipo, valor ? valor : "NULL", n_filhos);
@@ -65,7 +64,8 @@ void ast_gera_c(AST* no, FILE* saida, int nivel_indent) {
             for (int i = 0; i < nivel_indent; i++) fprintf(saida, "    ");
             if (no->n_filhos >= 1 && no->filhos[0]) {
                 char *nome = no->filhos[0]->valor;
-                int tipo = buscar_tipo_variavel(nome);
+                Simbolo *s = buscarSimbolo(nome);
+                int tipo = s ? s->tipo : 0;
                 if (tipo == 0)
                     fprintf(saida, "scanf(\"%%d\", &%s);\n", nome);
                 else if (tipo == 1)
@@ -93,7 +93,7 @@ void ast_gera_c(AST* no, FILE* saida, int nivel_indent) {
                     else if (tipo == 2)
                         fprintf(saida, "printf(\"%%c\\n\", %s);\n", no->filhos[0]->valor);
                     else
-                        fprintf(saida, "printf(\"%%d\\n\", %s);\n", no->filhos[0]->valor); // padrão seguro, sem comentário
+                        fprintf(saida, "printf(\"%%d\\n\", %s);\n", no->filhos[0]->valor); 
                 } else {
                     ast_gera_c(no->filhos[0], saida, 0);
                 }

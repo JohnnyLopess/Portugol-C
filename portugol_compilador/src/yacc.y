@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "ast.h"
+#include "simbolos.h"
 
 int yylex();
 void yyerror(const char *s);
@@ -16,19 +17,10 @@ struct variavel {
     int tipo;  
 };
 
-struct variavel variaveis[MAX_VARS];
-int num_vars = 0;
+
 
 AST* raiz_ast = NULL;
 
-int buscar_tipo_variavel(char *nome) {
-    for(int i = 0; i < num_vars; i++) {
-        if(strcmp(variaveis[i].nome, nome) == 0) {
-            return variaveis[i].tipo;
-        }
-    }
-    return -1;
-}
 
 // Add these variable type definitions
 #define TIPO_INT 0
@@ -112,9 +104,7 @@ comando:
 
 declaracao:
     VAR DOISPONTOS tipo ID PONTOEVIRGULA {
-        strcpy(variaveis[num_vars].nome, $4);
-        variaveis[num_vars].tipo = $3;
-        num_vars++;
+        inserirSimbolo($4, $3); // Adiciona na tabela hash
         AST* tipo_no = ast_cria(AST_ID, strdup($4), 0);
         AST* tipo_tipo = ast_cria(AST_NUM, strdup($3 == TIPO_INT ? "int" : $3 == TIPO_FLOAT ? "float" : "char"), 0);
         $$ = ast_cria(AST_DECLARACAO, NULL, 2, tipo_tipo, tipo_no);

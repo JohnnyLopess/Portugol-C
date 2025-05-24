@@ -14,23 +14,28 @@ unsigned hash(char *s) {
     return h % TAM;
 }
 
-void inserirSimbolo(char *nome, int tipo) {
+void inserirSimbolo(char *nome, int tipo, int escopo) {
     unsigned i = hash(nome);
     // Evita inserir duplicatas
-    Simbolo *existente = buscarSimbolo(nome);
+    Simbolo *existente = buscarSimbolo(nome, escopo);
     if (existente) return;
     Simbolo *s = malloc(sizeof(Simbolo));
     strncpy(s->nome, nome, sizeof(s->nome));
     s->nome[sizeof(s->nome)-1] = '\0';
     s->tipo = tipo;
+    s->escopo = escopo;
     s->proximo = tabela[i];
     tabela[i] = s;
 }
 
-Simbolo *buscarSimbolo(char *nome) {
+Simbolo *buscarSimbolo(char *nome, int escopo) {
     unsigned i = hash(nome);
-    for (Simbolo *s = tabela[i]; s; s = s->proximo) {
-        if (strcmp(s->nome, nome) == 0) return s;
+    // Procura do escopo atual até o global
+    for (int e = escopo; e >= 0; e--) {
+        for (Simbolo *s = tabela[i]; s; s = s->proximo) {
+            if (strcmp(s->nome, nome) == 0 && s->escopo == e)
+                return s;
+        }
     }
     return NULL;
 }

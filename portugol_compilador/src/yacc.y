@@ -10,19 +10,10 @@ void yyerror(const char *s);
 
 FILE *saida;
 
-#define MAX_VARS 100
-
-struct variavel {
-    char nome[50];
-    int tipo;  
-};
-
-
+int escopo_atual = 0;
 
 AST* raiz_ast = NULL;
 
-
-// Add these variable type definitions
 #define TIPO_INT 0
 #define TIPO_FLOAT 1
 #define TIPO_CHAR 2
@@ -49,7 +40,7 @@ AST* raiz_ast = NULL;
 %token PARA DE ATE FIMPARA
 %token DOISPONTOS
 %token <str> NUM ID STRING
-%type <ast> programa bloco comando declaracao leitura escrita atribuicao expressao
+%type <ast> programa bloco bloco_conteudo comando declaracao leitura escrita atribuicao expressao
 %type <inteiro> tipo
 
 
@@ -65,19 +56,28 @@ programa:
 ;
 
 bloco:
-    comando { 
-        $$ = ast_cria(AST_BLOCO, NULL, 1, $1); 
+    {
+        escopo_atual++; // Entra em novo escopo
     }
-    | bloco comando {
+    bloco_conteudo
+    {
+        escopo_atual--; // Sai do escopo ao final do bloco
+        $$ = $2;
+    }
+;
+
+bloco_conteudo:
+    comando { $$ = ast_cria(AST_BLOCO, NULL, 1, $1); }
+    | bloco_conteudo comando {
         if (!$2) {
             fprintf(stderr, "[ERRO] Comando nulo em bloco!\n");
-            $$ = $1; // Retorna o bloco anterior sem adicionar comando nulo
+            $$ = $1;
         } else {
             int n = $1->n_filhos + 1;
             AST** filhos = malloc(sizeof(AST*) * n);
             for (int i = 0; i < $1->n_filhos; i++) filhos[i] = $1->filhos[i];
             filhos[n-1] = $2;
-            AST* novo_bloco = ast_cria(AST_BLOCO, NULL, 0); // cria vazio
+            AST* novo_bloco = ast_cria(AST_BLOCO, NULL, 0);
             novo_bloco->n_filhos = n;
             novo_bloco->filhos = filhos;
             $$ = novo_bloco;
@@ -104,7 +104,7 @@ comando:
 
 declaracao:
     VAR DOISPONTOS tipo ID PONTOEVIRGULA {
-        inserirSimbolo($4, $3); // Adiciona na tabela hash
+        inserirSimbolo($4, $3, escopo_atual); // Agora inclui o escopo!
         AST* tipo_no = ast_cria(AST_ID, strdup($4), 0);
         AST* tipo_tipo = ast_cria(AST_NUM, strdup($3 == TIPO_INT ? "int" : $3 == TIPO_FLOAT ? "float" : "char"), 0);
         $$ = ast_cria(AST_DECLARACAO, NULL, 2, tipo_tipo, tipo_no);

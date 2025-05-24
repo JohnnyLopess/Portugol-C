@@ -5,6 +5,7 @@
 #include <string.h>
 #include "simbolos.h"
 
+extern int escopo_atual;
 
 AST* ast_cria(ASTTipo tipo, char* valor, int n_filhos, ...) {
     printf("[DEBUG] Criando nó tipo=%d, valor=%s, n_filhos=%d\n", tipo, valor ? valor : "NULL", n_filhos);
@@ -48,10 +49,12 @@ void ast_gera_c(AST* no, FILE* saida, int nivel_indent) {
             break;
 
         case AST_BLOCO:
+            escopo_atual++;
             for (int i = 0; i < no->n_filhos; i++) {
                 if (!no->filhos[i]) continue;
                 ast_gera_c(no->filhos[i], saida, nivel_indent);
             }
+            escopo_atual--;
             break;
 
         case AST_DECLARACAO:
@@ -64,7 +67,7 @@ void ast_gera_c(AST* no, FILE* saida, int nivel_indent) {
             for (int i = 0; i < nivel_indent; i++) fprintf(saida, "    ");
             if (no->n_filhos >= 1 && no->filhos[0]) {
                 char *nome = no->filhos[0]->valor;
-                Simbolo *s = buscarSimbolo(no->filhos[0]->valor);
+                Simbolo *s = buscarSimbolo(no->filhos[0]->valor, escopo_atual);
                 int tipo = s ? s->tipo : 0;
                 if (tipo == 0)
                     fprintf(saida, "scanf(\"%%d\", &%s);\n", nome);
@@ -85,7 +88,7 @@ void ast_gera_c(AST* no, FILE* saida, int nivel_indent) {
                 } else if (no->filhos[0]->tipo == AST_NUM) {
                     fprintf(saida, "printf(\"%%d\\n\", %s);\n", no->filhos[0]->valor);
                 } else if (no->filhos[0]->tipo == AST_ID) {
-                    Simbolo *s = buscarSimbolo(no->filhos[0]->valor);
+                    Simbolo *s = buscarSimbolo(no->filhos[0]->valor, escopo_atual);
                     int tipo = s ? s->tipo : 0;
                     if (tipo == 0)
                         fprintf(saida, "printf(\"%%d\\n\", %s);\n", no->filhos[0]->valor);

@@ -64,7 +64,7 @@ void ast_gera_c(AST* no, FILE* saida, int nivel_indent) {
             for (int i = 0; i < nivel_indent; i++) fprintf(saida, "    ");
             if (no->n_filhos >= 1 && no->filhos[0]) {
                 char *nome = no->filhos[0]->valor;
-                Simbolo *s = buscarSimbolo(nome);
+                Simbolo *s = buscarSimbolo(no->filhos[0]->valor);
                 int tipo = s ? s->tipo : 0;
                 if (tipo == 0)
                     fprintf(saida, "scanf(\"%%d\", &%s);\n", nome);
@@ -85,7 +85,8 @@ void ast_gera_c(AST* no, FILE* saida, int nivel_indent) {
                 } else if (no->filhos[0]->tipo == AST_NUM) {
                     fprintf(saida, "printf(\"%%d\\n\", %s);\n", no->filhos[0]->valor);
                 } else if (no->filhos[0]->tipo == AST_ID) {
-                    int tipo = buscar_tipo_variavel(no->filhos[0]->valor);
+                    Simbolo *s = buscarSimbolo(no->filhos[0]->valor);
+                    int tipo = s ? s->tipo : 0;
                     if (tipo == 0)
                         fprintf(saida, "printf(\"%%d\\n\", %s);\n", no->filhos[0]->valor);
                     else if (tipo == 1)

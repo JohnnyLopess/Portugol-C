@@ -1,29 +1,12 @@
-# 📘 Projeto Tradutor Portugol → C
-
-Este é o repositório do projeto da disciplina **Compiladores 1 (2025/1)**, ministrada pelo professor Dr. Sergio Freitas na UnB. O objetivo do projeto é desenvolver um tradutor de Portugol para C, utilizando as ferramentas Flex e Bison para construção dos analisadores léxico e sintático..
-
 ## ⚙️ Ferramentas 
 
 ### Bison
 
-Bison é uma ferramenta de geração de analisadores sintáticos (parsers) que trabalha em conjunto com o Flex. É o sucessor do Yacc (Yet Another Compiler Compiler) e é mantido pelo projeto GNU.
-
-#### Uso no Projeto Portugol → C
-
-- Definir a gramática da linguagem Portugol
-- Gerar código C equivalente
-- Tratar estruturas de controle 
-- Manipular expressões e declarações
+Bison é uma ferramenta de geração de analisadores sintáticos (parsers), mantida pelo projeto GNU e sucessora do Yacc (Yet Another Compiler Compiler). Neste projeto, o Bison é utilizado para definir a gramática da linguagem Portugol, permitindo identificar e estruturar corretamente expressões, declarações e comandos de controle de fluxo. A ferramenta gera código C correspondente à estrutura sintática reconhecida, integrando-se ao Flex para compor o analisador completo do compilador.
 
 ### Flex
 
-O Flex é uma ferramenta moderna que gera analisadores léxicos (scanners). É o sucessor do programa Lex original do Unix e é amplamente utilizado no desenvolvimento de compiladores.
-
-#### Uso no Projeto Portugol → C
-
-- Reconhecer tokens da linguagem Portugol (palavras-chave, identificadores, números)
-- Gerar o arquivo lex.yy.c que implementa o scanner
-- Integrar com o parser Bison para análise completa do código
+Flex é uma ferramenta moderna utilizada para gerar analisadores léxicos (scanners), sendo o sucessor do tradicional Lex do Unix. Neste projeto, o Flex é responsável por reconhecer os tokens da linguagem Portugol, como palavras-chave, identificadores e números. Ele gera automaticamente o arquivo lex.yy.c, que implementa o scanner léxico e integra-se ao Bison para permitir a análise completa do código-fonte durante o processo de compilação.
 
 ### GCC e Makefile
 
@@ -31,7 +14,7 @@ O Flex é uma ferramenta moderna que gera analisadores léxicos (scanners). É o
 
 ## 📅 Organização por Sprints
 
-O desenvolvimento foi dividido em **12 sprints semanais**, iniciando em **02/04/2025** e terminando com a entrega final em **27/06/2025**. Utilizamos **issues** no GitHub para organizar as tarefas de cada sprint com critérios claros de aceitação (_definition of done_).
+O desenvolvimento foi dividido em **13 sprints**, sendo elas semanais, iniciando em **30/03/2025** e terminando com a entrega final em **27/06/2025**. Utilizamos o **gitpages** no GitHub para organizar as tarefas de cada sprint com critérios claros de aceitação (_definition of done_).
 
 ---
 
@@ -141,7 +124,7 @@ O desenvolvimento foi dividido em **12 sprints semanais**, iniciando em **02/04/
 
 **Critérios de Aceitação:**
 - Código comentado, limpo e modular.
-- IMplementação de casos de teste
+- Implementação de casos de teste
 
 ---
 

@@ -5,11 +5,20 @@ site_name: Compilador Portugol-C
 
 nav:
   - Início: index.md
-  - Sprints: sprints.md
-  - Escopo: escopo.md
+  - Visão Projeto:
+      - Projeto: visaoProduto.md
+      - Escopo Portugol: escopo.md
+      - Sprints: sprints.md 
   - Resultados:
       - Sprint 1: resultados/sprint1.md
       - Sprint 2: resultados/sprint2.md
+      - Sprint 3: resultados/sprint3.md
+      - Sprint 4: resultados/sprint4.md
+      - Sprint 5: resultados/sprint5.md
+      - Sprint 6: resultados/sprint6.md
+      - Sprint 7: resultados/sprint7.md
+      - Sprint 8: resultados/sprint8.md
+      - Sprint 9: resultados/sprint9.md
 
 plugins:
   - search:

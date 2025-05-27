@@ -1,0 +1,14 @@
+inicio
+var: inteiro x;
+
+leia(x);
+
+se x == 5 entao
+    escreva(x);
+senao
+    se x ==2 entao 
+        escreva(0);
+    fimse
+fimse
+
+fim

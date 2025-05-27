@@ -1,6 +1,6 @@
 # 📘 Escopo da Linguagem - Tradutor Portugol → C
 
-Este documento descreve o **escopo da linguagem Portugol** que será utilizado no projeto do Tradutor Portugol → C. O escopo está **baseado no Portugol Studio**, garantindo compatibilidade e permitindo testes diretos na própria IDE do Portugol Studio.
+Este documento descreve o **escopo da linguagem Portugol** que será utilizado no projeto do Compilador Portugol → C. O escopo está **baseado no Portugol Studio**, garantindo compatibilidade e permitindo testes diretos na própria IDE do Portugol Studio.
 
 ---
 
@@ -45,8 +45,6 @@ var
 - `-` (subtração)
 - `*` (multiplicação)
 - `/` (divisão real)
-- `div` (divisão inteira)
-- `mod` (resto da divisão)
 
 ### Relacionais
 - `=` (igual)

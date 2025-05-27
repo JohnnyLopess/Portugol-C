@@ -7,41 +7,16 @@
 
 extern int escopo_atual;
 
-AST* ast_cria(ASTTipo tipo, char* valor, int n_filhos, ...) {
-    printf("[DEBUG] Criando nó tipo=%d, valor=%s, n_filhos=%d\n", tipo, valor ? valor : "NULL", n_filhos);
-    AST* no = malloc(sizeof(AST));
-    no->tipo = tipo;
-    no->valor = valor ? strdup(valor) : NULL;
-    no->n_filhos = n_filhos;
-    no->filhos = n_filhos > 0 ? malloc(sizeof(AST*) * n_filhos) : NULL;
-    va_list args;
-    va_start(args, n_filhos);
-    for (int i = 0; i < n_filhos; i++) {
-        no->filhos[i] = va_arg(args, AST*);
-        if (!no->filhos[i]) {
-            printf("[ERRO] Filho %d nulo em nó tipo=%d\n", i, tipo);
-        }
-    }
-    va_end(args);
-    return no;
-}
-
-void ast_libera(AST* no) {
-    if (!no) return;
-    for (int i = 0; i < no->n_filhos; i++)
-        ast_libera(no->filhos[i]);
-    free(no->filhos);
-    free(no->valor);
-    free(no);
-}
-
-void ast_gera_c(AST* no, FILE* saida, int nivel_indent) {
-    if (!no) {
+void ast_gera_c(AST *no, FILE *saida, int nivel_indent)
+{
+    if (!no)
+    {
         fprintf(stderr, "[ERRO] Nó AST nulo em ast_gera_c!\n");
         return;
     }
 
-    switch(no->tipo) {
+    switch (no->tipo)
+    {
         case AST_PROGRAMA:
             fprintf(saida, "#include <stdio.h>\n\n");
             fprintf(saida, "int main() {\n");
@@ -83,10 +58,10 @@ void ast_gera_c(AST* no, FILE* saida, int nivel_indent) {
                 else if (tipo == 2)
                     fprintf(saida, "scanf(\" %%c\", &%s);\n", nome); // espaço antes do %c
                 else
-                    fprintf(saida, "scanf(\"%%d\", &%s);\n", nome); // padrão seguro, sem comentário
+                    fprintf(saida, "scanf(\"%%d\", &%s);\n", nome); // padrão seguro
             }
             break;
-            
+
         case AST_ESCRITA:
             for (int i = 0; i < nivel_indent; i++) fprintf(saida, "    ");
             if (no->n_filhos >= 1 && no->filhos[0]) {
@@ -200,6 +175,7 @@ void ast_gera_c(AST* no, FILE* saida, int nivel_indent) {
             if (no->valor)
                 fprintf(saida, "%s", no->valor);
             break;
+
         case AST_FUNCAO: {
             // Busca símbolo da função para pegar tipo de retorno e parâmetros
             Simbolo *s = buscarSimbolo(no->valor, 0); // escopo global
@@ -233,6 +209,7 @@ void ast_gera_c(AST* no, FILE* saida, int nivel_indent) {
             ast_gera_c(no->filhos[1], saida, 1); // corpo da função
             fprintf(saida, "}\n");
             break;
+        }
         case AST_CHAMADA_FUNCAO:
             for (int i = 0; i < nivel_indent; i++) fprintf(saida, "    ");
             if (no->valor) {
@@ -243,14 +220,13 @@ void ast_gera_c(AST* no, FILE* saida, int nivel_indent) {
                         ast_gera_c(no->filhos[0]->filhos[i], saida, 0);
                     }
                 }
-                fprintf(saida, ");\n"); // <-- ponto e vírgula e quebra de linha
+                fprintf(saida, ");\n");
             }
             break;
-        }
+
         default:
             for (int i = 0; i < no->n_filhos; i++)
                 if (no->filhos[i])
                     ast_gera_c(no->filhos[i], saida, nivel_indent);
     }
 }
-

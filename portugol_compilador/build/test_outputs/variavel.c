@@ -1,0 +1,17 @@
+#include <stdio.h>
+
+int main() {
+    float numero;
+    char letra;
+    int idade;
+    printf("Digite um número real: ");
+    scanf("%f", &numero);
+    printf("Digite uma letra: ");
+    scanf(" %c", &letra);
+    printf("Digite sua idade: ");
+    scanf("%d", &idade);
+    printf("%f\n", numero);
+    printf("%c\n", letra);
+    printf("%d\n", idade);
+    return 0;
+}

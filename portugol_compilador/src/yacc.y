@@ -136,14 +136,16 @@ bloco_conteudo:
         }
     }
 ;
-
 comando:
     declaracao { $$ = $1; }
     | leitura { $$ = $1; }
     | escrita { $$ = $1; }
     | atribuicao { $$ = $1; }
-    | SE expressao ENTAO bloco SENAO bloco FIMSE {
+    | SE expressao ENTAO bloco SENAO comando FIMSE {
         $$ = ast_cria(AST_IF, NULL, 3, $2, $4, $6);
+    }
+    | SE expressao ENTAO bloco FIMSE {
+        $$ = ast_cria(AST_IF, NULL, 2, $2, $4);
     }
     | ENQUANTO expressao FACA bloco FIMENQUANTO {
         $$ = ast_cria(AST_WHILE, NULL, 2, $2, $4);

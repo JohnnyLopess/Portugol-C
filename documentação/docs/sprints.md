@@ -1,6 +1,6 @@
 # 📘 Projeto Tradutor Portugol → C
 
-Este é o repositório do projeto da disciplina **Compiladores 1 (2025/1)**, ministrada pelo professor Dr. Sergio Freitas na UnB. Nosso grupo está desenvolvendo um **tradutor de Portugol para C**, utilizando as ferramentas **Flex** e **Bison**.
+Este é o repositório do projeto da disciplina **Compiladores 1 (2025/1)**, ministrada pelo professor Dr. Sergio Freitas na UnB. O objetivo do projeto é desenvolver um tradutor de Portugol para C, utilizando as ferramentas Flex e Bison para construção dos analisadores léxico e sintático..
 
 ## ⚙️ Ferramentas 
 
@@ -25,108 +25,156 @@ O Flex é uma ferramenta moderna que gera analisadores léxicos (scanners). É o
 - Gerar o arquivo lex.yy.c que implementa o scanner
 - Integrar com o parser Bison para análise completa do código
 
+### GCC e Makefile
+
+- Ferramentas para compilar o código e automatizar o processo de build.
+
 ## 📅 Organização por Sprints
 
-O desenvolvimento foi dividido em **6 sprints quinzenais**, iniciando em **02/04/2025** e terminando com a entrega final em **27/06/2025**. Utilizamos **issues** no GitHub para organizar as tarefas de cada sprint com critérios claros de aceitação (_definition of done_).
+O desenvolvimento foi dividido em **12 sprints semanais**, iniciando em **02/04/2025** e terminando com a entrega final em **27/06/2025**. Utilizamos **issues** no GitHub para organizar as tarefas de cada sprint com critérios claros de aceitação (_definition of done_).
 
 ---
 
-## 🧩 Sprint 1 – Setup do Compilador e Primeiros Comandos (02/04 a 16/04)
+## 🧩 Sprint 1 –Setup do Compilador e Primeiros Comandos (30/03 - 05/04)
 
 **Objetivos:**
-- Definir escopo da linguagem Portugol
-- Criar estrutura de pastas e arquivos
-- Configurar o ambiente de compilação com Flex, Bison e GCC.
+- Definir escopo da linguagem Portugol suportada(UniVali).
+- Criar a estrutura inicial do projeto (pastas, Makefile, arquivos principais).
+- Configurar ambiente de desenvolvimento (Flex, Bison, GCC).
 - Criar um compilador inicial que reconheça e traduza comandos básicos.
-
-**Critérios de Aceitação:**
-- Scanner reconhece tokens básicos
-- Ambiente compilável (makefile, main.c, lex.l, yacc.y)
-- Reconhecimento de:
-
+- Implementar o reconhecimento e tradução dos seguintes elementos:
     - `inicio`, `fim`
     - `var`, `declaração de variáveis`
     - `leia`, `escreva`
-    - Atribuições e expressões aritméticas simples
+    - Atribuições e expressões aritméticas simples(`+`, `-`, `*`, `/`).
 
-- Geração de `saida.c` com main, scanf, printf, etc.
-- Projeto compila com `make`
-- Arquivo `exemplo1.pg` funciona
+**Critérios de Aceitação:**
+- Projeto compila corretamente usando `make`.
+- Geração de arquivo `saida.c` funcional.
+- Primeiro exemplo `exemplo1.pg`, que teste as funcionalidades implementadas, compilado e executado corretamente.
 
 
 ---
 
-## 🧩 Sprint 2 – Controle de Fluxo (Condicionais) (17/04 a 30/04)
+## 🧩 Sprint 2 – Controle de Fluxo(Condicionais) (06/04 - 12/04)
 
 **Objetivos:**
-Adicionar suporte à estrutura de decisão se ... entao ... senao ... fimse e operadores relacionais.
-
-**Critérios de Aceitação:**
-- Reconhecimento dos tokens:
+- Adicionar suporte à estrutura condicional:
     - `se`, `entao`, `senao`, `fimse`
+- Implementar operadores relacionais:
     - `==`, `!=`, `<`, `>`, `<=`, `>=`
-- Tradução para `if (...) { ... } else { ... }`
+
+**Critérios de Aceitação:**
+- Condições corretamente analisadas e compiladas.
 - Código com estruturas condicionais em Portugol é convertido corretamente para C.
-- `saida.c` compila e executa com a lógica esperada
+- Segundo exemplo `exemplo2.pg`, que teste as funcionalidades implementadas, compilado e executado corretamente.
 
-## 🧩 Sprint 3 – Estruturas de Repetição (enquanto ... faca ... fimenquanto) (01/05 a 15/05)
-
-**Objetivos:**
-Adicionar suporte à estrutura de repetição com tradução para while.
-
-**Critérios de Aceitação:**
-- `enquanto`, `faca`, `fimenquanto`
-- Laços enquanto são reconhecidos e traduzidos
-- Comandos internos são executados corretamente em saida.c
-
----
-
-## 🧩 Sprint 4 – Controle de fluxo + P2 (16/05 a 30/05)
+## 🧩 Sprint 3 – Estrutura de Repetição(enquanto…faca…fimenquanto) (13/04 - 19/04)
 
 **Objetivos:**
-- Implementar estruturas: `se`, `enquanto`, etc.
-- Traduzir controle de fluxo para C
-- Realizar a apresentação do P2
+- Adicionar suporte às estruturas de repetição:
+    - `enquanto`, `faca`, `fimenquanto`
 
 **Critérios de Aceitação:**
-- Estruturas traduzidas corretamente
-- Código C legível e funcional
-- Apresentação do P2 realizada
+
+- Laços de repetição são reconhecidos e compilados corretamente.
+- Terceiro exemplo `exemplo3.pg`, que teste as funcionalidades implementadas, compilado e executado corretamente.
 
 ---
 
-## 🧩 Sprint 5 – Tipagem e robustez (31/05 a 13/06)
+## 🧩 Sprint 4 – Estruturas de Repetição: Para (23/04 a 29/04)
 
 **Objetivos:**
-- Adicionar verificação de variáveis
-- Tratar tipos e escopos simples
-- Melhorar mensagens de erro
+- Adicionar suporte às estruturas de repetição:
+    - `para`, `de`, `ate`, `fimpara`
 
 **Critérios de Aceitação:**
-- Verificação de variáveis não declaradas
-- Tratamento básico de tipos
-- Erros bem localizados e informativos
+- Laços de repetição são reconhecidos e compilados corretamente.
+- Quarto exemplo `exemplo4.pg`, que teste as funcionalidades implementadas, compilado e executado corretamente.
 
 ---
 
-## 🧩 Sprint 6 – Finalização e entrega (14/06 a 27/06)
+## 🧩 Sprint 5 – Tipagem e Robustez + P1 (27/04 - 03/05)
 
 **Objetivos:**
-- Refatorar e organizar o código
-- Testar com múltiplos arquivos
-- Entregar no Teams (até 27/06)
+- Ampliar o suporte para novos tipos de dados:
+    - `inteiro`, `real` e `caractere`
+- Corrigir a regra de declaração de variáveis no analisador sintático.
 
 **Critérios de Aceitação:**
-- Projeto entregue e funcional
-- Código C gerado compila corretamente
-- Casos de teste bem documentados
+- Declaração de variáveis com tipo funcionando corretamente.
+- Compilação correta no C (int, float, char).
 
 ---
 
-## 👥 Participantes
+## 🧩 Sprint 6 – Sistema de Testes Automatizados (04/05 - 10/05)
 
-- (Adicione aqui os nomes dos integrantes do grupo)
+**Objetivos:**
+- implementar um sistema de testes automatizados completo para o compilador Portugol-C que permite verificar se a geração de código C está funcionando conforme o esperado.
+
+**Critérios de Aceitação:**
+- Sistema de Testes Automatizados funcionando corretamente.
 
 ---
 
-> Qualquer dúvida ou sugestão, entre em contato via [Issues](https://github.com/SEU_USUARIO/SEU_REPOSITORIO/issues).
+## 🧩 Sprint 7 – AST (11/05 - 17/05)
+
+**Objetivos:**
+- Construção da Árvore de Derivação Sintática
+
+---
+
+## 🧩 Sprint 8 – Recursos Avançados do Portugol (18/05 - 24/05)
+
+**Objetivos:**
+- Implementar recursos “senão se” e “switch/case (escolha, caso, fimcaso) ”
+
+**Critérios de Aceitação:**
+- Implementar casos de testes para cada um dos recursos
+- Todos testes devem estar funcionando
+---  
+
+## 🧩 Sprint 9 – Comentários em Portugol ((25/05 - 31/05))
+
+**Objetivos:**
+- Conversão de comentários do Portugol (//, /* */) para C.
+
+**Critérios de Aceitação:**
+- Código comentado, limpo e modular.
+- IMplementação de casos de teste
+
+---
+
+## 🧩 Sprint 10 – Novos Tipos + P2 (01/06 a 07/06)
+
+**Objetivos:**
+- Reconhecimento e tratamento dos tipos null e lógico (booleano) e apresentação do P2
+---
+
+## 🧩 Sprint 11 – Análise Semântica, Tabela de Símbolos + Disponibilização do GitHub 
+
+**Objetivos:**
+- Verificar se variáveis são declaradas antes do uso.
+- Implementar tabela de símbolos simples para armazenamento de identificadores e seus tipos.
+- Disponibilizar Repositório.
+
+**Critérios de Aceitação:**
+- Erros de variáveis não declaradas detectados.
+- Execução abortada em caso de erro semântico.
+
+---
+
+## 🧩 Sprint 12 – Correções e Integração Final (15/06 - 21/06)
+
+**Objetivos:**
+- Correção de bugs e inconsistências
+- Organização do código final
+- Últimos testes com múltiplos arquivos .pg
+
+
+## 🧩 Sprint 13 – Entrega e Apresentação Final (22/06 - 28/06)
+
+**Objetivos:**
+- Preparação para entrega do projeto, entrevista/apresentação finals
+
+---

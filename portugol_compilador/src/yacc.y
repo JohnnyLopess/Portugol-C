@@ -47,7 +47,7 @@ Simbolo *inserirParametro(char *nome, int tipo, int escopo, int referencia);
 %token FIMFUNCAO
 %token <str> NUM ID STRING
 %token FUNCAO RETORNE
-%token COMENTARIO_LINHA COMENTARIO_BLOCO
+%token <str> COMENTARIO_LINHA COMENTARIO_BLOCO
 %type <ast> programa  lista_funcoes funcao lista_args args bloco bloco_conteudo comando declaracao leitura escrita atribuicao expressao lista_parametros parametros parametro chamada_funcao
 %type <inteiro> tipo
 %type <ast> comentario

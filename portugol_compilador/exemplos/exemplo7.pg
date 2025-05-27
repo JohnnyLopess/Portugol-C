@@ -1,0 +1,15 @@
+funcao inteiro soma(inteiro a; inteiro b)
+    retorne a + b;
+fimfuncao
+
+funcao vazio saudacao()
+    escreva("Olá, mundo!\n");
+fimfuncao
+
+inicio
+    inteiro resultado;
+    resultado = soma(2; 3);
+    escreva("Resultado da soma: ");
+    escreva(resultado);
+    saudacao();
+fim

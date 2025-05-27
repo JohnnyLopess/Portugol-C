@@ -14,19 +14,55 @@ unsigned hash(char *s) {
     return h % TAM;
 }
 
-void inserirSimbolo(char *nome, int tipo, int escopo) {
+// Função genérica para inserir qualquer símbolo
+Simbolo *criaSimbolo(
+    char *nome,
+    int tipo,
+    int escopo,
+    CategoriaSimbolo categoria,
+    int inicializada,
+    int linha_decl,
+    int tipo_retorno,
+    int n_parametros,
+    Simbolo **parametros,
+    int referencia
+) {
     unsigned i = hash(nome);
-    // Evita inserir duplicatas
+    // Evita duplicatas no mesmo escopo
     Simbolo *existente = buscarSimbolo(nome, escopo);
-    if (existente) return;
+    if (existente) return NULL;
     Simbolo *s = malloc(sizeof(Simbolo));
     strncpy(s->nome, nome, sizeof(s->nome));
     s->nome[sizeof(s->nome)-1] = '\0';
     s->tipo = tipo;
     s->escopo = escopo;
+    s->categoria = categoria;
+    s->inicializada = inicializada;
+    s->linha_decl = linha_decl;
+    s->tipo_retorno = tipo_retorno;
+    s->n_parametros = n_parametros;
+    s->parametros = parametros;
+    s->referencia = referencia;
     s->proximo = tabela[i];
     tabela[i] = s;
+    return s;
 }
+
+// Função de conveniência para inserir variável
+void inserirSimbolo(char *nome, int tipo, int escopo) {
+    criaSimbolo(nome, tipo, escopo, SIMBOLO_VARIAVEL, 0, 0, -1, 0, NULL, 0);
+}
+
+// Função de conveniência para inserir função
+Simbolo *inserirFuncao(char *nome, int tipo_retorno, int escopo, int n_parametros, Simbolo **parametros) {
+    return criaSimbolo(nome, -1, escopo, SIMBOLO_FUNCAO, 1, 0, tipo_retorno, n_parametros, parametros, 0);
+}
+
+// Função de conveniência para inserir parâmetro
+Simbolo *inserirParametro(char *nome, int tipo, int escopo, int referencia) {
+    return criaSimbolo(nome, tipo, escopo, SIMBOLO_PARAMETRO, 1, 0, -1, 0, NULL, referencia);
+}
+
 
 Simbolo *buscarSimbolo(char *nome, int escopo) {
     unsigned i = hash(nome);
@@ -47,7 +83,17 @@ void imprimirTabela() {
             if (s->tipo == 0) tipo_str = "int";
             else if (s->tipo == 1) tipo_str = "float";
             else if (s->tipo == 2) tipo_str = "char";
-            printf("Nome: %s, Tipo: %s\n", s->nome, tipo_str);
+            const char *cat_str = "VAR";
+            if (s->categoria == SIMBOLO_FUNCAO) cat_str = "FUNCAO";
+            else if (s->categoria == SIMBOLO_PARAMETRO) cat_str = "PARAM";
+            else if (s->categoria == SIMBOLO_CONST) cat_str = "CONST";
+            printf("Nome: %s, Tipo: %s, Escopo: %d, Categoria: %s, Inicializada: %d, Linha: %d\n",
+                s->nome, tipo_str, s->escopo, cat_str, s->inicializada, s->linha_decl);
+            if (s->categoria == SIMBOLO_FUNCAO) {
+                printf("  Retorno: %s, Params: %d\n", 
+                    s->tipo_retorno == 0 ? "int" : s->tipo_retorno == 1 ? "float" : s->tipo_retorno == 2 ? "char" : "void",
+                    s->n_parametros);
+            }
         }
     }
 }

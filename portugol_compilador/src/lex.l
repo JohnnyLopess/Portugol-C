@@ -69,8 +69,18 @@
 }
 
 [ \t\n\r]+      ;   // Ignora espaços e quebras de linha
-"//".*          ;   // Ignora comentários de linha
-"{"[^}]*"}"     ;   // Ignora comentários de bloco
+"//".*          { 
+    yylval.str = strdup(yytext + 2); // Remove "//"
+    printf("[TOKEN] COMENTARIO_LINHA (%s)\n", yytext);
+    return COMENTARIO_LINHA; 
+}
+
+"{"[^}]*"}"     { 
+    yylval.str = strdup(yytext + 1); // Remove "{"
+    yylval.str[strlen(yylval.str) - 1] = '\0'; // Remove "}"
+    printf("[TOKEN] COMENTARIO_BLOCO (%s)\n", yytext);
+    return COMENTARIO_BLOCO; 
+}
 
 .               { printf("[LEXER] Caractere inválido: %s\n", yytext); }
 

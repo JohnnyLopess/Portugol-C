@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include "ast.h" 
 
-// Função gerada automaticamente pelo Bison
+
 int yyparse();  
 extern AST* raiz_ast; // Defina raiz_ast como global no yacc.y
 

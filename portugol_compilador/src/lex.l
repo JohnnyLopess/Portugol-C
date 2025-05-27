@@ -14,10 +14,13 @@
 
 "inicio"        { printf("[TOKEN] INICIO\n"); return INICIO; }
 "fim"           { printf("[TOKEN] FIM\n"); return FIM; }
+"retorne"       { printf("[TOKEN] RETORNE\n"); return RETORNE; }
 
 "leia"          { printf("[TOKEN] LEIA\n"); return LEIA; }
 "escreva"       { printf("[TOKEN] ESCREVA\n"); return ESCREVA; }
 "var"           { printf("[TOKEN] VAR\n"); return VAR; }
+"funcao"        { printf("[TOKEN] FUNCAO\n"); return FUNCAO; }
+"fimfuncao"        { printf("[TOKEN] FIMFUNCAO\n"); return FIMFUNCAO; }
 
 "se"            { printf("[TOKEN] SE\n"); return SE; }
 "senao"         { printf("[TOKEN] SENAO\n"); return SENAO; }
@@ -28,9 +31,11 @@
 "faca"          { printf("[TOKEN] FACA\n"); return FACA; }
 "fimenquanto"   { printf("[TOKEN] FIMENQUANTO\n"); return FIMENQUANTO; }
 
-"inteiro"       { yylval.str = strdup(yytext); return TIPO_INTEIRO; }
-"real"          { yylval.str = strdup(yytext); return TIPO_REAL; }
-"caractere"     { yylval.str = strdup(yytext); return TIPO_CARACTERE; }
+"inteiro"       { printf("[TOKEN] TIPO_INTEIRO\n"); yylval.str = strdup(yytext); return TIPO_INTEIRO; }
+"real"          { printf("[TOKEN] TIPO_REAL\n"); yylval.str = strdup(yytext); return TIPO_REAL; }
+"caractere"     { printf("[TOKEN] TIPO_CARACTERE\n"); yylval.str = strdup(yytext); return TIPO_CARACTERE; }
+"logico"        { printf("[TOKEN] TIPO_LOGICO\n"); yylval.str = strdup(yytext); return TIPO_LOGICO; }
+"vazio"         { printf("[TOKEN] TIPO_VAZIO\n"); yylval.str = strdup(yytext); return TIPO_VAZIO; }
 
 "para"          {printf("[TOKEN] PARA\n"); return PARA;}
 "de"            {printf("[TOKEN] DE\n"); return DE;}

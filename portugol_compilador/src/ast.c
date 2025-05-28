@@ -252,13 +252,13 @@ void ast_gera_c(AST *no, FILE *saida, int nivel_indent)
             }
             break;
 
-        case AST_COMENTARIO:
+            case AST_COMENTARIO:
             for (int i = 0; i < nivel_indent; i++) fprintf(saida, "    ");
             if (no->valor) {
                 if (strstr(no->valor, "\n")) {
-                    fprintf(saida, "/* %s */\n", no->valor); // Comentário de bloco
+                    fprintf(saida, "/*%s*/\n", no->valor); // Comentário de bloco
                 } else {
-                    fprintf(saida, "// %s\n", no->valor); // Comentário de linha
+                    fprintf(saida, "//%s\n", no->valor); // Comentário de linha
                 }
             }
             break;

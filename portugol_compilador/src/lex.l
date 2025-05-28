@@ -69,10 +69,12 @@
 }
 
 [ \t\n\r]+      ;   // Ignora espaços e quebras de linha
-"//".*          { 
-    yylval.str = strdup(yytext + 2); // Remove "//"
-    printf("[TOKEN] COMENTARIO_LINHA (%s)\n", yytext);
-    return COMENTARIO_LINHA; 
+"//".* {
+    char* texto = yytext + 2; // Ignora "//"
+    while (*texto == ' ') texto++; // Remove espaços iniciais
+    yylval.str = strdup(texto);
+    printf("[TOKEN] COMENTARIO_LINHA (%s)\n", texto);
+    return COMENTARIO_LINHA;
 }
 
 "{"[^}]*"}"     { 

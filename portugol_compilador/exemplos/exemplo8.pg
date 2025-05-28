@@ -1,0 +1,11 @@
+inicio
+var: inteiro i;
+// isso é um comentário
+
+para i de 1 ate 10 faca
+//teste de, vírgula
+    escreva(i);
+fimpara
+{teste de comentário de bloco}
+
+fim

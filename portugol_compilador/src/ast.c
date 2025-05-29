@@ -4,6 +4,7 @@
 #include <stdarg.h>
 #include <string.h>
 #include "simbolos.h"
+#include "tipos.h"
 
 extern int escopo_atual;
 
@@ -11,6 +12,7 @@ AST* ast_cria(ASTTipo tipo, char* valor, int n_filhos, ...) {
     printf("[DEBUG] Criando nó tipo=%d, valor=%s, n_filhos=%d\n", tipo, valor ? valor : "NULL", n_filhos);
     AST* no = malloc(sizeof(AST));
     no->tipo = tipo;
+    no->tipo_expr = -1; // Inicializa tipo de expressão como indefinido
     no->valor = valor ? strdup(valor) : NULL;
     no->n_filhos = n_filhos;
     no->filhos = n_filhos > 0 ? malloc(sizeof(AST*) * n_filhos) : NULL;
@@ -98,8 +100,14 @@ void ast_gera_c(AST *no, FILE *saida, int nivel_indent)
                 if (no->filhos[0]->tipo == AST_STRING) {
                     fprintf(saida, "printf(%s);\n", no->filhos[0]->valor);
                 } else {
-                    // Para qualquer expressão (ID, chamada de função, operação, número)
-                    fprintf(saida, "printf(\"%%d\\n\", ");
+                    // Usa o tipo propagado na AST
+                    int tipo = no->filhos[0]->tipo_expr;
+                    if (tipo == TIPO_FLOAT)
+                        fprintf(saida, "printf(\"%%f\\n\", ");
+                    else if (tipo == TIPO_CHAR)
+                        fprintf(saida, "printf(\"%%c\\n\", ");
+                    else
+                        fprintf(saida, "printf(\"%%d\\n\", ");
                     ast_gera_c(no->filhos[0], saida, 0);
                     fprintf(saida, ");\n");
                 }

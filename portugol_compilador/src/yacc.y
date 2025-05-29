@@ -66,7 +66,6 @@ programa:
     }
 ;
 
-
 funcao:
     FUNCAO tipo ID ABREPAR lista_parametros FECHAPAR bloco FIMFUNCAO {
         inserirFuncao($3, $2, escopo_atual, $5->n_filhos, NULL);
@@ -197,6 +196,7 @@ leitura:
 escrita:
     ESCREVA ABREPAR ID FECHAPAR PONTOEVIRGULA {
         AST* id = ast_cria(AST_ID, strdup($3), 0);
+        id->tipo_expr = buscar_tipo_variavel($3); // Propaga o tipo!
         $$ = ast_cria(AST_ESCRITA, NULL, 1, id);
     }
     | ESCREVA ABREPAR STRING FECHAPAR PONTOEVIRGULA {
@@ -220,10 +220,21 @@ atribuicao:
 ;
 
 expressao:
-    NUM { $$ = ast_cria(AST_NUM, strdup($1), 0); }
-    | ID { $$ = ast_cria(AST_ID, strdup($1), 0); }
+    NUM {
+        AST* num = ast_cria(AST_NUM, strdup($1), 0);
+        num->tipo_expr = TIPO_INT; // ou TIPO_FLOAT se detectar ponto
+        $$ = num;
+    }
+    | ID {
+        AST* id = ast_cria(AST_ID, strdup($1), 0);
+        id->tipo_expr = buscar_tipo_variavel($1);
+        $$ = id;
+    }
     | expressao SOMA expressao {
-        $$ = ast_cria(AST_EXPRESSAO, strdup("+"), 2, $1, $3);
+        AST* novo = ast_cria(AST_EXPRESSAO, strdup("+"), 2, $1, $3);
+        // Se qualquer lado for float, resultado é float
+        novo->tipo_expr = ($1->tipo_expr == TIPO_FLOAT || $3->tipo_expr == TIPO_FLOAT) ? TIPO_FLOAT : TIPO_INT;
+        $$ = novo;
     }
     | expressao SUB expressao {
         $$ = ast_cria(AST_EXPRESSAO, strdup("-"), 2, $1, $3);
@@ -248,7 +259,9 @@ expressao:
     }
     | ID ABREPAR lista_args FECHAPAR {
         AST* id = ast_cria(AST_ID, strdup($1), 0);
-        $$ = ast_cria(AST_EXPRESSAO, NULL, 2, id, $3);
+        AST* call = ast_cria(AST_EXPRESSAO, NULL, 2, id, $3);
+        call->tipo_expr = buscar_tipo_funcao($1); // você precisa implementar isso
+        $$ = call;
     }
     | expressao MUL expressao {
         $$ = ast_cria(AST_EXPRESSAO, strdup("*"), 2, $1, $3);

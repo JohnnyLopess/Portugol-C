@@ -1,6 +1,10 @@
 #include <stdio.h>
 
+void ola() {
+    printf("Oi!\n");
+}
+
 int main() {
-    printf("Hello, World!");
+    ola();
     return 0;
 }

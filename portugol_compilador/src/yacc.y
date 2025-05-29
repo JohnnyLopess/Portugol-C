@@ -41,7 +41,7 @@ Simbolo *inserirParametro(char *nome, int tipo, int escopo, int referencia);
 %token ENQUANTO FACA FIMENQUANTO
 %token IGUAL COMPARA DIFERENTE MENOR MAIOR MENOR_IGUAL MAIOR_IGUAL
 %token SOMA SUB MUL DIV
-%token ABREPAR FECHAPAR PONTOEVIRGULA
+%token ABREPAR FECHAPAR PONTOEVIRGULA VIRGULA
 %token PARA DE ATE FIMPARA
 %token DOISPONTOS
 %token FIMFUNCAO
@@ -50,7 +50,7 @@ Simbolo *inserirParametro(char *nome, int tipo, int escopo, int referencia);
 %type <ast> programa  lista_funcoes funcao lista_args args bloco bloco_conteudo comando declaracao leitura escrita atribuicao expressao lista_parametros parametros parametro chamada_funcao
 %type <inteiro> tipo
 
-%left SOMA SUB
+%left SOMA SUB MUL DIV
 
 
 %%
@@ -81,7 +81,7 @@ lista_args:
 
 args:
     expressao { $$ = ast_cria(AST_BLOCO, NULL, 1, $1); }
-    | args PONTOEVIRGULA expressao {
+    | args VIRGULA expressao {
         int n = $1->n_filhos + 1;
         AST** filhos = malloc(sizeof(AST*) * n);
         for (int i = 0; i < $1->n_filhos; i++) filhos[i] = $1->filhos[i];
@@ -250,6 +250,12 @@ expressao:
         AST* id = ast_cria(AST_ID, strdup($1), 0);
         $$ = ast_cria(AST_EXPRESSAO, NULL, 2, id, $3);
     }
+    | expressao MUL expressao {
+        $$ = ast_cria(AST_EXPRESSAO, strdup("*"), 2, $1, $3);
+    }
+    | expressao DIV expressao {
+        $$ = ast_cria(AST_EXPRESSAO, strdup("/"), 2, $1, $3);
+    }
 ;
 
 lista_parametros:
@@ -259,7 +265,7 @@ lista_parametros:
 
 parametros:
     parametro { $$ = ast_cria(AST_BLOCO, NULL, 1, $1); }
-    | parametros PONTOEVIRGULA parametro {
+    | parametros VIRGULA parametro {
         int n = $1->n_filhos + 1;
         AST** filhos = malloc(sizeof(AST*) * n);
         for (int i = 0; i < $1->n_filhos; i++) filhos[i] = $1->filhos[i];

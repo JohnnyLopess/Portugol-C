@@ -25,6 +25,7 @@ typedef struct AST {
     char* valor; // Para números, ids, strings, operadores
     struct AST** filhos;
     int n_filhos;
+    int tipo_expr;
 } AST;
 
 AST* ast_cria(ASTTipo tipo, char* valor, int n_filhos, ...);

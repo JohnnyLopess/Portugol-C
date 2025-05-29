@@ -58,6 +58,7 @@
 "("             { return ABREPAR; }
 ")"             { return FECHAPAR; }
 ";"             { return PONTOEVIRGULA; }
+","             { return VIRGULA; }
 ":"             { return DOISPONTOS; }
 
 [0-9]+          { yylval.str = strdup(yytext); printf("[TOKEN] NUMERO (%s)\n", yytext); return NUM; }

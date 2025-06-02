@@ -1,13 +1,29 @@
-all: compilador
+CC = gcc
+LEX = flex
+YACC = bison
+SRC_DIR = src
+BUILD_DIR = build
 
-compilador: lex.yy.c y.tab.c main.c
-	gcc -o compilador y.tab.c lex.yy.c main.c -lfl
+all: $(BUILD_DIR)/compilador
 
-lex.yy.c: lex.l
-	flex lex.l
+$(BUILD_DIR)/compilador: $(BUILD_DIR)/lex.yy.c $(BUILD_DIR)/y.tab.c $(SRC_DIR)/main.c
+	$(CC) -Isrc -o $@ $^ $(SRC_DIR)/ast.c $(SRC_DIR)/simbolos.c
 
-y.tab.c: yacc.y
-	bison -dy yacc.y
+$(BUILD_DIR)/lex.yy.c: $(SRC_DIR)/lex.l
+	$(LEX) -o $@ $<
+
+$(BUILD_DIR)/y.tab.c $(BUILD_DIR)/y.tab.h: $(SRC_DIR)/yacc.y
+	$(YACC) -d -o $(BUILD_DIR)/y.tab.c $<
+
+run: all
+	@if [ -z "$(FILE)" ]; then \
+		echo "Erro: Você deve especificar o arquivo com FILE=<caminho_para_o_arquivo>."; \
+		exit 1; \
+	fi
+	cd $(BUILD_DIR) && ./compilador < ../$(FILE)
 
 clean:
-	rm -f compilador lex.yy.c y.tab.c y.tab.h saida.c programa
+	rm -rf $(BUILD_DIR)/* ./compilador saida.c
+
+test:
+	bash testes/run_tests.sh

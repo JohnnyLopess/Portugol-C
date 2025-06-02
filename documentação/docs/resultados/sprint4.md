@@ -1,4 +1,5 @@
-# 📦 Sprint 2 — Controle de Fluxo (Condicionais) (06/04 - 12/04)
+# Sprint 4 — Estruturas de Repetição: Para (23/04 a 29/04)
+
 
 | Matrícula | Nome                                      | Nick no GitHub |                                                      📸                                                       |
 | :-------: | ----------------------------------------- | -------------- | :----------------------------------------------------------------------------------------------------------: |
@@ -6,22 +7,18 @@
 
  
 ## Objetivo:
-- Adicionar suporte a estruturas condicionais `se`, `senao`, `fimse` e operadores relacionais, gerando código C válido com blocos `if` e `else`.
+- Adicionar suporte às estruturas de repetição `para`, `de`, `ate`, `fimpara`
+ e operadores relacionais, gerando código C válido.
 
 ---
 
 ## 🧪 Funcionalidades Concluídas
 
 ### 🧩 Palavras-chave adicionadas
-- `se`
-- `entao`
-- `senao`
-- `fimse`
-
-### 🔢 Operadores relacionais reconhecidos
-- `==` (igual)
-- `!=` (diferente)
-- `<`, `>`, `<=`, `>=`
+- `para`
+- `de`
+- `ate`
+- `fimpara`
 
 
 ## 🚀 Como testar as novas funcionalidades ?
@@ -37,7 +34,7 @@ make
 ### 2. Execute com um arquivo de exemplo
 
 ```bash
-./compilador < exemplos/exemplo2.pg
+./compilador < exemplos/exemplo4.pg
 ```
 
 O compilador irá gerar um arquivo chamado `saida.c` com o código equivalente em C.
@@ -65,12 +62,8 @@ make clean
 
 | Critério | Descrição | Status |
 |---------|-----------|--------|
-| 🔤 **Léxico** | Tokens para `se`, `entao`, `senao`, `fimse` e operadores relacionais | ✅ |
-| 🧠 **Sintático** | Regras no `yacc.y` para condicionais | ✅ |
-| 🔁 **Blocos de decisão** | Suporte a `if` simples e `if/else` com múltiplos comandos | ✅ |
-| 💬 **Expressões relacionais** | Suporte completo a comparações entre expressões | ✅ |
-| 🧪 **Exemplo testado** | Arquivo `exemplo2.pg` executado e traduzido corretamente | ✅ |
-| 🧾 **saida.c funcional** | Arquivo C gerado compila e executa corretamente | ✅ |
+| 🔤 **Laços de repetição são reconhecidos e compilados corretamente.** | Tokens para `para`, `de`, `ate`, `fimpara` e operadores de repetição | ✅ |
+| 🧾 **saida.c funcional** | Quarto exemplo `exemplo4.pg`, que teste as funcionalidades implementadas, compilado e executado corretamente. | ✅ |
 
 ---
 
@@ -78,10 +71,10 @@ make clean
 
 - `lex.l`: Adição de tokens relacionais e palavras-chave de decisão
 - `yacc.y`: Regras novas para blocos condicionais e operadores lógicos
-- `exemplos/exemplo2.pg`: Script Portugol usado como teste da sprint
+- `exemplos/exemplo4.pg`: Script Portugol usado como teste da sprint
 
 ---
 
-## 🔚 Conclusão
+##  Conclusão
 
 A Sprint 2 foi **concluída com sucesso**, consolidando a base do compilador com controle de fluxo condicional. O sistema agora suporta decisões simples e compostas, sendo possível testar condições usando operadores relacionais com tradução correta para C.

@@ -1,8 +1,13 @@
-# 📦 Sprint 1 — Compilador Portugol → C
+# Sprint 1 — Setup do Compilador e Primeiros Comandos (30/03 - 05/04)
 
-## ✅ Objetivo
+| Matrícula | Nome                                      | Nick no GitHub |                                                      📸                                                       |
+| :-------: | ----------------------------------------- | -------------- | :----------------------------------------------------------------------------------------------------------: |
+| x |  x                 | x       |  [](https://github.com/)   |
 
-Construir a base funcional do compilador utilizando Flex e Bison, com tradução de comandos básicos do Portugol (de acordo com o Portugol Studio) para código C válido.
+
+## ✅ Objetivo:
+
+- Construir a base funcional do compilador utilizando Flex e Bison, com tradução de comandos básicos do Portugol (de acordo com o Portugol Studio) para código C válido.
 
 ---
 
@@ -49,7 +54,7 @@ portugol_compilador/
 
 ## 🏁 Status da Sprint
 
-🎯 Sprint 1 concluída com sucesso.  
+- 🎯 Sprint 1 concluída com sucesso.  
 A base do compilador está funcional e preparada para evoluções.
 
 ---

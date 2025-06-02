@@ -1,6 +1,6 @@
 # Bem-vindo ao Nosso Projeto de Compiladores
 
-Este projeto faz parte da disciplina de **Compiladores 1 (2025/1)** e tem como objetivo desenvolver um compilador ou interpretador, consolidando os conceitos aprendidos ao longo do semestre. A equipe é formada por estudantes dedicados que aplicam a metodologia **Problem Based Learning (PBL)** para integrar teoria e prática.
+Este projeto faz parte da disciplina de **Compiladores 1 (2025/1)**, Ministrada pelo professor Dr. Sergio Freitas na Universidade de Brasília e tem como objetivo desenvolver um compilador, consolidando os conceitos aprendidos ao longo do semestre. A equipe é formada por estudantes dedicados que aplicam a metodologia **Problem Based Learning (PBL)** para integrar teoria e prática.
 
 ## Nossa Equipe
 
@@ -21,7 +21,7 @@ Este projeto faz parte da disciplina de **Compiladores 1 (2025/1)** e tem como o
 
 ## Sobre o Projeto
 
-📌 Nosso projeto consiste em desenvolver um **compilador ou interpretador**, abordando desde o planejamento até a implementação final. Durante o processo, aplicaremos práticas ágeis (**Scrum**), garantindo uma abordagem organizada e eficiente.
+Este compilador tem como finalidade traduzir programas escritos em Portugol — com sintaxe inspirada no Portugol Studio — para a linguagem C, utilizando as ferramentas Flex (para análise léxica) e Bison (para análise sintática). O projeto visa facilitar a compreensão dos processos de compilação e a transição entre linguagens de alto e baixo nível. Além da tradução, o compilador conta com testes automatizados que garantem a validade e a consistência do código gerado em C.
 
 🔗 Repositório no GitHub: [Nosso Projeto](https://github.com/JohnnyLopess/Trabalho_compiladores)
 

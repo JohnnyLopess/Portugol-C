@@ -1,28 +1,17 @@
-# 📦 Sprint 2 — Controle de Fluxo (Condicionais) (06/04 - 12/04)
+# Sprint 5 — Tipagem e Robustez + P1 (27/04 - 03/05)
 
 | Matrícula | Nome                                      | Nick no GitHub |                                                      📸                                                       |
 | :-------: | ----------------------------------------- | -------------- | :----------------------------------------------------------------------------------------------------------: |
-| x |  x                 | x       |  [](https://github.com/)   |
+| 211061977 | João Victor Costa Andrade                 | jvcostta       |  [<img src="https://avatars.githubusercontent.com/u/124215106?v=4" width=50>](https://github.com/jvcostta)   |
 
- 
+
 ## Objetivo:
-- Adicionar suporte a estruturas condicionais `se`, `senao`, `fimse` e operadores relacionais, gerando código C válido com blocos `if` e `else`.
+- Ampliar o suporte para novos tipos de dados `inteiro`, `real` e `caractere` e corrigir a regra de declaração de variáveis no analisador sintático.
 
 ---
 
 ## 🧪 Funcionalidades Concluídas
-
-### 🧩 Palavras-chave adicionadas
-- `se`
-- `entao`
-- `senao`
-- `fimse`
-
-### 🔢 Operadores relacionais reconhecidos
-- `==` (igual)
-- `!=` (diferente)
-- `<`, `>`, `<=`, `>=`
-
+- Suporte mais robusto para tipagem de dados `inteiro`, `real` e `caractere` e regra de declaração corrigida
 
 ## 🚀 Como testar as novas funcionalidades ?
 
@@ -37,7 +26,7 @@ make
 ### 2. Execute com um arquivo de exemplo
 
 ```bash
-./compilador < exemplos/exemplo2.pg
+./compilador < exemplos/exemplo5.pg
 ```
 
 O compilador irá gerar um arquivo chamado `saida.c` com o código equivalente em C.
@@ -65,12 +54,9 @@ make clean
 
 | Critério | Descrição | Status |
 |---------|-----------|--------|
-| 🔤 **Léxico** | Tokens para `se`, `entao`, `senao`, `fimse` e operadores relacionais | ✅ |
-| 🧠 **Sintático** | Regras no `yacc.y` para condicionais | ✅ |
-| 🔁 **Blocos de decisão** | Suporte a `if` simples e `if/else` com múltiplos comandos | ✅ |
-| 💬 **Expressões relacionais** | Suporte completo a comparações entre expressões | ✅ |
-| 🧪 **Exemplo testado** | Arquivo `exemplo2.pg` executado e traduzido corretamente | ✅ |
-| 🧾 **saida.c funcional** | Arquivo C gerado compila e executa corretamente | ✅ |
+| 🔤 **Declaração** | Declaração de variáveis com tipo funcionando corretamente. | ✅ |
+| 🧠 **Compilação** | Compilação correta no C (int, float, char). | ✅ |
+| 🧪 **Exemplo testado** | Arquivo `exemplo5.pg` executado e traduzido corretamente | ✅ |
 
 ---
 
@@ -78,10 +64,10 @@ make clean
 
 - `lex.l`: Adição de tokens relacionais e palavras-chave de decisão
 - `yacc.y`: Regras novas para blocos condicionais e operadores lógicos
-- `exemplos/exemplo2.pg`: Script Portugol usado como teste da sprint
+- `exemplos/exemplo5.pg`: Script Portugol usado como teste da sprint
 
 ---
 
-## 🔚 Conclusão
+##  Conclusão
 
-A Sprint 2 foi **concluída com sucesso**, consolidando a base do compilador com controle de fluxo condicional. O sistema agora suporta decisões simples e compostas, sendo possível testar condições usando operadores relacionais com tradução correta para C.
+- A Sprint 5 foi **concluída com sucesso**, consolidando a ampliação do suporte a novos tipos de dados — `inteiro`, `real` e `caractere` — e a correção da regra de declaração de variáveis no analisador sintático, tornando a análise mais robusta e alinhada à sintaxe da linguagem Portugol.

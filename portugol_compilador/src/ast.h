@@ -17,7 +17,8 @@ typedef enum {
     AST_ID,
     AST_FUNCAO,
     AST_STRING,
-    AST_CHAMADA_FUNCAO
+    AST_CHAMADA_FUNCAO,
+    AST_COMENTARIO 
 } ASTTipo;
 
 typedef struct AST {

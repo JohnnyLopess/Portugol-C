@@ -47,8 +47,10 @@ Simbolo *inserirParametro(char *nome, int tipo, int escopo, int referencia);
 %token FIMFUNCAO
 %token <str> NUM ID STRING
 %token FUNCAO RETORNE
+%token <str> COMENTARIO_LINHA COMENTARIO_BLOCO
 %type <ast> programa  lista_funcoes funcao lista_args args bloco bloco_conteudo comando declaracao leitura escrita atribuicao expressao lista_parametros parametros parametro chamada_funcao
 %type <inteiro> tipo
+%type <ast> comentario
 
 %left SOMA SUB
 
@@ -141,6 +143,7 @@ comando:
     | leitura { $$ = $1; }
     | escrita { $$ = $1; }
     | atribuicao { $$ = $1; }
+    | comentario { $$ = $1; }
     | SE expressao ENTAO bloco SENAO comando FIMSE {
         $$ = ast_cria(AST_IF, NULL, 3, $2, $4, $6);
     }
@@ -274,6 +277,11 @@ parametros:
 parametro:
     tipo ID { inserirParametro($2, $1, escopo_atual, 0); $$ = ast_cria(AST_DECLARACAO, strdup($2), 0); }
     | tipo '&' ID { inserirParametro($3, $1, escopo_atual, 1); $$ = ast_cria(AST_DECLARACAO, strdup($3), 0); }
+;
+
+comentario:
+    COMENTARIO_LINHA { $$ = ast_cria(AST_COMENTARIO, strdup($1), 0); }
+    | COMENTARIO_BLOCO { $$ = ast_cria(AST_COMENTARIO, strdup($1), 0); }
 ;
 
 %%

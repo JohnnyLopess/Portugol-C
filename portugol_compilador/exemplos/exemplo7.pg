@@ -1,4 +1,4 @@
-funcao inteiro soma(inteiro a; inteiro b)
+funcao inteiro soma(inteiro a, inteiro b)
     retorne a + b;
 fimfuncao
 
@@ -8,7 +8,7 @@ fimfuncao
 
 inicio
     inteiro resultado;
-    resultado = soma(2; 3);
+    resultado = soma(2, 3);
     escreva("Resultado da soma: ");
     escreva(resultado);
     saudacao();

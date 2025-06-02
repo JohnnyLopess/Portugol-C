@@ -4,6 +4,7 @@
 #include <stdarg.h>
 #include <string.h>
 #include "simbolos.h"
+#include "tipos.h"
 
 extern int escopo_atual;
 
@@ -11,6 +12,7 @@ AST* ast_cria(ASTTipo tipo, char* valor, int n_filhos, ...) {
     printf("[DEBUG] Criando nó tipo=%d, valor=%s, n_filhos=%d\n", tipo, valor ? valor : "NULL", n_filhos);
     AST* no = malloc(sizeof(AST));
     no->tipo = tipo;
+    no->tipo_expr = -1; // Inicializa tipo de expressão como indefinido
     no->valor = valor ? strdup(valor) : NULL;
     no->n_filhos = n_filhos;
     no->filhos = n_filhos > 0 ? malloc(sizeof(AST*) * n_filhos) : NULL;
@@ -47,15 +49,17 @@ void ast_gera_c(AST *no, FILE *saida, int nivel_indent)
     {
         case AST_PROGRAMA:
             fprintf(saida, "#include <stdio.h>\n\n");
-            fprintf(saida, "int main() {\n");
             // Se tiver funções, gere-as antes do main
             if (no->n_filhos == 2) {
                 ast_gera_c(no->filhos[0], saida, 0); // funções
+                fprintf(saida, "int main() {\n");
                 ast_gera_c(no->filhos[1], saida, 1); // bloco principal
+                fprintf(saida, "    return 0;\n}\n");
             } else {
+                fprintf(saida, "int main() {\n");
                 ast_gera_c(no->filhos[0], saida, 1); // bloco principal
+                fprintf(saida, "    return 0;\n}\n");
             }
-            fprintf(saida, "    return 0;\n}\n");
             break;
 
         case AST_BLOCO:
@@ -95,21 +99,17 @@ void ast_gera_c(AST *no, FILE *saida, int nivel_indent)
             if (no->n_filhos >= 1 && no->filhos[0]) {
                 if (no->filhos[0]->tipo == AST_STRING) {
                     fprintf(saida, "printf(%s);\n", no->filhos[0]->valor);
-                } else if (no->filhos[0]->tipo == AST_NUM) {
-                    fprintf(saida, "printf(\"%%d\\n\", %s);\n", no->filhos[0]->valor);
-                } else if (no->filhos[0]->tipo == AST_ID) {
-                    Simbolo *s = buscarSimbolo(no->filhos[0]->valor, escopo_atual);
-                    int tipo = s ? s->tipo : 0;
-                    if (tipo == 0)
-                        fprintf(saida, "printf(\"%%d\\n\", %s);\n", no->filhos[0]->valor);
-                    else if (tipo == 1)
-                        fprintf(saida, "printf(\"%%f\\n\", %s);\n", no->filhos[0]->valor);
-                    else if (tipo == 2)
-                        fprintf(saida, "printf(\"%%c\\n\", %s);\n", no->filhos[0]->valor);
-                    else
-                        fprintf(saida, "printf(\"%%d\\n\", %s);\n", no->filhos[0]->valor); 
                 } else {
+                    // Usa o tipo propagado na AST
+                    int tipo = no->filhos[0]->tipo_expr;
+                    if (tipo == TIPO_FLOAT)
+                        fprintf(saida, "printf(\"%%f\\n\", ");
+                    else if (tipo == TIPO_CHAR)
+                        fprintf(saida, "printf(\"%%c\\n\", ");
+                    else
+                        fprintf(saida, "printf(\"%%d\\n\", ");
                     ast_gera_c(no->filhos[0], saida, 0);
+                    fprintf(saida, ");\n");
                 }
             }
             break;
@@ -175,7 +175,7 @@ void ast_gera_c(AST *no, FILE *saida, int nivel_indent)
                 ast_gera_c(no->filhos[0], saida, 0);
                 fprintf(saida, ";\n");
             } else if (no->n_filhos == 2 && no->filhos[0] && no->filhos[1]
-                       && no->filhos[0]->tipo == AST_ID && no->valor == NULL) {
+                    && no->filhos[0]->tipo == AST_ID && no->valor == NULL) {
                 // Chamada de função em expressão: ID + lista_args
                 fprintf(saida, "%s(", no->filhos[0]->valor);
                 AST *args = no->filhos[1];

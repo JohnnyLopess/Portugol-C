@@ -1,0 +1,7 @@
+funcao vazio ola()
+    escreva("Oi!\n");
+fimfuncao
+
+inicio
+    ola();
+fim

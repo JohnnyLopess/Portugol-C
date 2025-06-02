@@ -3,8 +3,12 @@
 #include <string.h>
 #include "ast.h"
 #include "simbolos.h"
+#include "tipos.h"
+#include "ast.h"
 
 #define TAM 211
+
+extern int escopo_atual;
 
 Simbolo *tabela[TAM] = {NULL}; // Inicializa a tabela
 
@@ -74,6 +78,17 @@ Simbolo *buscarSimbolo(char *nome, int escopo) {
         }
     }
     return NULL;
+}
+
+int buscar_tipo_funcao(char *nome) {
+    Simbolo *s = buscarSimbolo(nome, 0); // escopo global
+    return s ? s->tipo_retorno : TIPO_INT;
+}
+
+int buscar_tipo_variavel(const char *nome) {
+    Simbolo *s = buscarSimbolo((char*)nome, escopo_atual);
+    if (s) return s->tipo;
+    return TIPO_INT; // padrão seguro
 }
 
 void imprimirTabela() {

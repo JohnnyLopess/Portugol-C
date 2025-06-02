@@ -41,7 +41,7 @@ Simbolo *inserirParametro(char *nome, int tipo, int escopo, int referencia);
 %token ENQUANTO FACA FIMENQUANTO
 %token IGUAL COMPARA DIFERENTE MENOR MAIOR MENOR_IGUAL MAIOR_IGUAL
 %token SOMA SUB MUL DIV
-%token ABREPAR FECHAPAR PONTOEVIRGULA
+%token ABREPAR FECHAPAR PONTOEVIRGULA VIRGULA
 %token PARA DE ATE FIMPARA
 %token DOISPONTOS
 %token FIMFUNCAO
@@ -52,7 +52,7 @@ Simbolo *inserirParametro(char *nome, int tipo, int escopo, int referencia);
 %type <inteiro> tipo
 %type <ast> comentario
 
-%left SOMA SUB
+%left SOMA SUB MUL DIV
 
 
 %%
@@ -68,7 +68,6 @@ programa:
     }
 ;
 
-
 funcao:
     FUNCAO tipo ID ABREPAR lista_parametros FECHAPAR bloco FIMFUNCAO {
         inserirFuncao($3, $2, escopo_atual, $5->n_filhos, NULL);
@@ -83,7 +82,7 @@ lista_args:
 
 args:
     expressao { $$ = ast_cria(AST_BLOCO, NULL, 1, $1); }
-    | args PONTOEVIRGULA expressao {
+    | args VIRGULA expressao {
         int n = $1->n_filhos + 1;
         AST** filhos = malloc(sizeof(AST*) * n);
         for (int i = 0; i < $1->n_filhos; i++) filhos[i] = $1->filhos[i];
@@ -200,6 +199,7 @@ leitura:
 escrita:
     ESCREVA ABREPAR ID FECHAPAR PONTOEVIRGULA {
         AST* id = ast_cria(AST_ID, strdup($3), 0);
+        id->tipo_expr = buscar_tipo_variavel($3); // Propaga o tipo!
         $$ = ast_cria(AST_ESCRITA, NULL, 1, id);
     }
     | ESCREVA ABREPAR STRING FECHAPAR PONTOEVIRGULA {
@@ -223,10 +223,21 @@ atribuicao:
 ;
 
 expressao:
-    NUM { $$ = ast_cria(AST_NUM, strdup($1), 0); }
-    | ID { $$ = ast_cria(AST_ID, strdup($1), 0); }
+    NUM {
+        AST* num = ast_cria(AST_NUM, strdup($1), 0);
+        num->tipo_expr = TIPO_INT; // ou TIPO_FLOAT se detectar ponto
+        $$ = num;
+    }
+    | ID {
+        AST* id = ast_cria(AST_ID, strdup($1), 0);
+        id->tipo_expr = buscar_tipo_variavel($1);
+        $$ = id;
+    }
     | expressao SOMA expressao {
-        $$ = ast_cria(AST_EXPRESSAO, strdup("+"), 2, $1, $3);
+        AST* novo = ast_cria(AST_EXPRESSAO, strdup("+"), 2, $1, $3);
+        // Se qualquer lado for float, resultado é float
+        novo->tipo_expr = ($1->tipo_expr == TIPO_FLOAT || $3->tipo_expr == TIPO_FLOAT) ? TIPO_FLOAT : TIPO_INT;
+        $$ = novo;
     }
     | expressao SUB expressao {
         $$ = ast_cria(AST_EXPRESSAO, strdup("-"), 2, $1, $3);
@@ -251,7 +262,15 @@ expressao:
     }
     | ID ABREPAR lista_args FECHAPAR {
         AST* id = ast_cria(AST_ID, strdup($1), 0);
-        $$ = ast_cria(AST_EXPRESSAO, NULL, 2, id, $3);
+        AST* call = ast_cria(AST_EXPRESSAO, NULL, 2, id, $3);
+        call->tipo_expr = buscar_tipo_funcao($1); // você precisa implementar isso
+        $$ = call;
+    }
+    | expressao MUL expressao {
+        $$ = ast_cria(AST_EXPRESSAO, strdup("*"), 2, $1, $3);
+    }
+    | expressao DIV expressao {
+        $$ = ast_cria(AST_EXPRESSAO, strdup("/"), 2, $1, $3);
     }
 ;
 
@@ -262,7 +281,7 @@ lista_parametros:
 
 parametros:
     parametro { $$ = ast_cria(AST_BLOCO, NULL, 1, $1); }
-    | parametros PONTOEVIRGULA parametro {
+    | parametros VIRGULA parametro {
         int n = $1->n_filhos + 1;
         AST** filhos = malloc(sizeof(AST*) * n);
         for (int i = 0; i < $1->n_filhos; i++) filhos[i] = $1->filhos[i];

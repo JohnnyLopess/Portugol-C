@@ -38,13 +38,13 @@ for input in "$INPUT_DIR"/*.pg; do
     # Copia a saída do compilador para a pasta de teste
     cp $BUILD_DIR/saida.c "$out_file"
 
-    if diff -q "$out_file" "$esperado" > /dev/null; then
+    if diff -B -w -q "$out_file" "$esperado" > /dev/null; then
         echo "✅ $base passou"
         PASSOU=$((PASSOU+1))
     else
         echo "❌ $base falhou"
         echo "🔍 Diferença:"
-        diff -u "$out_file" "$esperado"
+        diff -B -w -u "$out_file" "$esperado"
         FALHOU=$((FALHOU+1))
     fi
 done

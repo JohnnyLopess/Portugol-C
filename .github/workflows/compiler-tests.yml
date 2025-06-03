@@ -19,13 +19,17 @@ jobs:
     
     - name: Instalar dependências
       run: |
-        sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-11 100
-        sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-11 100
-        sudo update-alternatives --set gcc /usr/bin/gcc-11
-        sudo update-alternatives --set g++ /usr/bin/g++-11
         sudo apt-get update
-        sudo apt-get install -y gcc-11
+        sudo apt-get install -y gcc-11 || sudo apt-get install -y gcc
         sudo apt-get install -y flex bison make
+        if [ -f /usr/bin/gcc-11 ]; then
+          sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-11 100
+          sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-11 100
+          sudo update-alternatives --set gcc /usr/bin/gcc-11
+          sudo update-alternatives --set g++ /usr/bin/g++-11
+        else
+          echo "gcc-11 not found. Using default gcc version."
+        fi
     
     - name: Preparar estrutura de diretórios
       run: |

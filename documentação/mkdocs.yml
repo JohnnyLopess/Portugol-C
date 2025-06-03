@@ -6,9 +6,9 @@ site_name: Compilador Portugol-C
 nav:
   - Início: index.md
   - Visão Projeto:
-      - Projeto: visaoProduto.md
-      - Escopo Portugol: escopo.md
-      - Sprints: sprints.md 
+      - Projeto: visao-projeto/visaoProduto.md
+      - Escopo Portugol: visao-projeto/escopo.md
+      - Sprints: visao-projeto/sprints.md 
   - Resultados:
       - Sprint 1: resultados/sprint1.md
       - Sprint 2: resultados/sprint2.md

@@ -48,7 +48,7 @@ Simbolo *inserirParametro(char *nome, int tipo, int escopo, int referencia);
 %token <str> NUM ID STRING
 %token FUNCAO RETORNE
 %token <str> COMENTARIO_LINHA COMENTARIO_BLOCO
-%type <ast> programa  lista_funcoes funcao lista_args args bloco bloco_conteudo comando declaracao leitura escrita atribuicao expressao lista_parametros parametros parametro chamada_funcao
+%type <ast> programa  lista_funcoes funcao cabecalho_funcao lista_args args bloco bloco_conteudo comando declaracao leitura escrita atribuicao expressao lista_parametros parametros parametro chamada_funcao
 %type <inteiro> tipo
 %type <ast> comentario
 
@@ -69,10 +69,25 @@ programa:
 ;
 
 funcao:
-    FUNCAO tipo ID ABREPAR lista_parametros FECHAPAR bloco FIMFUNCAO {
-        inserirFuncao($3, $2, escopo_atual, $5->n_filhos, NULL);
-        $$ = ast_cria(AST_FUNCAO, strdup($3), 2, $5, $7);
-    }   
+    cabecalho_funcao bloco FIMFUNCAO {
+        $$ = ast_cria(AST_FUNCAO, strdup($1->valor), 2, $1->filhos[0], $2);
+    }
+;
+
+cabecalho_funcao:
+    FUNCAO tipo ID ABREPAR lista_parametros FECHAPAR {
+        // Insere a função ANTES do bloco, para permitir recursão
+        Simbolo **parametros = NULL;
+        if ($5->n_filhos > 0) {
+            parametros = malloc(sizeof(Simbolo*) * $5->n_filhos);
+            for (int i = 0; i < $5->n_filhos; i++) {
+                parametros[i] = buscarSimbolo($5->filhos[i]->valor, escopo_atual + 1);
+            }
+        }
+        inserirFuncao($3, $2, escopo_atual, $5->n_filhos, parametros);
+        // Cria um nó AST para o cabeçalho (opcional, mas útil para manter a AST completa)
+        $$ = ast_cria(AST_DECLARACAO, strdup($3), 1, $5);
+    }
 ;
 
 lista_args:
@@ -191,6 +206,7 @@ tipo:
 
 leitura:
     LEIA ABREPAR ID FECHAPAR PONTOEVIRGULA {
+        checar_declaracao($3);
         AST* id = ast_cria(AST_ID, strdup($3), 0);
         $$ = ast_cria(AST_LEITURA, NULL, 1, id);
     }
@@ -198,6 +214,7 @@ leitura:
 
 escrita:
     ESCREVA ABREPAR ID FECHAPAR PONTOEVIRGULA {
+        checar_declaracao($3);
         AST* id = ast_cria(AST_ID, strdup($3), 0);
         id->tipo_expr = buscar_tipo_variavel($3); // Propaga o tipo!
         $$ = ast_cria(AST_ESCRITA, NULL, 1, id);
@@ -217,6 +234,7 @@ escrita:
 
 atribuicao:
     ID IGUAL expressao PONTOEVIRGULA {
+        checar_declaracao($1);
         AST* id = ast_cria(AST_ID, strdup($1), 0);
         $$ = ast_cria(AST_ATRIBUICAO, NULL, 2, id, $3);
     }
@@ -229,48 +247,83 @@ expressao:
         $$ = num;
     }
     | ID {
+        checar_declaracao($1);
         AST* id = ast_cria(AST_ID, strdup($1), 0);
         id->tipo_expr = buscar_tipo_variavel($1);
         $$ = id;
     }
     | expressao SOMA expressao {
         AST* novo = ast_cria(AST_EXPRESSAO, strdup("+"), 2, $1, $3);
-        // Se qualquer lado for float, resultado é float
         novo->tipo_expr = ($1->tipo_expr == TIPO_FLOAT || $3->tipo_expr == TIPO_FLOAT) ? TIPO_FLOAT : TIPO_INT;
         $$ = novo;
     }
     | expressao SUB expressao {
-        $$ = ast_cria(AST_EXPRESSAO, strdup("-"), 2, $1, $3);
+        AST* novo = ast_cria(AST_EXPRESSAO, strdup("-"), 2, $1, $3);
+        novo->tipo_expr = ($1->tipo_expr == TIPO_FLOAT || $3->tipo_expr == TIPO_FLOAT) ? TIPO_FLOAT : TIPO_INT;
+        $$ = novo;
     }
     | expressao COMPARA expressao {
-        $$ = ast_cria(AST_EXPRESSAO, strdup("=="), 2, $1, $3);
+        AST* novo = ast_cria(AST_EXPRESSAO, strdup("=="), 2, $1, $3);
+        novo->tipo_expr = TIPO_BOOL;
+        $$ = novo;
     }
     | expressao MENOR expressao {
-        $$ = ast_cria(AST_EXPRESSAO, strdup("<"), 2, $1, $3);
+        AST* novo = ast_cria(AST_EXPRESSAO, strdup("<"), 2, $1, $3);
+        novo->tipo_expr = TIPO_BOOL;
+        $$ = novo;
     }
     | expressao MAIOR expressao {
-        $$ = ast_cria(AST_EXPRESSAO, strdup(">"), 2, $1, $3);
+        AST* novo = ast_cria(AST_EXPRESSAO, strdup(">"), 2, $1, $3);
+        novo->tipo_expr = TIPO_BOOL;
+        $$ = novo;
     }
     | expressao MENOR_IGUAL expressao {
-        $$ = ast_cria(AST_EXPRESSAO, strdup("<="), 2, $1, $3);
+        AST* novo = ast_cria(AST_EXPRESSAO, strdup("<="), 2, $1, $3);
+        novo->tipo_expr = TIPO_BOOL;
+        $$ = novo;
     }
     | expressao MAIOR_IGUAL expressao {
-        $$ = ast_cria(AST_EXPRESSAO, strdup(">="), 2, $1, $3);
+        AST* novo = ast_cria(AST_EXPRESSAO, strdup(">="), 2, $1, $3);
+        novo->tipo_expr = TIPO_BOOL;
+        $$ = novo;
     }
     | expressao DIFERENTE expressao {
-        $$ = ast_cria(AST_EXPRESSAO, strdup("!="), 2, $1, $3);
+        AST* novo = ast_cria(AST_EXPRESSAO, strdup("!="), 2, $1, $3);
+        novo->tipo_expr = TIPO_BOOL;
+        $$ = novo;
     }
     | ID ABREPAR lista_args FECHAPAR {
+        Simbolo *func = buscarSimbolo($1, 0);
+        if (!func) {
+            fprintf(stderr, "[ERRO SEMÂNTICO] Função '%s' não declarada!\n", $1);
+            exit(1);
+        }
+        if (func->n_parametros != $3->n_filhos) {
+            fprintf(stderr, "[ERRO SEMÂNTICO] Função '%s' espera %d parâmetros, mas recebeu %d.\n", $1, func->n_parametros, $3->n_filhos);
+            exit(1);
+        }
+        for (int i = 0; i < func->n_parametros; i++) {
+            int tipo_esperado = func->parametros[i]->tipo;
+            int tipo_recebido = $3->filhos[i]->tipo_expr;
+            if (tipo_esperado != tipo_recebido) {
+                fprintf(stderr, "[ERRO SEMÂNTICO] Parâmetro %d da função '%s' espera tipo %d, mas recebeu tipo %d.\n", i+1, $1, tipo_esperado, tipo_recebido);
+                exit(1);
+            }
+        }
         AST* id = ast_cria(AST_ID, strdup($1), 0);
         AST* call = ast_cria(AST_EXPRESSAO, NULL, 2, id, $3);
-        call->tipo_expr = buscar_tipo_funcao($1); // você precisa implementar isso
+        call->tipo_expr = func->tipo_retorno;
         $$ = call;
     }
     | expressao MUL expressao {
-        $$ = ast_cria(AST_EXPRESSAO, strdup("*"), 2, $1, $3);
+        AST* novo = ast_cria(AST_EXPRESSAO, strdup("*"), 2, $1, $3);
+        novo->tipo_expr = ($1->tipo_expr == TIPO_FLOAT || $3->tipo_expr == TIPO_FLOAT) ? TIPO_FLOAT : TIPO_INT;
+        $$ = novo;
     }
     | expressao DIV expressao {
-        $$ = ast_cria(AST_EXPRESSAO, strdup("/"), 2, $1, $3);
+        AST* novo = ast_cria(AST_EXPRESSAO, strdup("/"), 2, $1, $3);
+        novo->tipo_expr = TIPO_FLOAT; // divisão sempre resulta em float
+        $$ = novo;
     }
 ;
 

@@ -27,6 +27,7 @@ void inserirSimbolo(char *nome, int tipo, int escopo);
 Simbolo *buscarSimbolo(char *nome, int escopo); 
 int buscar_tipo_funcao(char *nome);       
 int buscar_tipo_variavel(const char *nome);
+void checar_declaracao(const char* nome);
 void imprimirTabela();
 
 #endif

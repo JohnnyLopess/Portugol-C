@@ -91,6 +91,14 @@ int buscar_tipo_variavel(const char *nome) {
     return TIPO_INT; // padrão seguro
 }
 
+void checar_declaracao(const char* nome) {
+    extern int escopo_atual;
+    if (!buscarSimbolo((char*)nome, escopo_atual)) {
+        fprintf(stderr, "[ERRO SEMÂNTICO] Variável '%s' não declarada!\n", nome);
+        exit(1);
+    }
+}
+
 void imprimirTabela() {
     for (int i = 0; i < TAM; i++) {
         for (Simbolo *s = tabela[i]; s; s = s->proximo) {

@@ -47,6 +47,10 @@ Simbolo *inserirParametro(char *nome, int tipo, int escopo, int referencia);
 %token FIMFUNCAO
 %token <str> NUM ID STRING
 %token FUNCAO RETORNE
+%left OP_MAIS_IGUAL OP_MENOS_IGUAL
+%left OP_MULTIPLICACAO_IGUAL OP_DIVISAO_IGUAL
+%left OP_INCREMENTO_UNARIO OP_DECREMENTO_UNARIO
+%left MOD
 %token <str> COMENTARIO_LINHA COMENTARIO_BLOCO
 %type <ast> programa  lista_funcoes funcao lista_args args bloco bloco_conteudo comando declaracao leitura escrita atribuicao expressao lista_parametros parametros parametro chamada_funcao
 %type <inteiro> tipo
@@ -220,6 +224,26 @@ atribuicao:
         AST* id = ast_cria(AST_ID, strdup($1), 0);
         $$ = ast_cria(AST_ATRIBUICAO, NULL, 2, id, $3);
     }
+    | ID OP_MAIS_IGUAL expressao PONTOEVIRGULA {
+        AST* id = ast_cria(AST_ID, strdup($1), 0);
+        AST* op = ast_cria(AST_EXPRESSAO, strdup("+="), 2, id, $3);
+        $$ = ast_cria(AST_ATRIBUICAO, NULL, 1, op);
+    }
+    | ID OP_MENOS_IGUAL expressao PONTOEVIRGULA {
+        AST* id = ast_cria(AST_ID, strdup($1), 0);
+        AST* op = ast_cria(AST_EXPRESSAO, strdup("-="), 2, id, $3);
+        $$ = ast_cria(AST_ATRIBUICAO, NULL, 1, op);
+    }
+    | ID OP_MULTIPLICACAO_IGUAL expressao PONTOEVIRGULA {
+        AST* id = ast_cria(AST_ID, strdup($1), 0);
+        AST* op = ast_cria(AST_EXPRESSAO, strdup("*="), 2, id, $3);
+        $$ = ast_cria(AST_ATRIBUICAO, NULL, 1, op);
+    }
+    | ID OP_DIVISAO_IGUAL expressao PONTOEVIRGULA {
+        AST* id = ast_cria(AST_ID, strdup($1), 0);
+        AST* op = ast_cria(AST_EXPRESSAO, strdup("/="), 2, id, $3);
+        $$ = ast_cria(AST_ATRIBUICAO, NULL, 1, op);
+    }
 ;
 
 expressao:
@@ -272,6 +296,17 @@ expressao:
     | expressao DIV expressao {
         $$ = ast_cria(AST_EXPRESSAO, strdup("/"), 2, $1, $3);
     }
+    | expressao MOD expressao {
+    $$ = ast_cria(AST_EXPRESSAO, strdup("%"), 2, $1, $3);
+        | OP_INCREMENTO_UNARIO ID {
+        AST* id = ast_cria(AST_ID, strdup($2), 0);
+        $$ = ast_cria(AST_EXPRESSAO, strdup("++"), 1, id);
+    }
+    | OP_DECREMENTO_UNARIO ID {
+        AST* id = ast_cria(AST_ID, strdup($2), 0);
+        $$ = ast_cria(AST_EXPRESSAO, strdup("--"), 1, id);
+    }
+}
 ;
 
 lista_parametros:

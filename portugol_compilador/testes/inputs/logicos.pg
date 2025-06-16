@@ -1,0 +1,13 @@
+inicio
+    var: inteiro x;
+    var: logico y;
+    var: logico z;
+    x = 10 * 2;
+    y = x > 15;
+    z = x < 20;
+    escreva("x = 10*2 = 20\n");
+    escreva("x>15 ?\n");
+    escreva(y);
+    escreva("x>20 ?\n");
+    escreva(z);
+fim

@@ -1,0 +1,16 @@
+#include <stdio.h>
+
+int main() {
+    int x;
+    char y;
+    char z;
+    x = 10 * 2;
+    y = x > 15;
+    z = x < 20;
+    printf("x = 10*2 = 20\n");
+    printf("x>15?\n");
+    printf("%d\n", y);
+    printf("x>20?\n");
+    printf("%d\n", z);
+    return 0;
+}

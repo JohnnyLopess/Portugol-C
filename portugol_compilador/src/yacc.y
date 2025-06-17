@@ -297,8 +297,9 @@ expressao:
         $$ = ast_cria(AST_EXPRESSAO, strdup("/"), 2, $1, $3);
     }
     | expressao MOD expressao {
-    $$ = ast_cria(AST_EXPRESSAO, strdup("%"), 2, $1, $3);
-        | OP_INCREMENTO_UNARIO ID {
+        $$ = ast_cria(AST_EXPRESSAO, strdup("%"), 2, $1, $3);
+    }
+    | OP_INCREMENTO_UNARIO ID {
         AST* id = ast_cria(AST_ID, strdup($2), 0);
         $$ = ast_cria(AST_EXPRESSAO, strdup("++"), 1, id);
     }
@@ -306,7 +307,6 @@ expressao:
         AST* id = ast_cria(AST_ID, strdup($2), 0);
         $$ = ast_cria(AST_EXPRESSAO, strdup("--"), 1, id);
     }
-}
 ;
 
 lista_parametros:

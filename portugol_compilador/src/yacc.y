@@ -52,9 +52,13 @@ Simbolo *inserirParametro(char *nome, int tipo, int escopo, int referencia);
 %left OP_INCREMENTO_UNARIO OP_DECREMENTO_UNARIO
 %left MOD
 %token <str> COMENTARIO_LINHA COMENTARIO_BLOCO
+
+%token ESCOLHA CASO PARE CONTRARIO
+
 %type <ast> programa  lista_funcoes funcao lista_args args bloco bloco_conteudo comando declaracao leitura escrita atribuicao expressao lista_parametros parametros parametro chamada_funcao
 %type <inteiro> tipo
 %type <ast> comentario
+%type <ast> escolha_comando lista_casos caso_decl caso_contrario_decl
 
 %left SOMA SUB MUL DIV
 
@@ -164,6 +168,54 @@ comando:
         $$ = ast_cria(AST_EXPRESSAO, strdup("return"), 1, $2);
     }
     | chamada_funcao PONTOEVIRGULA { $$ = $1; }
+    | escolha_comando { $$ = $1; }
+;
+
+escolha_comando:
+    ESCOLHA ABREPAR expressao FECHAPAR '{' lista_casos '}' {
+        $$ = ast_cria(AST_ESCOLHA, NULL, 2, $3, $6);
+    }
+;
+
+lista_casos:
+    caso_decl { $$ = ast_cria(AST_BLOCO, NULL, 1, $1); }
+    | lista_casos caso_decl {
+        int n = $1->n_filhos + 1;
+        AST** filhos = malloc(sizeof(AST*) * n);
+        for (int i = 0; i < $1->n_filhos; i++) filhos[i] = $1->filhos[i];
+        filhos[n-1] = $2;
+        AST* novo = ast_cria(AST_BLOCO, NULL, 0);
+        novo->n_filhos = n;
+        novo->filhos = filhos;
+        $$ = novo;
+    }
+    | caso_contrario_decl { $$ = ast_cria(AST_BLOCO, NULL, 1, $1); }
+    | lista_casos caso_contrario_decl {
+        int n = $1->n_filhos + 1;
+        AST** filhos = malloc(sizeof(AST*) * n);
+        for (int i = 0; i < $1->n_filhos; i++) filhos[i] = $1->filhos[i];
+        filhos[n-1] = $2;
+        AST* novo = ast_cria(AST_BLOCO, NULL, 0);
+        novo->n_filhos = n;
+        novo->filhos = filhos;
+        $$ = novo;
+    }
+;
+
+caso_decl:
+    CASO (NUM | ID | STRING) DOISPONTOS bloco PARE {
+        AST* case_value;
+        if (strcmp($2, "NUM") == 0) case_value = ast_cria(AST_NUM, strdup($2), 0);
+        else if (strcmp($2, "ID") == 0) case_value = ast_cria(AST_ID, strdup($2), 0);
+        else case_value = ast_cria(AST_STRING, strdup($2), 0);
+        $$ = ast_cria(AST_CASO, NULL, 2, case_value, $4);
+    }
+;
+
+caso_contrario_decl:
+    CASO CONTRARIO DOISPONTOS bloco {
+        $$ = ast_cria(AST_CASO_CONTRARIO, NULL, 1, $4);
+    }
 ;
 
 chamada_funcao:
@@ -186,11 +238,11 @@ declaracao:
 ;
 
 tipo:
-    TIPO_INTEIRO     { $$ = TIPO_INT; }
-    | TIPO_REAL      { $$ = TIPO_FLOAT; }
+    TIPO_INTEIRO       { $$ = TIPO_INT; }
+    | TIPO_REAL        { $$ = TIPO_FLOAT; }
     | TIPO_CARACTERE { $$ = TIPO_CHAR; }
     | TIPO_LOGICO    { $$ = TIPO_BOOL; }
-    | TIPO_VAZIO     { $$ = TIPO_VOID; }
+    | TIPO_VAZIO       { $$ = TIPO_VOID; }
 ;
 
 leitura:

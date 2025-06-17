@@ -252,7 +252,7 @@ void ast_gera_c(AST *no, FILE *saida, int nivel_indent)
             }
             break;
 
-            case AST_COMENTARIO:
+        case AST_COMENTARIO:
             for (int i = 0; i < nivel_indent; i++) fprintf(saida, "    ");
             if (no->valor) {
                 if (strstr(no->valor, "\n")) {
@@ -261,6 +261,32 @@ void ast_gera_c(AST *no, FILE *saida, int nivel_indent)
                     fprintf(saida, "//%s\n", no->valor); // Comentário de linha
                 }
             }
+            break;
+
+        case AST_ESCOLHA:
+            for (int i = 0; i < nivel_indent; i++) fprintf(saida, "    ");
+            fprintf(saida, "switch (");
+            ast_gera_c(no->filhos[0], saida, 0);
+            fprintf(saida, ") {\n");
+            ast_gera_c(no->filhos[1], saida, nivel_indent + 1);
+            for (int i = 0; i < nivel_indent; i++) fprintf(saida, "    ");
+            fprintf(saida, "}\n");
+            break;
+
+        case AST_CASO:
+            for (int i = 0; i < nivel_indent; i++) fprintf(saida, "    ");
+            fprintf(saida, "case ");
+            ast_gera_c(no->filhos[0], saida, 0);
+            fprintf(saida, ":\n");
+            ast_gera_c(no->filhos[1], saida, nivel_indent + 2);
+            for (int i = 0; i < nivel_indent + 1; i++) fprintf(saida, "    ");
+            fprintf(saida, "break;\n");
+            break;
+
+        case AST_CASO_CONTRARIO:
+            for (int i = 0; i < nivel_indent; i++) fprintf(saida, "    ");
+            fprintf(saida, "default:\n");
+            ast_gera_c(no->filhos[0], saida, nivel_indent + 2); // Default 
             break;
 
         default:

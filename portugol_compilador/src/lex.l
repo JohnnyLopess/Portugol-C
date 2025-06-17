@@ -27,6 +27,7 @@
 "escolha"         { printf("[TOKEN] ESCOLHA\n"); return ESCOLHA; }
 "caso"         { printf("[TOKEN] CASO\n"); return CASO; }
 "pare"         { printf("[TOKEN] PARE\n"); return PARE; }
+"contrario"         { printf("[TOKEN] CONTRARIO\n"); return CONTRARIO; }
 
 "enquanto"      { printf("[TOKEN] ENQUANTO\n"); return ENQUANTO; }
 "faca"          { printf("[TOKEN] FACA\n"); return FACA; }

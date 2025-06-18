@@ -35,9 +35,10 @@ Simbolo *inserirParametro(char *nome, int tipo, int escopo, int referencia);
     struct AST* ast; // novo campo para AST
 }
 
-%token INICIO FIM LEIA ESCREVA VAR
+%token PROGRAMA INICIO FIM LEIA ESCREVA VAR
 %token TIPO_INTEIRO TIPO_REAL TIPO_CARACTERE TIPO_LOGICO TIPO_VAZIO
 %token SE SENAO ENTAO FIMSE
+%token ABRECHAVE FECHACHAVE
 %token ENQUANTO FACA FIMENQUANTO
 %token IGUAL COMPARA DIFERENTE MENOR MAIOR MENOR_IGUAL MAIOR_IGUAL
 %token SOMA SUB MUL DIV
@@ -48,7 +49,7 @@ Simbolo *inserirParametro(char *nome, int tipo, int escopo, int referencia);
 %token <str> NUM ID STRING
 %token FUNCAO RETORNE
 %token <str> COMENTARIO_LINHA COMENTARIO_BLOCO
-%type <ast> programa  lista_funcoes funcao cabecalho_funcao lista_args args bloco bloco_conteudo comando declaracao leitura escrita atribuicao expressao lista_parametros parametros parametro chamada_funcao
+%type <ast> programa corpo_programa lista_funcoes funcao cabecalho_funcao lista_args args bloco bloco_conteudo comando declaracao leitura escrita atribuicao expressao lista_parametros parametros parametro chamada_funcao
 %type <inteiro> tipo
 %type <ast> comentario
 
@@ -57,16 +58,9 @@ Simbolo *inserirParametro(char *nome, int tipo, int escopo, int referencia);
 
 %%
 
-programa:
-    lista_funcoes INICIO bloco FIM {
-        raiz_ast = ast_cria(AST_PROGRAMA, NULL, 2, $1, $3);
-        $$ = raiz_ast;
-    }
-    | INICIO bloco FIM {
-        raiz_ast = ast_cria(AST_PROGRAMA, NULL, 1, $2);
-        $$ = raiz_ast;
-    }
-;
+programa: PROGRAMA ABRECHAVE corpo_programa FECHACHAVE { $$ = $3; };
+
+corpo_programa: lista_funcoes INICIO bloco FIM { raiz_ast = ast_cria(AST_PROGRAMA, NULL, 2, $1, $3); $$ = raiz_ast; };
 
 funcao:
     cabecalho_funcao bloco FIMFUNCAO {

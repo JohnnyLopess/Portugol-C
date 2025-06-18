@@ -6,8 +6,7 @@ var: real numero;
 var: caractere letra;
 var: inteiro idade;
 
-/*este bloco tem operações de leia
- e escreva*/
+/*este bloco tem operações de leia e escreva*/
 escreva("Digite um número real: ");
 leia(numero);
 escreva("Digite uma letra: ");

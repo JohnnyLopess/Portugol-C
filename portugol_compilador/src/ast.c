@@ -50,7 +50,7 @@ void ast_gera_c(AST *no, FILE *saida, int nivel_indent)
         case AST_PROGRAMA:
             fprintf(saida, "#include <stdio.h>\n\n");
             // Se tiver funções, gere-as antes do main
-            if (no->n_filhos == 2) {
+            if (no->n_filhos > 1) { // Alterado de == 2 para > 1
                 ast_gera_c(no->filhos[0], saida, 0); // funções
                 fprintf(saida, "int main() {\n");
                 ast_gera_c(no->filhos[1], saida, 1); // bloco principal

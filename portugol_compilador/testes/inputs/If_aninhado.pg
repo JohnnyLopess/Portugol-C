@@ -1,3 +1,5 @@
+programa
+{
 inicio
 var: inteiro x;
 
@@ -12,3 +14,4 @@ senao
 fimse
 
 fim
+}

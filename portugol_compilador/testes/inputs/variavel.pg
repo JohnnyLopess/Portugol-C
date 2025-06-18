@@ -1,16 +1,17 @@
+programa
+{
 inicio
 var: real numero;
 var: caractere letra;
 var: inteiro idade;
-
 escreva("Digite um número real: ");
 leia(numero);
 escreva("Digite uma letra: ");
 leia(letra);
 escreva("Digite sua idade: ");
 leia(idade);
-
 escreva(numero);
 escreva(letra);
 escreva(idade);
 fim
+}

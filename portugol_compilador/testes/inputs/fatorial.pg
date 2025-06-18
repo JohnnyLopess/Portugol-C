@@ -1,3 +1,5 @@
+programa
+{
 funcao inteiro fat(inteiro n)
     se n == 0 entao
         retorne 1;
@@ -9,3 +11,4 @@ fimfuncao
 inicio
     escreva(fat(5));
 fim
+}

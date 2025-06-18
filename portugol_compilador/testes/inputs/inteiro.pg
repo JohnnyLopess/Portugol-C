@@ -1,5 +1,8 @@
+programa
+{
 inicio
-    var: inteiro idade;
-    idade = 20;
-    escreva(idade);
+var: inteiro idade;
+idade = 20;
+escreva(idade);
 fim
+}

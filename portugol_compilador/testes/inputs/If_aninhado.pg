@@ -1,15 +1,15 @@
 programa
 {
 inicio
-var: inteiro x;
+var: inteiro x
 
-leia(x);
+leia(x)
 
 se x == 5 entao
-    escreva(x);
+    escreva(x)
 senao
     se x ==2 entao 
-        escreva(0);
+        escreva(0)
     fimse
 fimse
 

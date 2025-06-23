@@ -1,6 +1,6 @@
 programa
 {
 inicio
-escreva("Hello, World!");
+escreva("Hello, World!")
 fim
 }

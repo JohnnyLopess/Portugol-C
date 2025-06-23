@@ -65,6 +65,13 @@
 ","             { return VIRGULA; }
 ":"             { return DOISPONTOS; }
 
+"&"             { return OP_BITWISE_AND; }
+"~"             { return OP_BITWISE_NOT; }
+"|"             { return OP_BITWISE_OR; }
+"<<"            { return OP_BITWISE_LEFT_SHIFT; }
+">>"            { return OP_BITWISE_RIGHT_SHIFT; }
+"^"             { return OP_BITWISE_XOR; }
+
 [0-9]+          { yylval.str = strdup(yytext); printf("[TOKEN] NUMERO (%s)\n", yytext); return NUM; }
 
 [a-zA-Z_][a-zA-Z0-9_]* {

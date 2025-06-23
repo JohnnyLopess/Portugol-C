@@ -322,6 +322,36 @@ expressao:
         novo->tipo_expr = TIPO_FLOAT; // divisão sempre resulta em float
         $$ = novo;
     }
+    | expressao OP_BITWISE_AND expressao {
+        AST* novo = ast_cria(AST_EXPRESSAO, strdup("&"), 2, $1, $3);
+        novo->tipo_expr = TIPO_INT;
+        $$ = novo;
+    }
+    | OP_BITWISE_NOT expressao {
+        AST* novo = ast_cria(AST_EXPRESSAO, strdup("~"), 1, $2);
+        novo->tipo_expr = TIPO_INT;
+        $$ = novo;
+    }
+    | expressao OP_BITWISE_OR expressao {
+        AST* novo = ast_cria(AST_EXPRESSAO, strdup("|"), 2, $1, $3);
+        novo->tipo_expr = TIPO_INT;
+        $$ = novo;
+    }
+    | expressao OP_BITWISE_LEFT_SHIFT expressao {
+        AST* novo = ast_cria(AST_EXPRESSAO, strdup("<<"), 2, $1, $3);
+        novo->tipo_expr = TIPO_INT;
+        $$ = novo;
+    }
+    | expressao OP_BITWISE_RIGHT_SHIFT expressao {
+        AST* novo = ast_cria(AST_EXPRESSAO, strdup(">>"), 2, $1, $3);
+        novo->tipo_expr = TIPO_INT;
+        $$ = novo;
+    }
+    | expressao OP_BITWISE_XOR expressao {
+        AST*novo = ast_cria(AST_EXPRESSAO, strdup("^"), 2, $1, $3);
+        novo->tipo_expr = TIPO_INT;
+        $$ = novo;
+    }
 ;
 
 lista_parametros:

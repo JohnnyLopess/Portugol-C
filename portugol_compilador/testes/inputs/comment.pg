@@ -1,24 +1,24 @@
 programa
 {
 inicio
-var: real numero;
+var: real numero
 //     este é um número real
-var: caractere letra;
-var: inteiro idade;
+var: caractere letra
+var: inteiro idade
 
 /*este bloco tem operações de leia
  e escreva*/
-escreva("Digite um número real: ");
-leia(numero);
-escreva("Digite uma letra: ");
-leia(letra);
+escreva("Digite um número real: ")
+leia(numero)
+escreva("Digite uma letra: ")
+leia(letra)
 //teste
-escreva("Digite sua idade: ");
-leia(idade);
+escreva("Digite sua idade: ")
+leia(idade)
 
 // resultado
-escreva(numero);
-escreva(letra);
-escreva(idade);
+escreva(numero)
+escreva(letra)
+escreva(idade)
 fim
 }

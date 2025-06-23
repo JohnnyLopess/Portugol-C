@@ -2,8 +2,8 @@
 
 int main() {
     int x;
-    char y;
-    char z;
+    bool y;
+    bool z;
     x = 10 * 2;
     y = x > 15;
     z = x < 20;

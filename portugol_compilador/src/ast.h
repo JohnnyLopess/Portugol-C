@@ -6,6 +6,7 @@ typedef enum {
     AST_PROGRAMA,
     AST_BLOCO,
     AST_DECLARACAO,
+    AST_TIPO,
     AST_LEITURA,
     AST_ESCRITA,
     AST_ATRIBUICAO,

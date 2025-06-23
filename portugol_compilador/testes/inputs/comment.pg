@@ -1,10 +1,10 @@
 programa
 {
 inicio
-var: real numero
+real numero
 //     este é um número real
-var: caractere letra
-var: inteiro idade
+caractere letra
+inteiro idade
 
 /*este bloco tem operações de leia
  e escreva*/

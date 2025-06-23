@@ -1,9 +1,9 @@
 programa
 {
 inicio
-var: inteiro x
-var: logico y
-var: logico z
+inteiro x
+logico y
+logico z
 x = 10 * 2
 y = x > 15
 z = x < 20

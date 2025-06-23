@@ -1,9 +1,9 @@
 programa
 {
 inicio
-var: real numero
-var: caractere letra
-var: inteiro idade
+real numero
+caractere letra
+inteiro idade
 escreva("Digite um número real: ")
 leia(numero)
 escreva("Digite uma letra: ")

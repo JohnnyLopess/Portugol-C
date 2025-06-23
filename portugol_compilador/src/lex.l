@@ -20,7 +20,6 @@
 
 "leia"          { printf("[TOKEN] LEIA\n"); return LEIA; }
 "escreva"       { printf("[TOKEN] ESCREVA\n"); return ESCREVA; }
-"var"           { printf("[TOKEN] VAR\n"); return VAR; }
 "funcao"        { printf("[TOKEN] FUNCAO\n"); return FUNCAO; }
 "fimfuncao"        { printf("[TOKEN] FIMFUNCAO\n"); return FIMFUNCAO; }
 

@@ -1,7 +1,7 @@
 programa
 {
 inicio
-var: inteiro x
+inteiro x
 
 leia(x)
 

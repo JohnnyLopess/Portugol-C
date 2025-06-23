@@ -1,7 +1,7 @@
 programa
 {
 inicio
-var: inteiro idade
+inteiro idade
 idade = 20
 escreva(idade)
 fim

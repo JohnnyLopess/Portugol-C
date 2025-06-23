@@ -32,10 +32,11 @@ Simbolo *inserirParametro(char *nome, int tipo, int escopo, int referencia);
         char* valor;
         int tipo;
     } expr;
-    struct AST* ast; // novo campo para AST
+    struct AST* ast; // Campo para AST
+    struct AST* bloco; // Adicionado para blocos de múltiplos filhos
 }
 
-%token PROGRAMA INICIO FIM LEIA ESCREVA VAR
+%token PROGRAMA INICIO FIM LEIA ESCREVA
 %token TIPO_INTEIRO TIPO_REAL TIPO_CARACTERE TIPO_LOGICO TIPO_VAZIO
 %token SE SENAO ENTAO FIMSE
 %token ABRECHAVE FECHACHAVE
@@ -52,6 +53,7 @@ Simbolo *inserirParametro(char *nome, int tipo, int escopo, int referencia);
 %type <ast> programa corpo_programa lista_funcoes funcao cabecalho_funcao lista_args args bloco bloco_conteudo comando declaracao leitura escrita atribuicao expressao lista_parametros parametros parametro chamada_funcao
 %type <inteiro> tipo
 %type <ast> comentario
+%type <ast> lista_ids
 
 // token Bitwise
 %token OP_BITWISE_AND OP_BITWISE_NOT OP_BITWISE_OR OP_BITWISE_LEFT_SHIFT OP_BITWISE_RIGHT_SHIFT OP_BITWISE_XOR
@@ -179,17 +181,25 @@ chamada_funcao:
 ;
 
 declaracao:
-    VAR DOISPONTOS tipo ID {
-        inserirSimbolo($4, $3, escopo_atual); // Agora inclui o escopo!
-        AST* tipo_no = ast_cria(AST_ID, strdup($4), 0);
-        AST* tipo_tipo = ast_cria(AST_NUM, strdup($3 == TIPO_INT ? "int" : $3 == TIPO_FLOAT ? "float" : "char"), 0);
-        $$ = ast_cria(AST_DECLARACAO, NULL, 2, tipo_tipo, tipo_no);
+    tipo lista_ids {
+        for (int i = 0; i < $2->n_filhos; i++) {
+            inserirSimbolo($2->filhos[i]->valor, $1, escopo_atual);
+        }
+        $$ = ast_cria(AST_DECLARACAO, NULL, 2, ast_cria(AST_TIPO, strdup($1 == TIPO_INT ? "int" : $1 == TIPO_FLOAT ? "float" : $1 == TIPO_CHAR ? "char" : "bool"), 0), $2);
     }
-    | tipo ID {
-        inserirSimbolo($2, $1, escopo_atual);
-        AST* tipo_no = ast_cria(AST_ID, strdup($2), 0);
-        AST* tipo_tipo = ast_cria(AST_NUM, strdup($1 == TIPO_INT ? "int" : $1 == TIPO_FLOAT ? "float" : "char"), 0);
-        $$ = ast_cria(AST_DECLARACAO, NULL, 2, tipo_tipo, tipo_no);
+;
+
+lista_ids:
+    ID { $$ = ast_cria(AST_BLOCO, NULL, 1, ast_cria(AST_ID, strdup($1), 0)); }
+    | lista_ids VIRGULA ID {
+        int n = $1->n_filhos + 1;
+        AST** filhos = malloc(sizeof(AST*) * n);
+        for (int i = 0; i < $1->n_filhos; i++) filhos[i] = $1->filhos[i];
+        filhos[n-1] = ast_cria(AST_ID, strdup($3), 0);
+        AST* novo = ast_cria(AST_BLOCO, NULL, 0);
+        novo->n_filhos = n;
+        novo->filhos = filhos;
+        $$ = novo;
     }
 ;
 

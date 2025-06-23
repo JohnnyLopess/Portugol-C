@@ -134,11 +134,16 @@ void ast_gera_c(AST *no, FILE *saida, int nivel_indent)
                 ast_gera_c(no->filhos[1], saida, nivel_indent + 1);
                 for (int i = 0; i < nivel_indent; i++) fprintf(saida, "    ");
                 fprintf(saida, "}");
-                if (no->n_filhos > 2 && no->filhos[2]) {
-                    fprintf(saida, " else {\n");
-                    ast_gera_c(no->filhos[2], saida, nivel_indent + 1);
-                    for (int i = 0; i < nivel_indent; i++) fprintf(saida, "    ");
-                    fprintf(saida, "}");
+                if (no->n_filhos > 2 && no->filhos[2]) { // Bloco ELSE ou ELSE IF
+                    if (no->filhos[2]->tipo == AST_IF) { // É um "else if"
+                        fprintf(saida, " else ");
+                        ast_gera_c(no->filhos[2], saida, nivel_indent); // Não adiciona indentação extra aqui, pois o IF interno já se encarrega
+                    } else { // É um "else" simples
+                        fprintf(saida, " else {\n");
+                        ast_gera_c(no->filhos[2], saida, nivel_indent + 1);
+                        for (int i = 0; i < nivel_indent; i++) fprintf(saida, "    ");
+                        fprintf(saida, "}");
+                    }
                 }
                 fprintf(saida, "\n");
             }

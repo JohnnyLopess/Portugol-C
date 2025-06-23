@@ -26,7 +26,6 @@
 "se"            { printf("[TOKEN] SE\n"); return SE; }
 "senao"         { printf("[TOKEN] SENAO\n"); return SENAO; }
 "entao"         { printf("[TOKEN] ENTAO\n"); return ENTAO; }
-"fimse"         { printf("[TOKEN] FIMSE\n"); return FIMSE; }
 
 "enquanto"      { printf("[TOKEN] ENQUANTO\n"); return ENQUANTO; }
 "faca"          { printf("[TOKEN] FACA\n"); return FACA; }

@@ -50,7 +50,7 @@ Simbolo *inserirParametro(char *nome, int tipo, int escopo, int referencia);
 %token <str> NUM ID STRING
 %token FUNCAO RETORNE
 %token <str> COMENTARIO_LINHA COMENTARIO_BLOCO
-%type <ast> programa corpo_programa lista_funcoes funcao cabecalho_funcao lista_args args bloco bloco_conteudo comando declaracao leitura escrita atribuicao expressao lista_parametros parametros parametro chamada_funcao
+%type <ast> programa corpo_programa lista_funcoes funcao cabecalho_funcao lista_args args bloco bloco_conteudo comando declaracao leitura escrita atribuicao expressao lista_parametros parametros parametro chamada_funcao condicional senao_bloco
 %type <inteiro> tipo
 %type <ast> comentario
 %type <ast> lista_ids
@@ -157,12 +157,7 @@ comando:
     | escrita { $$ = $1; }
     | atribuicao { $$ = $1; }
     | comentario { $$ = $1; }
-    | SE expressao ENTAO bloco SENAO comando FIMSE {
-        $$ = ast_cria(AST_IF, NULL, 3, $2, $4, $6);
-    }
-    | SE expressao ENTAO bloco FIMSE {
-        $$ = ast_cria(AST_IF, NULL, 2, $2, $4);
-    }
+    | condicional { $$ = $1; }
     | ENQUANTO expressao FACA bloco FIMENQUANTO {
         $$ = ast_cria(AST_WHILE, NULL, 2, $2, $4);
     }
@@ -174,6 +169,31 @@ comando:
         $$ = ast_cria(AST_EXPRESSAO, strdup("return"), 1, $2);
     }
     | chamada_funcao { $$ = $1; }
+;
+
+condicional:
+    SE ABREPAR expressao FECHAPAR ABRECHAVE bloco FECHACHAVE senao_bloco {
+        // se (condicao) { bloco } else { ... } ou se (condicao) { bloco }
+        if ($8 != NULL) { // se houver senao_bloco (pode ser senao ou senao se)
+            $$ = ast_cria(AST_IF, NULL, 3, $3, $6, $8);
+        } else { // apenas se
+            $$ = ast_cria(AST_IF, NULL, 2, $3, $6);
+        }
+    }
+;
+
+senao_bloco:
+    SENAO ABRECHAVE bloco FECHACHAVE { $$ = $3; } // senao { bloco }
+    | SENAO SE ABREPAR expressao FECHAPAR ABRECHAVE bloco FECHACHAVE senao_bloco {
+        // senao se (condicao) { bloco } ...
+        // Criamos um novo AST_IF para o "senao se", e ele pode ter um "senao_bloco" como seu próprio else
+        if ($9 != NULL) {
+            $$ = ast_cria(AST_IF, NULL, 3, $4, $7, $9);
+        } else {
+            $$ = ast_cria(AST_IF, NULL, 2, $4, $7);
+        }
+    }
+    | /* vazio */ { $$ = NULL; } // Para o caso de não ter senao
 ;
 
 chamada_funcao:

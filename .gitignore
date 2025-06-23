@@ -1,0 +1,24 @@
+# Arquivos de build
+/build/
+saida.c
+compilador
+
+# Arquivos gerados pelo Lex e Bison
+lex.yy.c
+y.tab.c
+y.tab.h
+
+# Arquivos de objeto e executáveis
+*.o
+*.obj
+*.out
+
+# Arquivos temporários e logs
+*.log
+*~
+
+# Configurações do sistema e do editor
+.DS_Store
+.swp
+.idea/
+.vscode/

@@ -53,6 +53,9 @@ Simbolo *inserirParametro(char *nome, int tipo, int escopo, int referencia);
 %type <inteiro> tipo
 %type <ast> comentario
 
+// token Bitwise
+%token OP_BITWISE_AND OP_BITWISE_NOT OP_BITWISE_OR OP_BITWISE_LEFT_SHIFT OP_BITWISE_RIGHT_SHIFT OP_BITWISE_XOR
+
 %left SOMA SUB MUL DIV
 
 

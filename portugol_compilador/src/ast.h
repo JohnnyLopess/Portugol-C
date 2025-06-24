@@ -19,7 +19,10 @@ typedef enum {
     AST_FUNCAO,
     AST_STRING,
     AST_CHAMADA_FUNCAO,
-    AST_COMENTARIO 
+    AST_COMENTARIO,
+    AST_ESCOLHA,
+    AST_CASO,
+    AST_CASO_CONTRARIO
 } ASTTipo;
 
 typedef struct AST {

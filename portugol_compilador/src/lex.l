@@ -26,6 +26,11 @@
 "senao"         { printf("[TOKEN] SENAO\n"); return SENAO; }
 "entao"         { printf("[TOKEN] ENTAO\n"); return ENTAO; }
 
+"escolha"       { printf("[TOKEN] ESCOLHA\n"); return ESCOLHA; }
+"caso"          { printf("[TOKEN] CASO\n"); return CASO; }
+"pare"          { printf("[TOKEN] PARE\n"); return PARE; }
+"caso contrario" { printf("[TOKEN] CASO_CONTRARIO\n"); return CASO_CONTRARIO; }
+
 "enquanto"      { printf("[TOKEN] ENQUANTO\n"); return ENQUANTO; }
 "faca"          { printf("[TOKEN] FACA\n"); return FACA; }
 "fimenquanto"   { printf("[TOKEN] FIMENQUANTO\n"); return FIMENQUANTO; }

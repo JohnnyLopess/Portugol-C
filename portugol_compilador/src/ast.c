@@ -270,6 +270,32 @@ void ast_gera_c(AST *no, FILE *saida, int nivel_indent)
             }
             break;
 
+            case AST_ESCOLHA:
+            for (int i = 0; i < nivel_indent; i++) fprintf(saida, "    ");
+            fprintf(saida, "switch(");
+            ast_gera_c(no->filhos[0], saida, 0);
+            fprintf(saida, ") {\n");
+            ast_gera_c(no->filhos[1], saida, nivel_indent + 1);
+            for (int i = 0; i < nivel_indent; i++) fprintf(saida, "    ");
+            fprintf(saida, "}\n");
+            break;
+            
+        case AST_CASO:
+            for (int i = 0; i < nivel_indent; i++) fprintf(saida, "    ");
+            fprintf(saida, "case ");
+            ast_gera_c(no->filhos[0], saida, 0);
+            fprintf(saida, ":\n");
+            ast_gera_c(no->filhos[1], saida, nivel_indent + 1);
+            for (int i = 0; i < nivel_indent; i++) fprintf(saida, "    ");
+            fprintf(saida, "break;\n");
+            break;
+            
+        case AST_CASO_CONTRARIO:
+            for (int i = 0; i < nivel_indent; i++) fprintf(saida, "    ");
+            fprintf(saida, "default:\n");
+            ast_gera_c(no->filhos[0], saida, nivel_indent + 1);
+            break;
+
         default:
             for (int i = 0; i < no->n_filhos; i++)
                 if (no->filhos[i])

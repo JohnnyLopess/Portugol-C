@@ -1,0 +1,15 @@
+programa{
+inicio
+inteiro opcao
+leia(opcao)
+escolha(opcao) {
+    caso 1:
+        escreva("Opção 1")
+    pare
+    caso 2:
+        escreva("Opção 2")
+    pare
+    caso contrario:
+        escreva("Opção inválida")
+}
+}

@@ -50,10 +50,12 @@ Simbolo *inserirParametro(char *nome, int tipo, int escopo, int referencia);
 %token <str> NUM ID STRING
 %token FUNCAO RETORNE
 %token <str> COMENTARIO_LINHA COMENTARIO_BLOCO
+%token ESCOLHA CASO PARE CASO_CONTRARIO
 %type <ast> programa corpo_programa lista_funcoes funcao cabecalho_funcao lista_args args bloco bloco_conteudo comando declaracao leitura escrita atribuicao expressao lista_parametros parametros parametro chamada_funcao condicional senao_bloco
 %type <inteiro> tipo
 %type <ast> comentario
 %type <ast> lista_ids
+%type <ast> escolha caso lista_casos caso_contrario
 
 // token Bitwise
 %token OP_BITWISE_AND OP_BITWISE_NOT OP_BITWISE_OR OP_BITWISE_LEFT_SHIFT OP_BITWISE_RIGHT_SHIFT OP_BITWISE_XOR
@@ -161,6 +163,7 @@ comando:
     | atribuicao { $$ = $1; }
     | comentario { $$ = $1; }
     | condicional { $$ = $1; }
+    | escolha { $$ = $1; }
     | ENQUANTO expressao FACA bloco FIMENQUANTO {
         $$ = ast_cria(AST_WHILE, NULL, 2, $2, $4);
     }
@@ -389,6 +392,40 @@ comentario:
     COMENTARIO_LINHA { $$ = ast_cria(AST_COMENTARIO, strdup($1), 0); }
     | COMENTARIO_BLOCO { $$ = ast_cria(AST_COMENTARIO, strdup($1), 0); }
 ;
+
+escolha:
+    ESCOLHA ABREPAR expressao FECHAPAR ABRECHAVE lista_casos caso_contrario FECHACHAVE {
+        $$ = ast_cria(AST_ESCOLHA, NULL, 2, $3, ast_cria(AST_BLOCO, NULL, 2, $6, $7));
+    }
+;
+
+lista_casos:
+    /* vazio */ { $$ = ast_cria(AST_BLOCO, NULL, 0); }
+    | lista_casos caso { 
+        int n = $1->n_filhos + 1;
+        AST** filhos = malloc(sizeof(AST*) * n);
+        for (int i = 0; i < $1->n_filhos; i++) filhos[i] = $1->filhos[i];
+        filhos[n-1] = $2;
+        AST* novo = ast_cria(AST_BLOCO, NULL, 0);
+        novo->n_filhos = n;
+        novo->filhos = filhos;
+        $$ = novo;
+    }
+;
+
+caso:
+    CASO expressao DOISPONTOS bloco_conteudo PARE {
+        $$ = ast_cria(AST_CASO, NULL, 2, $2, $4);
+    }
+;
+
+caso_contrario:
+    /* vazio */ { $$ = ast_cria(AST_BLOCO, NULL, 0); }
+    | CASO_CONTRARIO DOISPONTOS bloco_conteudo {
+        $$ = ast_cria(AST_CASO_CONTRARIO, NULL, 1, $3);
+    }
+;
+
 
 %%
 

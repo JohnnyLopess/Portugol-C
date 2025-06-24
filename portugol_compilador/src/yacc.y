@@ -42,7 +42,7 @@ Simbolo *inserirParametro(char *nome, int tipo, int escopo, int referencia);
 %token ABRECHAVE FECHACHAVE
 %token ENQUANTO FACA FIMENQUANTO
 %token IGUAL COMPARA DIFERENTE MENOR MAIOR MENOR_IGUAL MAIOR_IGUAL
-%token SOMA SUB MUL DIV
+%token SOMA SUB MUL DIV MODULO
 %token ABREPAR FECHAPAR PONTOEVIRGULA VIRGULA
 %token PARA DE ATE FIMPARA
 %token DOISPONTOS
@@ -60,7 +60,8 @@ Simbolo *inserirParametro(char *nome, int tipo, int escopo, int referencia);
 // token Bitwise
 %token OP_BITWISE_AND OP_BITWISE_NOT OP_BITWISE_OR OP_BITWISE_LEFT_SHIFT OP_BITWISE_RIGHT_SHIFT OP_BITWISE_XOR
 
-%left SOMA SUB MUL DIV
+%left SOMA SUB
+%left MUL DIV MODULO
 
 
 %%
@@ -360,6 +361,11 @@ expressao:
     | expressao DIV expressao {
         AST* novo = ast_cria(AST_EXPRESSAO, strdup("/"), 2, $1, $3);
         novo->tipo_expr = TIPO_FLOAT; // divisão sempre resulta em float
+        $$ = novo;
+    }
+    | expressao MODULO expressao {
+        AST* novo = ast_cria(AST_EXPRESSAO, strdup("%"), 2, $1, $3);
+        novo->tipo_expr = TIPO_INT;
         $$ = novo;
     }
 ;

@@ -1,0 +1,8 @@
+programa{
+    inicio
+    se (5%2 == 1) {
+        escreva("o resto de 5 dividido por 2 é igual a 1")
+    } senao {
+        escreva("a matemática está errada")
+    }
+}

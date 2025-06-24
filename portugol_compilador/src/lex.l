@@ -57,6 +57,7 @@
 "-"             { return SUB; }
 "*"             { return MUL; }
 "/"             { return DIV; }
+"%"             { printf("[TOKEN] MODULO\n"); return MODULO; }
 
 "("             { return ABREPAR; }
 ")"             { return FECHAPAR; }

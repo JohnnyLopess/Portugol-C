@@ -33,7 +33,6 @@
 
 "enquanto"      { printf("[TOKEN] ENQUANTO\n"); return ENQUANTO; }
 "faca"          { printf("[TOKEN] FACA\n"); return FACA; }
-"fimenquanto"   { printf("[TOKEN] FIMENQUANTO\n"); return FIMENQUANTO; }
 
 "inteiro"       { printf("[TOKEN] TIPO_INTEIRO\n"); yylval.str = strdup(yytext); return TIPO_INTEIRO; }
 "real"          { printf("[TOKEN] TIPO_REAL\n"); yylval.str = strdup(yytext); return TIPO_REAL; }

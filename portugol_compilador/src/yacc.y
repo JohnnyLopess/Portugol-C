@@ -164,8 +164,8 @@ comando:
     | comentario { $$ = $1; }
     | condicional { $$ = $1; }
     | escolha { $$ = $1; }
-    | ENQUANTO expressao FACA bloco FIMENQUANTO {
-        $$ = ast_cria(AST_WHILE, NULL, 2, $2, $4);
+    | ENQUANTO ABREPAR expressao FECHAPAR ABRECHAVE bloco FECHACHAVE {
+        $$ = ast_cria(AST_WHILE, NULL, 2, $3, $6);
     }
     | PARA ID DE expressao ATE expressao FACA bloco FIMPARA {
         checar_declaracao($2);

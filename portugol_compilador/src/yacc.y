@@ -165,6 +165,8 @@ comando:
         $$ = ast_cria(AST_WHILE, NULL, 2, $2, $4);
     }
     | PARA ID DE expressao ATE expressao FACA bloco FIMPARA {
+        checar_declaracao($2);
+        marcarVariavelInicializada($2, escopo_atual);
         AST* id = ast_cria(AST_ID, strdup($2), 0);
         $$ = ast_cria(AST_FOR, NULL, 4, id, $4, $6, $8);
     }
@@ -237,6 +239,7 @@ tipo:
 leitura:
     LEIA ABREPAR ID FECHAPAR {
         checar_declaracao($3);
+        marcarVariavelInicializada($3, escopo_atual);
         AST* id = ast_cria(AST_ID, strdup($3), 0);
         $$ = ast_cria(AST_LEITURA, NULL, 1, id);
     }
@@ -265,6 +268,7 @@ escrita:
 atribuicao:
     ID IGUAL expressao {
         checar_declaracao($1);
+        marcarVariavelInicializada($1, escopo_atual);
         AST* id = ast_cria(AST_ID, strdup($1), 0);
         $$ = ast_cria(AST_ATRIBUICAO, NULL, 2, id, $3);
     }

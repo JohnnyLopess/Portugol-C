@@ -47,7 +47,7 @@
 
 "=="            { printf("[TOKEN] COMPARA\n"); return COMPARA; }
 "="             { printf("[TOKEN] IGUAL\n"); return IGUAL; }
-"<>"            { return DIFERENTE; }
+"!="            { return DIFERENTE; }
 "<="            { return MENOR_IGUAL; }
 ">="            { return MAIOR_IGUAL; }
 "<"             { return MENOR; }

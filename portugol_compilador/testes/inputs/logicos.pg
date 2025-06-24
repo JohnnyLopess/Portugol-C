@@ -12,5 +12,4 @@ escreva("x>15?\n")
 escreva(y)
 escreva("x>20?\n")
 escreva(z)
-fim
 }

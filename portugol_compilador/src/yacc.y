@@ -65,7 +65,10 @@ Simbolo *inserirParametro(char *nome, int tipo, int escopo, int referencia);
 
 programa: PROGRAMA ABRECHAVE corpo_programa FECHACHAVE { $$ = $3; };
 
-corpo_programa: lista_funcoes INICIO bloco FIM { raiz_ast = ast_cria(AST_PROGRAMA, NULL, 2, $1, $3); $$ = raiz_ast; };
+corpo_programa: lista_funcoes INICIO bloco {
+    raiz_ast = ast_cria(AST_PROGRAMA, NULL, 2, $1, $3);
+    $$ = raiz_ast;
+};
 
 funcao:
     cabecalho_funcao bloco FIMFUNCAO {

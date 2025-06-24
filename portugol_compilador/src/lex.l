@@ -15,7 +15,6 @@
 "programa"      { printf("[TOKEN] PROGRAMA\n"); return PROGRAMA; }
 
 "inicio"        { printf("[TOKEN] INICIO\n"); return INICIO; }
-"fim"           { printf("[TOKEN] FIM\n"); return FIM; }
 "retorne"       { printf("[TOKEN] RETORNE\n"); return RETORNE; }
 
 "leia"          { printf("[TOKEN] LEIA\n"); return LEIA; }

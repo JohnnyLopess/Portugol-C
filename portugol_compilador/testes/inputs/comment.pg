@@ -20,5 +20,4 @@ leia(idade)
 escreva(numero)
 escreva(letra)
 escreva(idade)
-fim
 }

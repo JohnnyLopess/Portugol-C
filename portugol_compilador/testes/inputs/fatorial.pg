@@ -13,5 +13,4 @@ fimfuncao
 
 inicio
     escreva(fat(5))
-fim
 }

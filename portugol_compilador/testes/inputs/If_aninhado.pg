@@ -1,6 +1,6 @@
 programa
 {
-    inicio
+    funcao inicio() {
         inteiro x
 
         leia(x)
@@ -16,4 +16,5 @@ programa
                 escreva(0)
             }
         }
+    }
 }

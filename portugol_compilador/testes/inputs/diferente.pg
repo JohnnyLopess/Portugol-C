@@ -1,8 +1,9 @@
 programa{
-    inicio
+    funcao inicio() {
         se (5 != 2){
             escreva("os valores são diferentes")
         } senao {
             escreva("os valores são iguais")
         }
+    }
 }

@@ -1,5 +1,9 @@
 programa
 {
+    funcao inicio() {
+        escreva(fat(5))
+    }
+    
     funcao inteiro fat(inteiro n){
         se (n == 0)
         {
@@ -11,6 +15,4 @@ programa
         }
     }
 
-    inicio
-        escreva(fat(5))
 }

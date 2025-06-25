@@ -1,7 +1,8 @@
 programa
 {
-    inicio
+    funcao inicio() {
         inteiro idade
         idade = 20
         escreva(idade)
+    }
 }

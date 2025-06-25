@@ -5,6 +5,7 @@ programa
     }
     
 
-    inicio
+    funcao inicio() {
         ola()
+    }
 }

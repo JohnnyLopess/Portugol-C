@@ -1,8 +1,9 @@
 programa {
-    inicio
+    funcao inicio() {
         inteiro x = 5
         x++
         escreva(x)
         x--
         escreva(x)
+    }
 }

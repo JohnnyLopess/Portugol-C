@@ -1,10 +1,11 @@
 programa  
 {  
-    inicio  
+    funcao inicio(){
         inteiro tab  
   
         para (inteiro c=1; c<=10; c++){ 
             tab=c*3  
             escreva ("operação feita")  
         }  
+    }  
 }  

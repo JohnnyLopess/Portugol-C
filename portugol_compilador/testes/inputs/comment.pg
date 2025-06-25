@@ -1,6 +1,6 @@
 programa
 {
-    inicio
+    funcao inicio() {
         real numero
         //     este é um número real
         caractere letra
@@ -20,4 +20,5 @@ programa
         escreva(numero)
         escreva(letra)
         escreva(idade)
+    }
 }

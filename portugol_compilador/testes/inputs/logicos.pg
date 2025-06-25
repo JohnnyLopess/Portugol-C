@@ -1,6 +1,6 @@
 programa
 {
-    inicio
+    funcao inicio() {
         inteiro x
         logico y
         logico z
@@ -12,4 +12,5 @@ programa
         escreva(y)
         escreva("x>20?\n")
         escreva(z)
+    }
 }

@@ -1,0 +1,10 @@
+#include <stdio.h>
+
+int main() {
+    int tab;
+    for (int c = 1; c <= 10; c++) {
+        tab = c * 3;
+        printf("operação feita");
+    }
+    return 0;
+}

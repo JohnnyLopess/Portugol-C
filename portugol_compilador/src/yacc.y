@@ -44,7 +44,7 @@ Simbolo *inserirParametro(char *nome, int tipo, int escopo, int referencia);
 %token IGUAL COMPARA DIFERENTE MENOR MAIOR MENOR_IGUAL MAIOR_IGUAL
 %token SOMA SUB MUL DIV MODULO
 %token ABREPAR FECHAPAR PONTOEVIRGULA VIRGULA
-%token PARA DE ATE FIMPARA
+%token PARA
 %token DOISPONTOS
 %token FIMFUNCAO
 %token <str> NUM ID STRING
@@ -170,11 +170,8 @@ comando:
     | ENQUANTO ABREPAR expressao FECHAPAR ABRECHAVE bloco FECHACHAVE {
         $$ = ast_cria(AST_WHILE, NULL, 2, $3, $6);
     }
-    | PARA ID DE expressao ATE expressao FACA bloco FIMPARA {
-        checar_declaracao($2);
-        marcarVariavelInicializada($2, escopo_atual);
-        AST* id = ast_cria(AST_ID, strdup($2), 0);
-        $$ = ast_cria(AST_FOR, NULL, 4, id, $4, $6, $8);
+    | PARA ABREPAR declaracao PONTOEVIRGULA expressao PONTOEVIRGULA expressao FECHAPAR ABRECHAVE bloco FECHACHAVE {
+        $$ = ast_cria(AST_FOR, NULL, 4, $3, $5, $7, $10);
     }
     | RETORNE expressao {
         $$ = ast_cria(AST_EXPRESSAO, strdup("return"), 1, $2);
@@ -378,6 +375,18 @@ expressao:
         AST* novo = ast_cria(AST_EXPRESSAO, strdup("%"), 2, $1, $3);
         novo->tipo_expr = TIPO_INT;
         $$ = novo;
+    }
+    | ID INCREMENTO {
+        checar_declaracao($1);
+        AST* id_node = ast_cria(AST_ID, strdup($1), 0);
+        $$ = ast_cria(AST_INCREMENTO, NULL, 1, id_node); // Reusing AST_INCREMENTO type
+        $$->tipo_expr = buscar_tipo_variavel($1); // Propagate type
+    }
+    | ID DECREMENTO {
+        checar_declaracao($1);
+        AST* id_node = ast_cria(AST_ID, strdup($1), 0);
+        $$ = ast_cria(AST_DECREMENTO, NULL, 1, id_node); // Reusing AST_DECREMENTO type
+        $$->tipo_expr = buscar_tipo_variavel($1); // Propagate type
     }
 ;
 

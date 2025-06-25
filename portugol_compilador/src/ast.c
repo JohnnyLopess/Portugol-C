@@ -171,15 +171,53 @@ void ast_gera_c(AST *no, FILE *saida, int nivel_indent)
             }
             break;
 
-        case AST_FOR:
+            case AST_FOR:
             for (int i = 0; i < nivel_indent; i++) fprintf(saida, "    ");
             if (no->n_filhos >= 4 && no->filhos[0] && no->filhos[1] && no->filhos[2] && no->filhos[3]) {
-                fprintf(saida, "for (%s = ", no->filhos[0]->valor);
+                fprintf(saida, "for (");
+                if (no->filhos[0]->tipo == AST_DECLARACAO &&
+                    no->filhos[0]->n_filhos == 2 &&
+                    no->filhos[0]->filhos[1]->tipo == AST_ATRIBUICAO) {
+
+                    AST* type_node = no->filhos[0]->filhos[0]; // AST_TIPO node (e.g., "int")
+                    AST* assign_node = no->filhos[0]->filhos[1]; // AST_ATRIBUICAO node
+                    AST* id_node_in_assign = assign_node->filhos[0]; // AST_ID node (variable name)
+                    AST* init_expr_node = assign_node->filhos[1]; // Expression node for initial value
+
+                    // Print type
+                    if (type_node && type_node->valor) {
+                        fprintf(saida, "%s ", type_node->valor);
+                    } else {
+                         // Default to "int" if type is not found (shouldn't happen with proper parsing)
+                         fprintf(saida, "int ");
+                    }
+
+                    // Print variable name
+                    if (id_node_in_assign && id_node_in_assign->valor) {
+                        fprintf(saida, "%s = ", id_node_in_assign->valor);
+                    } else {
+                        fprintf(stderr, "[ERRO] ID não encontrado na inicialização do FOR.\n");
+                    }
+
+                    // Print initial expression
+                    ast_gera_c(init_expr_node, saida, 0); // Generate the expression (e.g., "0")
+
+                } else {
+                    fprintf(stderr, "[ERRO] Formato inesperado para a inicialização do loop 'para'.\n");
+                    ast_gera_c(no->filhos[0], saida, 0);
+                }
+
+                fprintf(saida, "; ");
+                // Condition part
                 ast_gera_c(no->filhos[1], saida, 0);
-                fprintf(saida, "; %s <= ", no->filhos[0]->valor);
-                ast_gera_c(no->filhos[2], saida, 0);
-                fprintf(saida, "; %s++) {\n", no->filhos[0]->valor);
-                ast_gera_c(no->filhos[3], saida, nivel_indent + 1);
+                fprintf(saida, "; ");
+
+                // Increment/Decrement part: gera inline sem indentação e sem ';' ou nova linha
+                ast_gera_c(no->filhos[2], saida, -1); 
+                fprintf(saida, ") {\n");
+
+                // Body of the loop
+                ast_gera_c(no->filhos[3], saida, nivel_indent + 1); // Generate the block content
                 for (int i = 0; i < nivel_indent; i++) fprintf(saida, "    ");
                 fprintf(saida, "}\n");
             }
@@ -307,20 +345,36 @@ void ast_gera_c(AST *no, FILE *saida, int nivel_indent)
             break;
 
         case AST_INCREMENTO:
-            for (int i = 0; i < nivel_indent; i++) fprintf(saida, "    ");
-            if (no->n_filhos >= 1 && no->filhos[0] && no->filhos[0]->tipo == AST_ID) {
-                fprintf(saida, "%s++;\n", no->filhos[0]->valor);
+            if (nivel_indent >= 0) {
+                for (int i = 0; i < nivel_indent; i++) fprintf(saida, "    ");
+                if (no->n_filhos >= 1 && no->filhos[0] && no->filhos[0]->tipo == AST_ID) {
+                    fprintf(saida, "%s++;\n", no->filhos[0]->valor);
+                } else {
+                    fprintf(stderr, "[ERRO] Incremento aplicado a não-ID na AST.\n");
+                }
             } else {
-                fprintf(stderr, "[ERRO] Incremento aplicado a não-ID na AST.\n");
+                if (no->n_filhos >= 1 && no->filhos[0] && no->filhos[0]->tipo == AST_ID) {
+                    fprintf(saida, "%s++", no->filhos[0]->valor);
+                } else {
+                    fprintf(stderr, "[ERRO] Incremento aplicado a não-ID na AST.\n");
+                }
             }
             break;
 
         case AST_DECREMENTO:
-            for (int i = 0; i < nivel_indent; i++) fprintf(saida, "    ");
-            if (no->n_filhos >= 1 && no->filhos[0] && no->filhos[0]->tipo == AST_ID) {
-                fprintf(saida, "%s--;\n", no->filhos[0]->valor);
+            if (nivel_indent >= 0) {
+                for (int i = 0; i < nivel_indent; i++) fprintf(saida, "    ");
+                if (no->n_filhos >= 1 && no->filhos[0] && no->filhos[0]->tipo == AST_ID) {
+                    fprintf(saida, "%s--;\n", no->filhos[0]->valor);
+                } else {
+                    fprintf(stderr, "[ERRO] Decremento aplicado a não-ID na AST.\n");
+                }
             } else {
-                fprintf(stderr, "[ERRO] Decremento aplicado a não-ID na AST.\n");
+                if (no->n_filhos >= 1 && no->filhos[0] && no->filhos[0]->tipo == AST_ID) {
+                    fprintf(saida, "%s--", no->filhos[0]->valor);
+                } else {
+                    fprintf(stderr, "[ERRO] Decremento aplicado a não-ID na AST.\n");
+                }
             }
             break;
 

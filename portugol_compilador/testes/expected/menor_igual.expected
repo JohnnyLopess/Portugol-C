@@ -1,0 +1,9 @@
+#include <stdio.h>
+
+int main() {
+    int c = 1;
+    if (10 <= 5) {
+        c++;
+    }
+    return 0;
+}

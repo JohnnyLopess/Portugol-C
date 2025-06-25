@@ -51,11 +51,13 @@ Simbolo *inserirParametro(char *nome, int tipo, int escopo, int referencia);
 %token FUNCAO RETORNE
 %token <str> COMENTARIO_LINHA COMENTARIO_BLOCO
 %token ESCOLHA CASO PARE CASO_CONTRARIO
+%token INCREMENTO DECREMENTO
 %type <ast> programa corpo_programa lista_funcoes funcao cabecalho_funcao lista_args args bloco bloco_conteudo comando declaracao leitura escrita atribuicao expressao lista_parametros parametros parametro chamada_funcao condicional senao_bloco
 %type <inteiro> tipo
 %type <ast> comentario
 %type <ast> lista_ids
 %type <ast> escolha caso lista_casos caso_contrario
+%type <ast> incremento_decremento
 
 // token Bitwise
 %token OP_BITWISE_AND OP_BITWISE_NOT OP_BITWISE_OR OP_BITWISE_LEFT_SHIFT OP_BITWISE_RIGHT_SHIFT OP_BITWISE_XOR
@@ -178,6 +180,7 @@ comando:
         $$ = ast_cria(AST_EXPRESSAO, strdup("return"), 1, $2);
     }
     | chamada_funcao { $$ = $1; }
+    | incremento_decremento { $$ = $1; }
 ;
 
 condicional:
@@ -437,6 +440,19 @@ caso_contrario:
     /* vazio */ { $$ = ast_cria(AST_BLOCO, NULL, 0); }
     | CASO_CONTRARIO DOISPONTOS bloco_conteudo {
         $$ = ast_cria(AST_CASO_CONTRARIO, NULL, 1, $3);
+    }
+;
+
+incremento_decremento:
+    ID INCREMENTO {
+        checar_declaracao($1);
+        AST* id_node = ast_cria(AST_ID, strdup($1), 0);
+        $$ = ast_cria(AST_INCREMENTO, NULL, 1, id_node);
+    }
+    | ID DECREMENTO {
+        checar_declaracao($1);
+        AST* id_node = ast_cria(AST_ID, strdup($1), 0);
+        $$ = ast_cria(AST_DECREMENTO, NULL, 1, id_node);
     }
 ;
 

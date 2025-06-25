@@ -59,6 +59,9 @@
 "/"             { return DIV; }
 "%"             { printf("[TOKEN] MODULO\n"); return MODULO; }
 
+"++" { printf("[TOKEN] INCREMENTO\n"); return INCREMENTO; }
+"--" { printf("[TOKEN] DECREMENTO\n"); return DECREMENTO; }
+
 "("             { return ABREPAR; }
 ")"             { return FECHAPAR; }
 "{"             { printf("[TOKEN] ABRECHAVE\n"); return ABRECHAVE; }

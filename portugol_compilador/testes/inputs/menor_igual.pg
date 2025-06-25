@@ -1,0 +1,8 @@
+programa  
+{  
+inicio
+inteiro c = 1  
+        se( 10 <= 5){
+            c++
+        }  
+}  

@@ -306,6 +306,24 @@ void ast_gera_c(AST *no, FILE *saida, int nivel_indent)
             ast_gera_c(no->filhos[0], saida, nivel_indent + 1);
             break;
 
+        case AST_INCREMENTO:
+            for (int i = 0; i < nivel_indent; i++) fprintf(saida, "    ");
+            if (no->n_filhos >= 1 && no->filhos[0] && no->filhos[0]->tipo == AST_ID) {
+                fprintf(saida, "%s++;\n", no->filhos[0]->valor);
+            } else {
+                fprintf(stderr, "[ERRO] Incremento aplicado a não-ID na AST.\n");
+            }
+            break;
+
+        case AST_DECREMENTO:
+            for (int i = 0; i < nivel_indent; i++) fprintf(saida, "    ");
+            if (no->n_filhos >= 1 && no->filhos[0] && no->filhos[0]->tipo == AST_ID) {
+                fprintf(saida, "%s--;\n", no->filhos[0]->valor);
+            } else {
+                fprintf(stderr, "[ERRO] Decremento aplicado a não-ID na AST.\n");
+            }
+            break;
+
         default:
             for (int i = 0; i < no->n_filhos; i++)
                 if (no->filhos[i])

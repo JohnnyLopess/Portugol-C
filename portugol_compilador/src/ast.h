@@ -22,7 +22,9 @@ typedef enum {
     AST_COMENTARIO,
     AST_ESCOLHA,
     AST_CASO,
-    AST_CASO_CONTRARIO
+    AST_CASO_CONTRARIO,
+    AST_INCREMENTO,
+    AST_DECREMENTO
 } ASTTipo;
 
 typedef struct AST {

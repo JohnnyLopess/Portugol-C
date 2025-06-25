@@ -292,6 +292,14 @@ expressao:
         num->tipo_expr = TIPO_INT; // ou TIPO_FLOAT se detectar ponto
         $$ = num;
     }
+    | SUB NUM {
+        char* neg = (char*)malloc(strlen($2) + 2);
+        sprintf(neg, "-%s", $2);
+        AST* num = ast_cria(AST_NUM, neg, 0);
+        num->tipo_expr = TIPO_INT;
+        $$ = num;
+        free(neg);
+    }
     | ID {
         checar_declaracao($1);
         AST* id = ast_cria(AST_ID, strdup($1), 0);

@@ -216,6 +216,14 @@ declaracao:
         }
         $$ = ast_cria(AST_DECLARACAO, NULL, 2, ast_cria(AST_TIPO, strdup($1 == TIPO_INT ? "int" : $1 == TIPO_FLOAT ? "float" : $1 == TIPO_CHAR ? "char" : "bool"), 0), $2);
     }
+    | tipo lista_ids IGUAL expressao {
+        for (int i = 0; i < $2->n_filhos; i++) {
+            inserirSimbolo($2->filhos[i]->valor, $1, escopo_atual);
+            marcarVariavelInicializada($2->filhos[i]->valor, escopo_atual);
+        }
+        AST* atribuicao = ast_cria(AST_ATRIBUICAO, NULL, 2, $2->filhos[0], $4);
+        $$ = ast_cria(AST_DECLARACAO, NULL, 2, ast_cria(AST_TIPO, strdup($1 == TIPO_INT ? "int" : $1 == TIPO_FLOAT ? "float" : $1 == TIPO_CHAR ? "char" : "bool"), 0), atribuicao);
+    }
 ;
 
 lista_ids:

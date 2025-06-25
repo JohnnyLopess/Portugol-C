@@ -72,11 +72,21 @@ void ast_gera_c(AST *no, FILE *saida, int nivel_indent)
             break;
 
         case AST_DECLARACAO:
-            for (int i = 0; i < no->filhos[1]->n_filhos; i++) {
-                fprintf(saida, "%s %s", no->filhos[0]->valor, no->filhos[1]->filhos[i]->valor);
-                if (i < no->filhos[1]->n_filhos - 1) fprintf(saida, ", ");
+            for (int i = 0; i < nivel_indent; i++) fprintf(saida, "    ");
+            if (no->n_filhos == 2 && no->filhos[1]->tipo == AST_ATRIBUICAO) {
+                // Declaração com inicialização
+                fprintf(saida, "%s %s = ", no->filhos[0]->valor, no->filhos[1]->filhos[0]->valor);
+                ast_gera_c(no->filhos[1]->filhos[1], saida, 0);
+                fprintf(saida, ";\n");
+            } else {
+                // Declaração simples
+                fprintf(saida, "%s ", no->filhos[0]->valor);
+                for (int i = 0; i < no->filhos[1]->n_filhos; i++) {
+                    fprintf(saida, "%s", no->filhos[1]->filhos[i]->valor);
+                    if (i < no->filhos[1]->n_filhos - 1) fprintf(saida, ", ");
+                }
+                fprintf(saida, ";\n");
             }
-            fprintf(saida, ";\n");
             break;
 
         case AST_LEITURA:

@@ -46,7 +46,6 @@ Simbolo *inserirParametro(char *nome, int tipo, int escopo, int referencia);
 %token ABREPAR FECHAPAR PONTOEVIRGULA VIRGULA
 %token PARA
 %token DOISPONTOS
-%token FIMFUNCAO
 %token <str> NUM ID STRING
 %token FUNCAO RETORNE
 %token <str> COMENTARIO_LINHA COMENTARIO_BLOCO
@@ -76,8 +75,8 @@ corpo_programa: lista_funcoes INICIO bloco {
 };
 
 funcao:
-    cabecalho_funcao bloco FIMFUNCAO {
-        $$ = ast_cria(AST_FUNCAO, strdup($1->valor), 2, $1->filhos[0], $2);
+    cabecalho_funcao ABRECHAVE bloco FECHACHAVE {
+        $$ = ast_cria(AST_FUNCAO, strdup($1->valor), 2, $1->filhos[0], $3);
     }
 ;
 
@@ -94,6 +93,21 @@ cabecalho_funcao:
         inserirFuncao($3, $2, escopo_atual, $5->n_filhos, parametros);
         // Cria um nó AST para o cabeçalho (opcional, mas útil para manter a AST completa)
         $$ = ast_cria(AST_DECLARACAO, strdup($3), 1, $5);
+    }
+    | FUNCAO ID ABREPAR lista_parametros FECHAPAR {
+        // Para funcoes com o tipo omitido, sendo o retorno do tipo void
+        Simbolo **parametros = NULL;
+        int tipo = TIPO_VOID;
+
+        if ($4->n_filhos > 0) {
+            parametros = malloc(sizeof(Simbolo*) * $4->n_filhos);
+            for (int i = 0; i < $4->n_filhos; i++) {
+                parametros[i] = buscarSimbolo($4->filhos[i]->valor, escopo_atual + 1);
+            }
+        }
+        inserirFuncao($2, tipo, escopo_atual, $4->n_filhos, parametros);
+        // Cria um nó AST para o cabeçalho (opcional, mas útil para manter a AST completa)
+        $$ = ast_cria(AST_DECLARACAO, strdup($2), 1, $4);
     }
 ;
 

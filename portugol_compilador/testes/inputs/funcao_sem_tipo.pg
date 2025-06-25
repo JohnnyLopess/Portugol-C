@@ -1,0 +1,8 @@
+programa {
+    funcao calcula() {
+        inteiro numero = 1
+        escreva(numero + 1)
+    }
+    inicio
+        calcula()
+}

@@ -1,5 +1,5 @@
 programa
 {
-inicio
-escreva("Hello, World!")
+    inicio
+        escreva("Hello, World!")
 }

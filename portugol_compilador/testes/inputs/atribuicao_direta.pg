@@ -1,5 +1,5 @@
 programa {
-inicio
-inteiro tab = 1
-escreva(tab)
+    inicio
+        inteiro tab = 1
+        escreva(tab)
 }

@@ -1,8 +1,8 @@
 programa{
-inicio
-se (5 != 2){
-    escreva("os valores são diferentes")
-} senao {
-    escreva("os valores são iguais")
-}
+    inicio
+        se (5 != 2){
+            escreva("os valores são diferentes")
+        } senao {
+            escreva("os valores são iguais")
+        }
 }

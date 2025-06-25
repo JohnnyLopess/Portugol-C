@@ -1,20 +1,19 @@
 programa
 {
-inicio
-inteiro x
+    inicio
+        inteiro x
 
-leia(x)
+        leia(x)
 
-se (x == 5)
-{
-    escreva(x)
-}
-senao
-{
-    se (x == 2)
-    {
-        escreva(0)
-    }
-}
-
+        se (x == 5)
+        {
+            escreva(x)
+        }
+        senao
+        {
+            se (x == 2)
+            {
+                escreva(0)
+            }
+        }
 }

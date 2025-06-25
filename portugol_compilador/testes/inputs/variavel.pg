@@ -1,16 +1,16 @@
 programa
 {
-inicio
-real numero
-caractere letra
-inteiro idade
-escreva("Digite um número real: ")
-leia(numero)
-escreva("Digite uma letra: ")
-leia(letra)
-escreva("Digite sua idade: ")
-leia(idade)
-escreva(numero)
-escreva(letra)
-escreva(idade)
+    inicio
+        real numero
+        caractere letra
+        inteiro idade
+        escreva("Digite um número real: ")
+        leia(numero)
+        escreva("Digite uma letra: ")
+        leia(letra)
+        escreva("Digite sua idade: ")
+        leia(idade)
+        escreva(numero)
+        escreva(letra)
+        escreva(idade)
 }

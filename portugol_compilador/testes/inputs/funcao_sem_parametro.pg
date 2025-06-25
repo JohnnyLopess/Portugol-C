@@ -1,9 +1,9 @@
 programa
 {
-funcao vazio ola()
-    escreva("Oi!\n")
-fimfuncao
+    funcao vazio ola()
+        escreva("Oi!\n")
+    fimfuncao
 
-inicio
-    ola()
+    inicio
+        ola()
 }

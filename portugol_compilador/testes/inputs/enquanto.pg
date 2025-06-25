@@ -1,11 +1,11 @@
 programa  
 {  
 inicio  
-inteiro parar  
-parar = 1
-enquanto (parar == 1)  
-{  
-    escreva ("deseja parar o laço? (0/1)")  
-    leia (parar)  
-}  
+    inteiro parar  
+    parar = 1
+    enquanto (parar == 1)  
+    {  
+        escreva ("deseja parar o laço? (0/1)")  
+        leia (parar)  
+    }  
 } 

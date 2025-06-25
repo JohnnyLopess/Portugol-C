@@ -1,6 +1,6 @@
 programa  
 {  
-inicio  
+    inicio  
         inteiro tab  
   
         para (inteiro c=1; c<=10; c++){ 

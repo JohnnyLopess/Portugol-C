@@ -419,7 +419,7 @@ expressao:
         AST* id_node = ast_cria(AST_ID, strdup($1), 0);
         $$ = ast_cria(AST_DECREMENTO, NULL, 1, id_node); // Reusing AST_DECREMENTO type
         $$->tipo_expr = buscar_tipo_variavel($1); // Propagate type
-
+    }
     | expressao OP_BITWISE_AND expressao {
         AST* novo = ast_cria(AST_EXPRESSAO, strdup("&"), 2, $1, $3);
         novo->tipo_expr = TIPO_INT;

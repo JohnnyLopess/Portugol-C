@@ -37,7 +37,7 @@ Simbolo *inserirParametro(char *nome, int tipo, int escopo, int referencia);
 }
 
 %token PROGRAMA INICIO FIM LEIA ESCREVA
-%token TIPO_INTEIRO TIPO_REAL TIPO_CARACTERE TIPO_LOGICO TIPO_VAZIO
+%token TIPO_INTEIRO TIPO_REAL TIPO_CARACTER TIPO_LOGICO TIPO_VAZIO
 %token SE SENAO ENTAO FIMSE
 %token ABRECHAVE FECHACHAVE
 %token ENQUANTO FACA FIMENQUANTO
@@ -258,7 +258,7 @@ lista_ids:
 tipo:
     TIPO_INTEIRO     { $$ = TIPO_INT; }
     | TIPO_REAL      { $$ = TIPO_FLOAT; }
-    | TIPO_CARACTERE { $$ = TIPO_CHAR; }
+    | TIPO_CARACTER { $$ = TIPO_CHAR; }
     | TIPO_LOGICO    { $$ = TIPO_BOOL; }
     | TIPO_VAZIO     { $$ = TIPO_VOID; }
 ;

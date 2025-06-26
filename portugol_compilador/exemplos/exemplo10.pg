@@ -3,7 +3,7 @@ programa
 inicio
 real numero
 //     este é um número real
-caractere letra
+caracter letra
 inteiro idade
 
 idade = 1

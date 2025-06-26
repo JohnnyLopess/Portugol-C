@@ -3,7 +3,7 @@ programa
 inicio
 var: real numero;
 //     este é um número real
-var: caractere letra;
+var: caracter letra;
 var: inteiro idade;
 
 /*este bloco tem operações de leia e escreva*/

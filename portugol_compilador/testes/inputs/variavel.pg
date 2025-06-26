@@ -2,7 +2,7 @@ programa
 {
     funcao inicio() {    
         real numero
-        caractere letra
+        caracter letra
         inteiro idade
         escreva("Digite um número real: ")
         leia(numero)

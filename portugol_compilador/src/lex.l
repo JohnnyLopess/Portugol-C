@@ -35,7 +35,7 @@
 
 "inteiro"       { printf("[TOKEN] TIPO_INTEIRO\n"); yylval.str = strdup(yytext); return TIPO_INTEIRO; }
 "real"          { printf("[TOKEN] TIPO_REAL\n"); yylval.str = strdup(yytext); return TIPO_REAL; }
-"caractere"     { printf("[TOKEN] TIPO_CARACTERE\n"); yylval.str = strdup(yytext); return TIPO_CARACTERE; }
+"caracter"     { printf("[TOKEN] TIPO_CARACTER\n"); yylval.str = strdup(yytext); return TIPO_CARACTER; }
 "logico"        { printf("[TOKEN] TIPO_LOGICO\n"); yylval.str = strdup(yytext); return TIPO_LOGICO; }
 "vazio"         { printf("[TOKEN] TIPO_VAZIO\n"); yylval.str = strdup(yytext); return TIPO_VAZIO; }
 
@@ -90,7 +90,7 @@
     return COMENTARIO_BLOCO;
 }
 
-.               { printf("[LEXER] Caractere inválido: %s\n", yytext); }
+.               { printf("[LEXER] caracter inválido: %s\n", yytext); }
 
 %%
 

@@ -26,7 +26,7 @@ Este documento descreve o **escopo da linguagem Portugol** que será utilizado n
 - Bloco `var` com os seguintes tipos:
   - `inteiro`
   - `real`
-  - `caractere`
+  - `caracter`
   - `logico`
 
 Exemplo:
@@ -62,7 +62,7 @@ var
 
 - `inteiro`
 - `real`
-- `caractere`
+- `caracter`
 - `logico`
 
 ---

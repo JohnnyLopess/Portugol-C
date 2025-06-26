@@ -6,12 +6,12 @@
 
 
 ## Objetivo:
-- Ampliar o suporte para novos tipos de dados `inteiro`, `real` e `caractere` e corrigir a regra de declaração de variáveis no analisador sintático.
+- Ampliar o suporte para novos tipos de dados `inteiro`, `real` e `caracter` e corrigir a regra de declaração de variáveis no analisador sintático.
 
 ---
 
 ## 🧪 Funcionalidades Concluídas
-- Suporte mais robusto para tipagem de dados `inteiro`, `real` e `caractere` e regra de declaração corrigida
+- Suporte mais robusto para tipagem de dados `inteiro`, `real` e `caracter` e regra de declaração corrigida
 
 ## 🚀 Como testar as novas funcionalidades ?
 
@@ -70,4 +70,4 @@ make clean
 
 ##  Conclusão
 
-- A Sprint 5 foi **concluída com sucesso**, consolidando a ampliação do suporte a novos tipos de dados — `inteiro`, `real` e `caractere` — e a correção da regra de declaração de variáveis no analisador sintático, tornando a análise mais robusta e alinhada à sintaxe da linguagem Portugol.
+- A Sprint 5 foi **concluída com sucesso**, consolidando a ampliação do suporte a novos tipos de dados — `inteiro`, `real` e `caracter` — e a correção da regra de declaração de variáveis no analisador sintático, tornando a análise mais robusta e alinhada à sintaxe da linguagem Portugol.

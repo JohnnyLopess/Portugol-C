@@ -1,0 +1,16 @@
+programa{
+    funcao inicio() {
+        inteiro x
+        x = 10
+        se(1 == 1){
+            escreva("Entrou no if")
+            retorne 42
+            x = 99 // <- DEAD CODE: nunca será executado
+        } senao {
+            escreva("Nunca entra aqui")
+            retorne 0
+            x = 100 
+        }
+        x = 123 
+    }
+}

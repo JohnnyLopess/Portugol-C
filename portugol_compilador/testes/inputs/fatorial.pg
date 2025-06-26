@@ -1,6 +1,5 @@
 programa
 {
-    
     funcao inteiro fat(inteiro n){
         se (n == 0)
         {

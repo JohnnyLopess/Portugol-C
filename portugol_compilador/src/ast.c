@@ -314,6 +314,10 @@ void ast_gera_c(AST *no, FILE *saida, int nivel_indent)
                     ast_gera_c(args->filhos[i], saida, 0);
                 }
                 fprintf(saida, ")");
+            } else if (no->n_filhos == 1 && (strcmp(no->valor, "~") == 0 || strcmp(no->valor, "-") == 0) ) { // possivel implementacao de operador unario negativo
+                // Gera código para operador unário ~ ou -
+                fprintf(saida, no->valor);
+                ast_gera_c(no->filhos[0], saida, 0);
             } else if (no->n_filhos == 1 && no->filhos[0]) {
                 ast_gera_c(no->filhos[0], saida, 0);
             } else if (no->n_filhos == 2 && no->filhos[0] && no->filhos[1]) {

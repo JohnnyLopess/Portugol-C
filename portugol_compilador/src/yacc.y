@@ -62,8 +62,10 @@ Simbolo *inserirParametro(char *nome, int tipo, int escopo, int referencia);
 // token Bitwise
 %token OP_BITWISE_AND OP_BITWISE_NOT OP_BITWISE_OR OP_BITWISE_LEFT_SHIFT OP_BITWISE_RIGHT_SHIFT OP_BITWISE_XOR
 
+
 %left SOMA SUB
 %left MUL DIV MODULO
+
 
 
 %%
@@ -273,6 +275,7 @@ leitura:
 ;
 
 escrita:
+
     ESCREVA ABREPAR lista_escrita_args FECHAPAR {
             $$ = ast_cria(AST_ESCRITA, NULL, 1, $3);
     }
@@ -399,6 +402,7 @@ expressao:
         novo->tipo_expr = TIPO_FLOAT; // divisão sempre resulta em float
         $$ = novo;
     }
+
     | expressao MODULO expressao {
         AST* novo = ast_cria(AST_EXPRESSAO, strdup("%"), 2, $1, $3);
         novo->tipo_expr = TIPO_INT;
@@ -415,6 +419,37 @@ expressao:
         AST* id_node = ast_cria(AST_ID, strdup($1), 0);
         $$ = ast_cria(AST_DECREMENTO, NULL, 1, id_node); // Reusing AST_DECREMENTO type
         $$->tipo_expr = buscar_tipo_variavel($1); // Propagate type
+
+    | expressao OP_BITWISE_AND expressao {
+        AST* novo = ast_cria(AST_EXPRESSAO, strdup("&"), 2, $1, $3);
+        novo->tipo_expr = TIPO_INT;
+        $$ = novo;
+    }
+    | OP_BITWISE_NOT expressao {
+        AST* novo = ast_cria(AST_EXPRESSAO, strdup("~"), 1, $2);
+        novo->tipo_expr = TIPO_INT;
+        $$ = novo;
+    }
+    | expressao OP_BITWISE_OR expressao {
+        AST* novo = ast_cria(AST_EXPRESSAO, strdup("|"), 2, $1, $3);
+        novo->tipo_expr = TIPO_INT;
+        $$ = novo;
+    }
+    | expressao OP_BITWISE_LEFT_SHIFT expressao {
+        AST* novo = ast_cria(AST_EXPRESSAO, strdup("<<"), 2, $1, $3);
+        novo->tipo_expr = TIPO_INT;
+        $$ = novo;
+    }
+    | expressao OP_BITWISE_RIGHT_SHIFT expressao {
+        AST* novo = ast_cria(AST_EXPRESSAO, strdup(">>"), 2, $1, $3);
+        novo->tipo_expr = TIPO_INT;
+        $$ = novo;
+    }
+    | expressao OP_BITWISE_XOR expressao {
+        AST*novo = ast_cria(AST_EXPRESSAO, strdup("^"), 2, $1, $3);
+        novo->tipo_expr = TIPO_INT;
+        $$ = novo;
+
     }
 ;
 

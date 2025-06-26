@@ -459,3 +459,127 @@ void ast_gera_c(AST *no, FILE *saida, int nivel_indent)
                     ast_gera_c(no->filhos[i], saida, nivel_indent);
     }
 }
+
+
+//Parte destinada a otimização de código
+
+AST* otimiza_ast_propagacao_constantes(AST* no) {
+    if (!no) return NULL;
+
+    // Otimiza filhos primeiro
+    for (int i = 0; i < no->n_filhos; i++) {
+        no->filhos[i] = otimiza_ast_propagacao_constantes(no->filhos[i]);
+    }
+
+    // Constant folding para operações aritméticas simples
+    if (no->tipo == AST_EXPRESSAO && no->n_filhos == 2 && no->filhos[0] && no->filhos[1]) {
+        AST *esq = no->filhos[0];
+        AST *dir = no->filhos[1];
+        if (esq->tipo == AST_NUM && dir->tipo == AST_NUM && no->valor) {
+            int v1 = atoi(esq->valor);
+            int v2 = atoi(dir->valor);
+            int resultado = 0;
+            int pode_otimizar = 1;
+
+            if (strcmp(no->valor, "+") == 0) resultado = v1 + v2;
+            else if (strcmp(no->valor, "-") == 0) resultado = v1 - v2;
+            else if (strcmp(no->valor, "*") == 0) resultado = v1 * v2;
+            else if (strcmp(no->valor, "/") == 0 && v2 != 0) resultado = v1 / v2;
+            else pode_otimizar = 0;
+
+            if (pode_otimizar) {
+                ast_libera(esq);
+                ast_libera(dir);
+                free(no->filhos);
+
+                char buf[32];
+                sprintf(buf, "%d", resultado);
+                free(no->valor);
+                no->valor = strdup(buf);
+                no->tipo = AST_NUM;
+                no->n_filhos = 0;
+                no->filhos = NULL;
+                printf("[DEBUG] Redução de constante: %d %s %d = %d\n", v1, no->valor, v2, resultado);
+            }
+        }
+    }
+    return no;
+}
+
+AST* otimiza_ast_dead_code(AST* no) {
+    if (!no) return NULL;
+
+    // Otimiza filhos primeiro
+    for (int i = 0; i < no->n_filhos; i++) {
+        no->filhos[i] = otimiza_ast_dead_code(no->filhos[i]);
+    }
+
+    // 1. Remove comandos após 'return' em blocos
+    if (no->tipo == AST_BLOCO && no->n_filhos > 0) {
+        int novo_n = no->n_filhos;
+        for (int i = 0; i < no->n_filhos; i++) {
+            if (no->filhos[i] && no->filhos[i]->tipo == AST_EXPRESSAO && no->filhos[i]->valor && strcmp(no->filhos[i]->valor, "return") == 0) {
+                printf("[DEBUG] Removendo código morto após return no bloco\n");
+                novo_n = i + 1;
+                break;
+            }
+        }
+        if (novo_n < no->n_filhos) {
+            // Libera filhos mortos
+            for (int i = novo_n; i < no->n_filhos; i++) {
+                ast_libera(no->filhos[i]);
+            }
+            no->n_filhos = novo_n;
+            no->filhos = realloc(no->filhos, sizeof(AST*) * novo_n);
+        }
+    }
+
+    // 2. Remove blocos de if/while com condição constante
+    if (no->tipo == AST_IF && no->n_filhos >= 2 && no->filhos[0] && no->filhos[0]->tipo == AST_NUM) {
+        int cond = atoi(no->filhos[0]->valor);
+        if (cond) {
+            // if (1): substitui pelo bloco "then"
+            AST* bloco = no->filhos[1];
+            ast_libera(no->filhos[0]);
+            if (no->n_filhos > 2) ast_libera(no->filhos[2]);
+            free(no->filhos);
+            free(no->valor);
+            AST* novo = bloco;
+            free(no);
+            return novo;
+        } else {
+            // if (0): substitui pelo bloco "else" se existir, senão remove
+            AST* bloco = (no->n_filhos > 2) ? no->filhos[2] : NULL;
+            ast_libera(no->filhos[0]);
+            ast_libera(no->filhos[1]);
+            if (no->n_filhos > 2 && bloco) {
+                free(no->filhos);
+                free(no->valor);
+                AST* novo = bloco;
+                free(no);
+                return novo;
+            } else {
+                free(no->filhos);
+                free(no->valor);
+                free(no);
+                return NULL;
+            }
+        }
+    }
+
+    if (no->tipo == AST_WHILE && no->n_filhos >= 2 && no->filhos[0] && no->filhos[0]->tipo == AST_NUM) {
+        int cond = atoi(no->filhos[0]->valor);
+        if (!cond) {
+            // while (0): remove o laço
+            ast_libera(no->filhos[0]);
+            ast_libera(no->filhos[1]);
+            free(no->filhos);
+            free(no->valor);
+            free(no);
+            return NULL;
+        }
+        // while (1): laço infinito, mantém
+    }
+
+    return no;
+}

@@ -1,0 +1,7 @@
+programa {
+    funcao inicio() {
+        inteiro x
+        x = 2 + 3 * 4
+        escreva(x)
+    }
+}

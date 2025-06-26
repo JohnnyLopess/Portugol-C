@@ -4,7 +4,7 @@ int main() {
     int x;
     bool y;
     bool z;
-    x = 10 * 2;
+    x = 20;
     y = x > 15;
     z = x < 20;
     printf("x = 10*2 = 20\n");

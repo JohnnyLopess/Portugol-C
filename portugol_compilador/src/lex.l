@@ -12,6 +12,8 @@
     return STRING; 
 }
 
+"programa"      { printf("[TOKEN] PROGRAMA\n"); return PROGRAMA; }
+
 "inicio"        { printf("[TOKEN] INICIO\n"); return INICIO; }
 "fim"           { printf("[TOKEN] FIM\n"); return FIM; }
 "retorne"       { printf("[TOKEN] RETORNE\n"); return RETORNE; }
@@ -57,9 +59,18 @@
 
 "("             { return ABREPAR; }
 ")"             { return FECHAPAR; }
+"{"             { printf("[TOKEN] ABRECHAVE\n"); return ABRECHAVE; }
+"}"             { printf("[TOKEN] FECHACHAVE\n"); return FECHACHAVE; }
 ";"             { return PONTOEVIRGULA; }
 ","             { return VIRGULA; }
 ":"             { return DOISPONTOS; }
+
+"&"             { return OP_BITWISE_AND; }
+"~"             { return OP_BITWISE_NOT; }
+"|"             { return OP_BITWISE_OR; }
+"<<"            { return OP_BITWISE_LEFT_SHIFT; }
+">>"            { return OP_BITWISE_RIGHT_SHIFT; }
+"^"             { return OP_BITWISE_XOR; }
 
 [0-9]+          { yylval.str = strdup(yytext); printf("[TOKEN] NUMERO (%s)\n", yytext); return NUM; }
 
@@ -78,11 +89,11 @@
     return COMENTARIO_LINHA;
 }
 
-"{"[^}]*"}"     { 
-    yylval.str = strdup(yytext + 1); // Remove "{"
-    yylval.str[strlen(yylval.str) - 1] = '\0'; // Remove "}"
+"/*"([^*]|\*+[^/])*\*+"/" {
+    yylval.str = strdup(yytext + 2); // Remove "/*"
+    yylval.str[strlen(yylval.str) - 2] = '\0'; // Remove "*/"
     printf("[TOKEN] COMENTARIO_BLOCO (%s)\n", yytext);
-    return COMENTARIO_BLOCO; 
+    return COMENTARIO_BLOCO;
 }
 
 .               { printf("[LEXER] Caractere inválido: %s\n", yytext); }

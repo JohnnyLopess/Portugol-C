@@ -35,9 +35,10 @@ Simbolo *inserirParametro(char *nome, int tipo, int escopo, int referencia);
     struct AST* ast; // novo campo para AST
 }
 
-%token INICIO FIM LEIA ESCREVA VAR
+%token PROGRAMA INICIO FIM LEIA ESCREVA VAR
 %token TIPO_INTEIRO TIPO_REAL TIPO_CARACTERE TIPO_LOGICO TIPO_VAZIO
 %token SE SENAO ENTAO FIMSE
+%token ABRECHAVE FECHACHAVE
 %token ENQUANTO FACA FIMENQUANTO
 %token IGUAL COMPARA DIFERENTE MENOR MAIOR MENOR_IGUAL MAIOR_IGUAL
 %token SOMA SUB MUL DIV
@@ -48,25 +49,21 @@ Simbolo *inserirParametro(char *nome, int tipo, int escopo, int referencia);
 %token <str> NUM ID STRING
 %token FUNCAO RETORNE
 %token <str> COMENTARIO_LINHA COMENTARIO_BLOCO
-%type <ast> programa  lista_funcoes funcao cabecalho_funcao lista_args args bloco bloco_conteudo comando declaracao leitura escrita atribuicao expressao lista_parametros parametros parametro chamada_funcao
+%type <ast> programa corpo_programa lista_funcoes funcao cabecalho_funcao lista_args args bloco bloco_conteudo comando declaracao leitura escrita atribuicao expressao lista_parametros parametros parametro chamada_funcao
 %type <inteiro> tipo
 %type <ast> comentario
+
+// token Bitwise
+%token OP_BITWISE_AND OP_BITWISE_NOT OP_BITWISE_OR OP_BITWISE_LEFT_SHIFT OP_BITWISE_RIGHT_SHIFT OP_BITWISE_XOR
 
 %left SOMA SUB MUL DIV
 
 
 %%
 
-programa:
-    lista_funcoes INICIO bloco FIM {
-        raiz_ast = ast_cria(AST_PROGRAMA, NULL, 2, $1, $3);
-        $$ = raiz_ast;
-    }
-    | INICIO bloco FIM {
-        raiz_ast = ast_cria(AST_PROGRAMA, NULL, 1, $2);
-        $$ = raiz_ast;
-    }
-;
+programa: PROGRAMA ABRECHAVE corpo_programa FECHACHAVE { $$ = $3; };
+
+corpo_programa: lista_funcoes INICIO bloco FIM { raiz_ast = ast_cria(AST_PROGRAMA, NULL, 2, $1, $3); $$ = raiz_ast; };
 
 funcao:
     cabecalho_funcao bloco FIMFUNCAO {
@@ -171,10 +168,10 @@ comando:
         AST* id = ast_cria(AST_ID, strdup($2), 0);
         $$ = ast_cria(AST_FOR, NULL, 4, id, $4, $6, $8);
     }
-    | RETORNE expressao PONTOEVIRGULA {
+    | RETORNE expressao {
         $$ = ast_cria(AST_EXPRESSAO, strdup("return"), 1, $2);
     }
-    | chamada_funcao PONTOEVIRGULA { $$ = $1; }
+    | chamada_funcao { $$ = $1; }
 ;
 
 chamada_funcao:
@@ -182,13 +179,13 @@ chamada_funcao:
 ;
 
 declaracao:
-    VAR DOISPONTOS tipo ID PONTOEVIRGULA {
+    VAR DOISPONTOS tipo ID {
         inserirSimbolo($4, $3, escopo_atual); // Agora inclui o escopo!
         AST* tipo_no = ast_cria(AST_ID, strdup($4), 0);
         AST* tipo_tipo = ast_cria(AST_NUM, strdup($3 == TIPO_INT ? "int" : $3 == TIPO_FLOAT ? "float" : "char"), 0);
         $$ = ast_cria(AST_DECLARACAO, NULL, 2, tipo_tipo, tipo_no);
     }
-    | tipo ID PONTOEVIRGULA {
+    | tipo ID {
         inserirSimbolo($2, $1, escopo_atual);
         AST* tipo_no = ast_cria(AST_ID, strdup($2), 0);
         AST* tipo_tipo = ast_cria(AST_NUM, strdup($1 == TIPO_INT ? "int" : $1 == TIPO_FLOAT ? "float" : "char"), 0);
@@ -205,7 +202,7 @@ tipo:
 ;
 
 leitura:
-    LEIA ABREPAR ID FECHAPAR PONTOEVIRGULA {
+    LEIA ABREPAR ID FECHAPAR {
         checar_declaracao($3);
         AST* id = ast_cria(AST_ID, strdup($3), 0);
         $$ = ast_cria(AST_LEITURA, NULL, 1, id);
@@ -213,27 +210,27 @@ leitura:
 ;
 
 escrita:
-    ESCREVA ABREPAR ID FECHAPAR PONTOEVIRGULA {
+    ESCREVA ABREPAR ID FECHAPAR {
         checar_declaracao($3);
         AST* id = ast_cria(AST_ID, strdup($3), 0);
         id->tipo_expr = buscar_tipo_variavel($3); // Propaga o tipo!
         $$ = ast_cria(AST_ESCRITA, NULL, 1, id);
     }
-    | ESCREVA ABREPAR STRING FECHAPAR PONTOEVIRGULA {
+    | ESCREVA ABREPAR STRING FECHAPAR {
         AST* str = ast_cria(AST_STRING, strdup($3), 0);
         $$ = ast_cria(AST_ESCRITA, NULL, 1, str);
     }
-    | ESCREVA ABREPAR expressao FECHAPAR PONTOEVIRGULA {
+    | ESCREVA ABREPAR expressao FECHAPAR {
         $$ = ast_cria(AST_ESCRITA, NULL, 1, $3);
     }
-    | ESCREVA ABREPAR NUM FECHAPAR PONTOEVIRGULA {
+    | ESCREVA ABREPAR NUM FECHAPAR {
         AST* num = ast_cria(AST_NUM, strdup($3), 0);
         $$ = ast_cria(AST_ESCRITA, NULL, 1, num);
     }
 ;
 
 atribuicao:
-    ID IGUAL expressao PONTOEVIRGULA {
+    ID IGUAL expressao {
         checar_declaracao($1);
         AST* id = ast_cria(AST_ID, strdup($1), 0);
         $$ = ast_cria(AST_ATRIBUICAO, NULL, 2, id, $3);
@@ -323,6 +320,36 @@ expressao:
     | expressao DIV expressao {
         AST* novo = ast_cria(AST_EXPRESSAO, strdup("/"), 2, $1, $3);
         novo->tipo_expr = TIPO_FLOAT; // divisão sempre resulta em float
+        $$ = novo;
+    }
+    | expressao OP_BITWISE_AND expressao {
+        AST* novo = ast_cria(AST_EXPRESSAO, strdup("&"), 2, $1, $3);
+        novo->tipo_expr = TIPO_INT;
+        $$ = novo;
+    }
+    | OP_BITWISE_NOT expressao {
+        AST* novo = ast_cria(AST_EXPRESSAO, strdup("~"), 1, $2);
+        novo->tipo_expr = TIPO_INT;
+        $$ = novo;
+    }
+    | expressao OP_BITWISE_OR expressao {
+        AST* novo = ast_cria(AST_EXPRESSAO, strdup("|"), 2, $1, $3);
+        novo->tipo_expr = TIPO_INT;
+        $$ = novo;
+    }
+    | expressao OP_BITWISE_LEFT_SHIFT expressao {
+        AST* novo = ast_cria(AST_EXPRESSAO, strdup("<<"), 2, $1, $3);
+        novo->tipo_expr = TIPO_INT;
+        $$ = novo;
+    }
+    | expressao OP_BITWISE_RIGHT_SHIFT expressao {
+        AST* novo = ast_cria(AST_EXPRESSAO, strdup(">>"), 2, $1, $3);
+        novo->tipo_expr = TIPO_INT;
+        $$ = novo;
+    }
+    | expressao OP_BITWISE_XOR expressao {
+        AST*novo = ast_cria(AST_EXPRESSAO, strdup("^"), 2, $1, $3);
+        novo->tipo_expr = TIPO_INT;
         $$ = novo;
     }
 ;

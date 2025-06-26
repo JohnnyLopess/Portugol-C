@@ -1,7 +1,10 @@
+programa
+{
 funcao vazio ola()
-    escreva("Oi!\n");
+    escreva("Oi!\n")
 fimfuncao
 
 inicio
-    ola();
+    ola()
 fim
+}

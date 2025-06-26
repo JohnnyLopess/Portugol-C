@@ -1,0 +1,11 @@
+#include <stdio.h>
+
+int main() {
+    printf("%d\n", 5 & 3);
+    printf("%d\n", ~7);
+    printf("%d\n", 5 | 3);
+    printf("%d\n", 23 << 1);
+    printf("%d\n", 105 >> 1);
+    printf("%d\n", 5 ^ 3);
+    return 0;
+}

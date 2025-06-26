@@ -39,6 +39,6 @@ AST* ast_cria(ASTTipo tipo, char* valor, int n_filhos, ...);
 void ast_libera(AST* no);
 void ast_gera_c(AST* no, FILE* saida, int nivel_indent);
 AST* otimiza_ast_propagacao_constantes(AST* no);
-
+AST* otimiza_ast_dead_code(AST* no);
 
 #endif

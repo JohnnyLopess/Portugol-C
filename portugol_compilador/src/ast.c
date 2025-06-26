@@ -45,6 +45,12 @@ void ast_gera_c(AST *no, FILE *saida, int nivel_indent)
         return;
     }
 
+    // String temporária para construir o formato da printf
+    char format_buffer[1024] = "";
+    int format_len = 0;
+    // Flag para controlar se precisa de vírgula antes dos argumentos
+    int needs_comma_for_args = 0;
+
     switch (no->tipo)
     {
         case AST_PROGRAMA:
@@ -108,22 +114,91 @@ void ast_gera_c(AST *no, FILE *saida, int nivel_indent)
 
         case AST_ESCRITA:
             for (int i = 0; i < nivel_indent; i++) fprintf(saida, "    ");
-            if (no->n_filhos >= 1 && no->filhos[0]) {
-                if (no->filhos[0]->tipo == AST_STRING) {
-                    fprintf(saida, "printf(%s);\n", no->filhos[0]->valor);
+            fprintf(saida, "printf(");
+
+            AST* args_block = no->filhos[0]; // Deve ser um AST_BLOCO
+            if (args_block && args_block->tipo == AST_BLOCO) {
+                // Primeira passada: construir a string de formato
+                strncat(format_buffer, "\"", sizeof(format_buffer) - format_len - 1);
+                format_len++;
+
+                for (int i = 0; i < args_block->n_filhos; i++) {
+                    AST* arg = args_block->filhos[i];
+                    if (arg->tipo == AST_STRING) {
+                        // Copia a string literal (com aspas) diretamente para o buffer
+                        char* temp_str = strdup(arg->valor);
+                        if (temp_str[0] == '"' && temp_str[strlen(temp_str) - 1] == '"') {
+                            temp_str[strlen(temp_str) - 1] = '\0';
+                            strncat(format_buffer, temp_str + 1, sizeof(format_buffer) - format_len - 1);
+                            format_len += strlen(temp_str + 1);
+                        } else {
+                            strncat(format_buffer, temp_str, sizeof(format_buffer) - format_len - 1);
+                            format_len += strlen(temp_str);
+                        }
+                        free(temp_str);
+                    } else {
+                        // Para expressões/variáveis, adiciona o especificador de formato
+                        int tipo = arg->tipo_expr;
+                        if (arg->tipo == AST_ID) {
+                            Simbolo* s = buscarSimbolo(arg->valor, escopo_atual);
+                            if (s) tipo = s->tipo;
+                        } else if (arg->tipo == AST_NUM) {
+                            if (strchr(arg->valor, '.') != NULL) {
+                                tipo = TIPO_FLOAT;
+                            } else {
+                                tipo = TIPO_INT;
+                            }
+                        }
+                        if (tipo == TIPO_FLOAT)
+                            strncat(format_buffer, "%f", sizeof(format_buffer) - format_len - 1);
+                        else if (tipo == TIPO_CHAR)
+                            strncat(format_buffer, "%c", sizeof(format_buffer) - format_len - 1);
+                        else
+                            strncat(format_buffer, "%d", sizeof(format_buffer) - format_len - 1);
+                        format_len += 2; // comprimento de "%d", "%f" ou "%c"
+
+                        needs_comma_for_args = 1; // É necessário separar os argumentos depois
+                    }
+                }
+
+                // Ajusta o fechamento da string de formato
+                // Após construir o format_buffer com o loop, conte quantos argumentos não são literais
+                int nonStringCount = 0;
+                for (int i = 0; i < args_block->n_filhos; i++) {
+                    if (args_block->filhos[i]->tipo != AST_STRING)
+                        nonStringCount++;
+                }
+                // Se há exatamente um argumento e ele NÃO é literal, adiciona "\\n"
+                if (args_block->n_filhos == 1 && nonStringCount == 1) {
+                    int len = strlen(format_buffer);
+                    if (len > 0 && format_buffer[len - 1] == '"') {
+                        format_buffer[len - 1] = '\0';
+                    }
+                    strncat(format_buffer, "\\n\"", sizeof(format_buffer) - strlen(format_buffer) - 1);
                 } else {
-                    // Usa o tipo propagado na AST
-                    int tipo = no->filhos[0]->tipo_expr;
-                    if (tipo == TIPO_FLOAT)
-                        fprintf(saida, "printf(\"%%f\\n\", ");
-                    else if (tipo == TIPO_CHAR)
-                        fprintf(saida, "printf(\"%%c\\n\", ");
-                    else
-                        fprintf(saida, "printf(\"%%d\\n\", ");
-                    ast_gera_c(no->filhos[0], saida, 0);
-                    fprintf(saida, ");\n");
+                    // Caso contrário, apenas fecha a string com aspas, se necessário.
+                    int len = strlen(format_buffer);
+                    if (len == 0 || format_buffer[len - 1] != '"') {
+                        strncat(format_buffer, "\"", sizeof(format_buffer) - len - 1);
+                    }
+                }
+                fprintf(saida, "%s", format_buffer); // Imprime a string de formato completa
+
+                // Segunda passada: gera os argumentos (imprime apenas os que não são literais)
+                if (nonStringCount > 0) {
+                    fprintf(saida, ", ");
+                    int first_arg_printed = 0;
+                    for (int i = 0; i < args_block->n_filhos; i++) {
+                        AST* arg = args_block->filhos[i];
+                        if (arg->tipo != AST_STRING) { // Apenas os argumentos não literais
+                            if (first_arg_printed) fprintf(saida, ", ");
+                            ast_gera_c(arg, saida, 0); // Gera a expressão/ID
+                            first_arg_printed = 1;
+                        }
+                    }
                 }
             }
+            fprintf(saida, ");\n");
             break;
 
         case AST_ATRIBUICAO:

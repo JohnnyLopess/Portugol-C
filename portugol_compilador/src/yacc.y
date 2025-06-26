@@ -57,6 +57,7 @@ Simbolo *inserirParametro(char *nome, int tipo, int escopo, int referencia);
 %type <ast> lista_ids
 %type <ast> escolha caso lista_casos caso_contrario
 %type <ast> incremento_decremento
+%type <ast> lista_escrita_args escrita_arg
 
 // token Bitwise
 %token OP_BITWISE_AND OP_BITWISE_NOT OP_BITWISE_OR OP_BITWISE_LEFT_SHIFT OP_BITWISE_RIGHT_SHIFT OP_BITWISE_XOR
@@ -272,23 +273,28 @@ leitura:
 ;
 
 escrita:
-    ESCREVA ABREPAR ID FECHAPAR {
-        checar_declaracao($3);
-        AST* id = ast_cria(AST_ID, strdup($3), 0);
-        id->tipo_expr = buscar_tipo_variavel($3); // Propaga o tipo!
-        $$ = ast_cria(AST_ESCRITA, NULL, 1, id);
+    ESCREVA ABREPAR lista_escrita_args FECHAPAR {
+            $$ = ast_cria(AST_ESCRITA, NULL, 1, $3);
     }
-    | ESCREVA ABREPAR STRING FECHAPAR {
-        AST* str = ast_cria(AST_STRING, strdup($3), 0);
-        $$ = ast_cria(AST_ESCRITA, NULL, 1, str);
+;
+
+lista_escrita_args:
+    escrita_arg { $$ = ast_cria(AST_BLOCO, NULL, 1, $1); }
+    | lista_escrita_args VIRGULA escrita_arg {
+        int n = $1->n_filhos + 1;
+        AST** filhos = malloc(sizeof(AST*) * n);
+        for (int i = 0; i < $1->n_filhos; i++) filhos[i] = $1->filhos[i];
+        filhos[n-1] = $3;
+        AST* novo = ast_cria(AST_BLOCO, NULL, 0);
+        novo->n_filhos = n;
+        novo->filhos = filhos;
+        $$ = novo;
     }
-    | ESCREVA ABREPAR expressao FECHAPAR {
-        $$ = ast_cria(AST_ESCRITA, NULL, 1, $3);
-    }
-    | ESCREVA ABREPAR NUM FECHAPAR {
-        AST* num = ast_cria(AST_NUM, strdup($3), 0);
-        $$ = ast_cria(AST_ESCRITA, NULL, 1, num);
-    }
+;
+
+escrita_arg:
+    expressao { $$ = $1; }
+    | STRING { $$ = ast_cria(AST_STRING, strdup($1), 0); }
 ;
 
 atribuicao:

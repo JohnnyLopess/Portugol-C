@@ -384,3 +384,50 @@ void ast_gera_c(AST *no, FILE *saida, int nivel_indent)
                     ast_gera_c(no->filhos[i], saida, nivel_indent);
     }
 }
+
+
+//Parte destinada a otimização de código
+
+AST* otimiza_ast_propagacao_constantes(AST* no) {
+    if (!no) return NULL;
+
+    // Otimiza filhos primeiro
+    for (int i = 0; i < no->n_filhos; i++) {
+        no->filhos[i] = otimiza_ast_propagacao_constantes(no->filhos[i]);
+    }
+
+    // Constant folding para operações aritméticas simples
+    if (no->tipo == AST_EXPRESSAO && no->n_filhos == 2 && no->filhos[0] && no->filhos[1]) {
+        AST *esq = no->filhos[0];
+        AST *dir = no->filhos[1];
+        if (esq->tipo == AST_NUM && dir->tipo == AST_NUM && no->valor) {
+            int v1 = atoi(esq->valor);
+            int v2 = atoi(dir->valor);
+            int resultado = 0;
+            int pode_otimizar = 1;
+
+            if (strcmp(no->valor, "+") == 0) resultado = v1 + v2;
+            else if (strcmp(no->valor, "-") == 0) resultado = v1 - v2;
+            else if (strcmp(no->valor, "*") == 0) resultado = v1 * v2;
+            else if (strcmp(no->valor, "/") == 0 && v2 != 0) resultado = v1 / v2;
+            else pode_otimizar = 0;
+
+            if (pode_otimizar) {
+                ast_libera(esq);
+                ast_libera(dir);
+                free(no->filhos);
+
+                char buf[32];
+                sprintf(buf, "%d", resultado);
+                free(no->valor);
+                no->valor = strdup(buf);
+                no->tipo = AST_NUM;
+                no->n_filhos = 0;
+                no->filhos = NULL;
+                printf("[DEBUG] Redução de constante: %d %s %d = %d\n", v1, no->valor, v2, resultado);
+            }
+        }
+    }
+    return no;
+}
+

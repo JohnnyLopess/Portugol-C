@@ -6,6 +6,7 @@ typedef enum {
     AST_PROGRAMA,
     AST_BLOCO,
     AST_DECLARACAO,
+    AST_TIPO,
     AST_LEITURA,
     AST_ESCRITA,
     AST_ATRIBUICAO,
@@ -18,7 +19,12 @@ typedef enum {
     AST_FUNCAO,
     AST_STRING,
     AST_CHAMADA_FUNCAO,
-    AST_COMENTARIO 
+    AST_COMENTARIO,
+    AST_ESCOLHA,
+    AST_CASO,
+    AST_CASO_CONTRARIO,
+    AST_INCREMENTO,
+    AST_DECREMENTO
 } ASTTipo;
 
 typedef struct AST {
@@ -32,5 +38,7 @@ typedef struct AST {
 AST* ast_cria(ASTTipo tipo, char* valor, int n_filhos, ...);
 void ast_libera(AST* no);
 void ast_gera_c(AST* no, FILE* saida, int nivel_indent);
+AST* otimiza_ast_propagacao_constantes(AST* no);
+AST* otimiza_ast_dead_code(AST* no);
 
 #endif

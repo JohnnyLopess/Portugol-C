@@ -1,0 +1,10 @@
+programa
+{
+inicio
+real numero
+//     este é um número real
+caracter letra
+inteiro idade
+
+idade = 1
+}

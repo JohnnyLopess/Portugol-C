@@ -1,6 +1,6 @@
 programa
 {
-inicio
-escreva("Hello, World!")
-fim
+    funcao inicio() {
+        escreva("Hello, World!")
+    }
 }

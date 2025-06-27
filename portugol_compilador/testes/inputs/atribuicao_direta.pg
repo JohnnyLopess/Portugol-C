@@ -1,0 +1,6 @@
+programa {
+    funcao inicio() {
+        inteiro tab = 1
+        escreva(tab)
+    }
+}

@@ -1,0 +1,18 @@
+#include <stdio.h>
+
+int main() {
+    int variavel = 5;
+    //escreve no console um texto qualquer
+    printf("Escreva um texto aqui.\n");
+    //escreve no console o valor da variável "variavel"
+    printf("%d\n", variavel);
+    //escreve no console o resultado da operação
+    printf("%d\n", variavel + variavel);
+    //escreve no console o texto digitado, e o valor contido na variável
+    printf("O valor da variável é: %d", variavel);
+    //escreve no console o texto com quebra de linha
+    printf("Texto com\nquebra-linha");
+    //escreve no console o texto com espaço de tabulação
+    printf("Texto com\t tabulação");
+    return 0;
+}

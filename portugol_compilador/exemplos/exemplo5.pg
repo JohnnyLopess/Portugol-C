@@ -1,6 +1,6 @@
 inicio
 var: real numero;
-var: caractere letra;
+var: caracter letra;
 var: inteiro idade;
 
 escreva("Digite um número real: ");

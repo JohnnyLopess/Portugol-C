@@ -1,0 +1,6 @@
+programa {
+    funcao inicio(){
+        inteiro numeroNegativo = -1
+        escreva(numeroNegativo)
+    }
+}

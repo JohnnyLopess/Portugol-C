@@ -1,5 +1,7 @@
 # Arquivos de build
-/build/
+
+portugol_compilador/build/*
+
 saida.c
 compilador
 

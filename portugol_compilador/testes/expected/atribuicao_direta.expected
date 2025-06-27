@@ -1,0 +1,7 @@
+#include <stdio.h>
+
+int main() {
+    int tab = 1;
+    printf("%d\n", tab);
+    return 0;
+}

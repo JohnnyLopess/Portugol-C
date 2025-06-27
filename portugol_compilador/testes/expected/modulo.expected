@@ -1,0 +1,10 @@
+#include <stdio.h>
+
+int main() {
+    if (5 % 2 == 1) {
+        printf("o resto de 5 dividido por 2 é igual a 1");
+    } else {
+        printf("a matemática está errada");
+    }
+    return 0;
+}

@@ -15,38 +15,35 @@
 "programa"      { printf("[TOKEN] PROGRAMA\n"); return PROGRAMA; }
 
 "inicio"        { printf("[TOKEN] INICIO\n"); return INICIO; }
-"fim"           { printf("[TOKEN] FIM\n"); return FIM; }
 "retorne"       { printf("[TOKEN] RETORNE\n"); return RETORNE; }
 
 "leia"          { printf("[TOKEN] LEIA\n"); return LEIA; }
 "escreva"       { printf("[TOKEN] ESCREVA\n"); return ESCREVA; }
-"var"           { printf("[TOKEN] VAR\n"); return VAR; }
 "funcao"        { printf("[TOKEN] FUNCAO\n"); return FUNCAO; }
-"fimfuncao"        { printf("[TOKEN] FIMFUNCAO\n"); return FIMFUNCAO; }
 
 "se"            { printf("[TOKEN] SE\n"); return SE; }
 "senao"         { printf("[TOKEN] SENAO\n"); return SENAO; }
 "entao"         { printf("[TOKEN] ENTAO\n"); return ENTAO; }
-"fimse"         { printf("[TOKEN] FIMSE\n"); return FIMSE; }
+
+"escolha"       { printf("[TOKEN] ESCOLHA\n"); return ESCOLHA; }
+"caso"          { printf("[TOKEN] CASO\n"); return CASO; }
+"pare"          { printf("[TOKEN] PARE\n"); return PARE; }
+"caso contrario" { printf("[TOKEN] CASO_CONTRARIO\n"); return CASO_CONTRARIO; }
 
 "enquanto"      { printf("[TOKEN] ENQUANTO\n"); return ENQUANTO; }
 "faca"          { printf("[TOKEN] FACA\n"); return FACA; }
-"fimenquanto"   { printf("[TOKEN] FIMENQUANTO\n"); return FIMENQUANTO; }
 
 "inteiro"       { printf("[TOKEN] TIPO_INTEIRO\n"); yylval.str = strdup(yytext); return TIPO_INTEIRO; }
 "real"          { printf("[TOKEN] TIPO_REAL\n"); yylval.str = strdup(yytext); return TIPO_REAL; }
-"caractere"     { printf("[TOKEN] TIPO_CARACTERE\n"); yylval.str = strdup(yytext); return TIPO_CARACTERE; }
+"caracter"     { printf("[TOKEN] TIPO_CARACTER\n"); yylval.str = strdup(yytext); return TIPO_CARACTER; }
 "logico"        { printf("[TOKEN] TIPO_LOGICO\n"); yylval.str = strdup(yytext); return TIPO_LOGICO; }
 "vazio"         { printf("[TOKEN] TIPO_VAZIO\n"); yylval.str = strdup(yytext); return TIPO_VAZIO; }
 
 "para"          {printf("[TOKEN] PARA\n"); return PARA;}
-"de"            {printf("[TOKEN] DE\n"); return DE;}
-"ate"           {printf("[TOKEN] ATE\n"); return ATE;}
-"fimpara"       {printf("[TOKEN] FIMPARA\n"); return FIMPARA;}
 
 "=="            { printf("[TOKEN] COMPARA\n"); return COMPARA; }
 "="             { printf("[TOKEN] IGUAL\n"); return IGUAL; }
-"<>"            { return DIFERENTE; }
+"!="            { return DIFERENTE; }
 "<="            { return MENOR_IGUAL; }
 ">="            { return MAIOR_IGUAL; }
 "<"             { return MENOR; }
@@ -56,6 +53,10 @@
 "-"             { return SUB; }
 "*"             { return MUL; }
 "/"             { return DIV; }
+"%"             { printf("[TOKEN] MODULO\n"); return MODULO; }
+
+"++" { printf("[TOKEN] INCREMENTO\n"); return INCREMENTO; }
+"--" { printf("[TOKEN] DECREMENTO\n"); return DECREMENTO; }
 
 "("             { return ABREPAR; }
 ")"             { return FECHAPAR; }
@@ -96,7 +97,7 @@
     return COMENTARIO_BLOCO;
 }
 
-.               { printf("[LEXER] Caractere inválido: %s\n", yytext); }
+.               { printf("[LEXER] caracter inválido: %s\n", yytext); }
 
 %%
 

@@ -1,11 +1,10 @@
-programa
-{
-    inicio
+programa{
+    funcao inicio() {
         escreva(5 & 3)
         escreva(~7)
         escreva(5 | 3)
         escreva(23 << 1)
         escreva(105 >> 1)
         escreva(5 ^ 3)
-    fim
+    }
 }

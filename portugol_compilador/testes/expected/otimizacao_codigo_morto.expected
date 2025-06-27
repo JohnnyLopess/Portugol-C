@@ -1,0 +1,16 @@
+#include <stdio.h>
+
+int main() {
+    int x;
+    x = 10;
+    if (1 == 1) {
+        printf("Entrou no if");
+        return 42;
+    } else {
+        printf("Nunca entra aqui");
+        return 0;
+    }
+    x = 123;
+    
+    return 0;
+}

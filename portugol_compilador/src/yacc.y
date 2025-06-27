@@ -32,42 +32,54 @@ Simbolo *inserirParametro(char *nome, int tipo, int escopo, int referencia);
         char* valor;
         int tipo;
     } expr;
-    struct AST* ast; // novo campo para AST
+    struct AST* ast; // Campo para AST
+    struct AST* bloco; // Adicionado para blocos de múltiplos filhos
 }
 
-%token PROGRAMA INICIO FIM LEIA ESCREVA VAR
-%token TIPO_INTEIRO TIPO_REAL TIPO_CARACTERE TIPO_LOGICO TIPO_VAZIO
+%token PROGRAMA INICIO FIM LEIA ESCREVA
+%token TIPO_INTEIRO TIPO_REAL TIPO_CARACTER TIPO_LOGICO TIPO_VAZIO
 %token SE SENAO ENTAO FIMSE
 %token ABRECHAVE FECHACHAVE
 %token ENQUANTO FACA FIMENQUANTO
 %token IGUAL COMPARA DIFERENTE MENOR MAIOR MENOR_IGUAL MAIOR_IGUAL
-%token SOMA SUB MUL DIV
+%token SOMA SUB MUL DIV MODULO
 %token ABREPAR FECHAPAR PONTOEVIRGULA VIRGULA
-%token PARA DE ATE FIMPARA
+%token PARA
 %token DOISPONTOS
-%token FIMFUNCAO
 %token <str> NUM ID STRING
 %token FUNCAO RETORNE
 %token <str> COMENTARIO_LINHA COMENTARIO_BLOCO
-%type <ast> programa corpo_programa lista_funcoes funcao cabecalho_funcao lista_args args bloco bloco_conteudo comando declaracao leitura escrita atribuicao expressao lista_parametros parametros parametro chamada_funcao
+%token ESCOLHA CASO PARE CASO_CONTRARIO
+%token INCREMENTO DECREMENTO
+%type <ast> programa corpo_programa lista_funcoes funcao cabecalho_funcao lista_args args bloco bloco_conteudo comando declaracao leitura escrita atribuicao expressao lista_parametros parametros parametro chamada_funcao condicional senao_bloco
 %type <inteiro> tipo
 %type <ast> comentario
+%type <ast> lista_ids
+%type <ast> escolha caso lista_casos caso_contrario
+%type <ast> incremento_decremento
+%type <ast> lista_escrita_args escrita_arg
 
 // token Bitwise
 %token OP_BITWISE_AND OP_BITWISE_NOT OP_BITWISE_OR OP_BITWISE_LEFT_SHIFT OP_BITWISE_RIGHT_SHIFT OP_BITWISE_XOR
 
-%left SOMA SUB MUL DIV
+
+%left SOMA SUB
+%left MUL DIV MODULO
+
 
 
 %%
 
 programa: PROGRAMA ABRECHAVE corpo_programa FECHACHAVE { $$ = $3; };
 
-corpo_programa: lista_funcoes INICIO bloco FIM { raiz_ast = ast_cria(AST_PROGRAMA, NULL, 2, $1, $3); $$ = raiz_ast; };
+corpo_programa: lista_funcoes FUNCAO INICIO ABREPAR FECHAPAR ABRECHAVE bloco FECHACHAVE {
+    raiz_ast = ast_cria(AST_PROGRAMA, NULL, 2, $1, $7);
+    $$ = raiz_ast;
+};
 
 funcao:
-    cabecalho_funcao bloco FIMFUNCAO {
-        $$ = ast_cria(AST_FUNCAO, strdup($1->valor), 2, $1->filhos[0], $2);
+    cabecalho_funcao ABRECHAVE bloco FECHACHAVE {
+        $$ = ast_cria(AST_FUNCAO, strdup($1->valor), 2, $1->filhos[0], $3);
     }
 ;
 
@@ -84,6 +96,21 @@ cabecalho_funcao:
         inserirFuncao($3, $2, escopo_atual, $5->n_filhos, parametros);
         // Cria um nó AST para o cabeçalho (opcional, mas útil para manter a AST completa)
         $$ = ast_cria(AST_DECLARACAO, strdup($3), 1, $5);
+    }
+    | FUNCAO ID ABREPAR lista_parametros FECHAPAR {
+        // Para funcoes com o tipo omitido, sendo o retorno do tipo void
+        Simbolo **parametros = NULL;
+        int tipo = TIPO_VOID;
+
+        if ($4->n_filhos > 0) {
+            parametros = malloc(sizeof(Simbolo*) * $4->n_filhos);
+            for (int i = 0; i < $4->n_filhos; i++) {
+                parametros[i] = buscarSimbolo($4->filhos[i]->valor, escopo_atual + 1);
+            }
+        }
+        inserirFuncao($2, tipo, escopo_atual, $4->n_filhos, parametros);
+        // Cria um nó AST para o cabeçalho (opcional, mas útil para manter a AST completa)
+        $$ = ast_cria(AST_DECLARACAO, strdup($2), 1, $4);
     }
 ;
 
@@ -155,23 +182,44 @@ comando:
     | escrita { $$ = $1; }
     | atribuicao { $$ = $1; }
     | comentario { $$ = $1; }
-    | SE expressao ENTAO bloco SENAO comando FIMSE {
-        $$ = ast_cria(AST_IF, NULL, 3, $2, $4, $6);
+    | condicional { $$ = $1; }
+    | escolha { $$ = $1; }
+    | ENQUANTO ABREPAR expressao FECHAPAR ABRECHAVE bloco FECHACHAVE {
+        $$ = ast_cria(AST_WHILE, NULL, 2, $3, $6);
     }
-    | SE expressao ENTAO bloco FIMSE {
-        $$ = ast_cria(AST_IF, NULL, 2, $2, $4);
-    }
-    | ENQUANTO expressao FACA bloco FIMENQUANTO {
-        $$ = ast_cria(AST_WHILE, NULL, 2, $2, $4);
-    }
-    | PARA ID DE expressao ATE expressao FACA bloco FIMPARA {
-        AST* id = ast_cria(AST_ID, strdup($2), 0);
-        $$ = ast_cria(AST_FOR, NULL, 4, id, $4, $6, $8);
+    | PARA ABREPAR declaracao PONTOEVIRGULA expressao PONTOEVIRGULA expressao FECHAPAR ABRECHAVE bloco FECHACHAVE {
+        $$ = ast_cria(AST_FOR, NULL, 4, $3, $5, $7, $10);
     }
     | RETORNE expressao {
         $$ = ast_cria(AST_EXPRESSAO, strdup("return"), 1, $2);
     }
     | chamada_funcao { $$ = $1; }
+    | incremento_decremento { $$ = $1; }
+;
+
+condicional:
+    SE ABREPAR expressao FECHAPAR ABRECHAVE bloco FECHACHAVE senao_bloco {
+        // se (condicao) { bloco } else { ... } ou se (condicao) { bloco }
+        if ($8 != NULL) { // se houver senao_bloco (pode ser senao ou senao se)
+            $$ = ast_cria(AST_IF, NULL, 3, $3, $6, $8);
+        } else { // apenas se
+            $$ = ast_cria(AST_IF, NULL, 2, $3, $6);
+        }
+    }
+;
+
+senao_bloco:
+    SENAO ABRECHAVE bloco FECHACHAVE { $$ = $3; } // senao { bloco }
+    | SENAO SE ABREPAR expressao FECHAPAR ABRECHAVE bloco FECHACHAVE senao_bloco {
+        // senao se (condicao) { bloco } ...
+        // Criamos um novo AST_IF para o "senao se", e ele pode ter um "senao_bloco" como seu próprio else
+        if ($9 != NULL) {
+            $$ = ast_cria(AST_IF, NULL, 3, $4, $7, $9);
+        } else {
+            $$ = ast_cria(AST_IF, NULL, 2, $4, $7);
+        }
+    }
+    | /* vazio */ { $$ = NULL; } // Para o caso de não ter senao
 ;
 
 chamada_funcao:
@@ -179,24 +227,40 @@ chamada_funcao:
 ;
 
 declaracao:
-    VAR DOISPONTOS tipo ID {
-        inserirSimbolo($4, $3, escopo_atual); // Agora inclui o escopo!
-        AST* tipo_no = ast_cria(AST_ID, strdup($4), 0);
-        AST* tipo_tipo = ast_cria(AST_NUM, strdup($3 == TIPO_INT ? "int" : $3 == TIPO_FLOAT ? "float" : "char"), 0);
-        $$ = ast_cria(AST_DECLARACAO, NULL, 2, tipo_tipo, tipo_no);
+    tipo lista_ids {
+        for (int i = 0; i < $2->n_filhos; i++) {
+            inserirSimbolo($2->filhos[i]->valor, $1, escopo_atual);
+        }
+        $$ = ast_cria(AST_DECLARACAO, NULL, 2, ast_cria(AST_TIPO, strdup($1 == TIPO_INT ? "int" : $1 == TIPO_FLOAT ? "float" : $1 == TIPO_CHAR ? "char" : "bool"), 0), $2);
     }
-    | tipo ID {
-        inserirSimbolo($2, $1, escopo_atual);
-        AST* tipo_no = ast_cria(AST_ID, strdup($2), 0);
-        AST* tipo_tipo = ast_cria(AST_NUM, strdup($1 == TIPO_INT ? "int" : $1 == TIPO_FLOAT ? "float" : "char"), 0);
-        $$ = ast_cria(AST_DECLARACAO, NULL, 2, tipo_tipo, tipo_no);
+    | tipo lista_ids IGUAL expressao {
+        for (int i = 0; i < $2->n_filhos; i++) {
+            inserirSimbolo($2->filhos[i]->valor, $1, escopo_atual);
+            marcarVariavelInicializada($2->filhos[i]->valor, escopo_atual);
+        }
+        AST* atribuicao = ast_cria(AST_ATRIBUICAO, NULL, 2, $2->filhos[0], $4);
+        $$ = ast_cria(AST_DECLARACAO, NULL, 2, ast_cria(AST_TIPO, strdup($1 == TIPO_INT ? "int" : $1 == TIPO_FLOAT ? "float" : $1 == TIPO_CHAR ? "char" : "bool"), 0), atribuicao);
+    }
+;
+
+lista_ids:
+    ID { $$ = ast_cria(AST_BLOCO, NULL, 1, ast_cria(AST_ID, strdup($1), 0)); }
+    | lista_ids VIRGULA ID {
+        int n = $1->n_filhos + 1;
+        AST** filhos = malloc(sizeof(AST*) * n);
+        for (int i = 0; i < $1->n_filhos; i++) filhos[i] = $1->filhos[i];
+        filhos[n-1] = ast_cria(AST_ID, strdup($3), 0);
+        AST* novo = ast_cria(AST_BLOCO, NULL, 0);
+        novo->n_filhos = n;
+        novo->filhos = filhos;
+        $$ = novo;
     }
 ;
 
 tipo:
     TIPO_INTEIRO     { $$ = TIPO_INT; }
     | TIPO_REAL      { $$ = TIPO_FLOAT; }
-    | TIPO_CARACTERE { $$ = TIPO_CHAR; }
+    | TIPO_CARACTER { $$ = TIPO_CHAR; }
     | TIPO_LOGICO    { $$ = TIPO_BOOL; }
     | TIPO_VAZIO     { $$ = TIPO_VOID; }
 ;
@@ -204,34 +268,42 @@ tipo:
 leitura:
     LEIA ABREPAR ID FECHAPAR {
         checar_declaracao($3);
+        marcarVariavelInicializada($3, escopo_atual);
         AST* id = ast_cria(AST_ID, strdup($3), 0);
         $$ = ast_cria(AST_LEITURA, NULL, 1, id);
     }
 ;
 
 escrita:
-    ESCREVA ABREPAR ID FECHAPAR {
-        checar_declaracao($3);
-        AST* id = ast_cria(AST_ID, strdup($3), 0);
-        id->tipo_expr = buscar_tipo_variavel($3); // Propaga o tipo!
-        $$ = ast_cria(AST_ESCRITA, NULL, 1, id);
+
+    ESCREVA ABREPAR lista_escrita_args FECHAPAR {
+            $$ = ast_cria(AST_ESCRITA, NULL, 1, $3);
     }
-    | ESCREVA ABREPAR STRING FECHAPAR {
-        AST* str = ast_cria(AST_STRING, strdup($3), 0);
-        $$ = ast_cria(AST_ESCRITA, NULL, 1, str);
+;
+
+lista_escrita_args:
+    escrita_arg { $$ = ast_cria(AST_BLOCO, NULL, 1, $1); }
+    | lista_escrita_args VIRGULA escrita_arg {
+        int n = $1->n_filhos + 1;
+        AST** filhos = malloc(sizeof(AST*) * n);
+        for (int i = 0; i < $1->n_filhos; i++) filhos[i] = $1->filhos[i];
+        filhos[n-1] = $3;
+        AST* novo = ast_cria(AST_BLOCO, NULL, 0);
+        novo->n_filhos = n;
+        novo->filhos = filhos;
+        $$ = novo;
     }
-    | ESCREVA ABREPAR expressao FECHAPAR {
-        $$ = ast_cria(AST_ESCRITA, NULL, 1, $3);
-    }
-    | ESCREVA ABREPAR NUM FECHAPAR {
-        AST* num = ast_cria(AST_NUM, strdup($3), 0);
-        $$ = ast_cria(AST_ESCRITA, NULL, 1, num);
-    }
+;
+
+escrita_arg:
+    expressao { $$ = $1; }
+    | STRING { $$ = ast_cria(AST_STRING, strdup($1), 0); }
 ;
 
 atribuicao:
     ID IGUAL expressao {
         checar_declaracao($1);
+        marcarVariavelInicializada($1, escopo_atual);
         AST* id = ast_cria(AST_ID, strdup($1), 0);
         $$ = ast_cria(AST_ATRIBUICAO, NULL, 2, id, $3);
     }
@@ -242,6 +314,14 @@ expressao:
         AST* num = ast_cria(AST_NUM, strdup($1), 0);
         num->tipo_expr = TIPO_INT; // ou TIPO_FLOAT se detectar ponto
         $$ = num;
+    }
+    | SUB NUM {
+        char* neg = (char*)malloc(strlen($2) + 2);
+        sprintf(neg, "-%s", $2);
+        AST* num = ast_cria(AST_NUM, neg, 0);
+        num->tipo_expr = TIPO_INT;
+        $$ = num;
+        free(neg);
     }
     | ID {
         checar_declaracao($1);
@@ -322,6 +402,24 @@ expressao:
         novo->tipo_expr = TIPO_FLOAT; // divisão sempre resulta em float
         $$ = novo;
     }
+
+    | expressao MODULO expressao {
+        AST* novo = ast_cria(AST_EXPRESSAO, strdup("%"), 2, $1, $3);
+        novo->tipo_expr = TIPO_INT;
+        $$ = novo;
+    }
+    | ID INCREMENTO {
+        checar_declaracao($1);
+        AST* id_node = ast_cria(AST_ID, strdup($1), 0);
+        $$ = ast_cria(AST_INCREMENTO, NULL, 1, id_node); // Reusing AST_INCREMENTO type
+        $$->tipo_expr = buscar_tipo_variavel($1); // Propagate type
+    }
+    | ID DECREMENTO {
+        checar_declaracao($1);
+        AST* id_node = ast_cria(AST_ID, strdup($1), 0);
+        $$ = ast_cria(AST_DECREMENTO, NULL, 1, id_node); // Reusing AST_DECREMENTO type
+        $$->tipo_expr = buscar_tipo_variavel($1); // Propagate type
+    }
     | expressao OP_BITWISE_AND expressao {
         AST* novo = ast_cria(AST_EXPRESSAO, strdup("&"), 2, $1, $3);
         novo->tipo_expr = TIPO_INT;
@@ -351,6 +449,7 @@ expressao:
         AST*novo = ast_cria(AST_EXPRESSAO, strdup("^"), 2, $1, $3);
         novo->tipo_expr = TIPO_INT;
         $$ = novo;
+
     }
 ;
 
@@ -382,6 +481,53 @@ comentario:
     COMENTARIO_LINHA { $$ = ast_cria(AST_COMENTARIO, strdup($1), 0); }
     | COMENTARIO_BLOCO { $$ = ast_cria(AST_COMENTARIO, strdup($1), 0); }
 ;
+
+escolha:
+    ESCOLHA ABREPAR expressao FECHAPAR ABRECHAVE lista_casos caso_contrario FECHACHAVE {
+        $$ = ast_cria(AST_ESCOLHA, NULL, 2, $3, ast_cria(AST_BLOCO, NULL, 2, $6, $7));
+    }
+;
+
+lista_casos:
+    /* vazio */ { $$ = ast_cria(AST_BLOCO, NULL, 0); }
+    | lista_casos caso { 
+        int n = $1->n_filhos + 1;
+        AST** filhos = malloc(sizeof(AST*) * n);
+        for (int i = 0; i < $1->n_filhos; i++) filhos[i] = $1->filhos[i];
+        filhos[n-1] = $2;
+        AST* novo = ast_cria(AST_BLOCO, NULL, 0);
+        novo->n_filhos = n;
+        novo->filhos = filhos;
+        $$ = novo;
+    }
+;
+
+caso:
+    CASO expressao DOISPONTOS bloco_conteudo PARE {
+        $$ = ast_cria(AST_CASO, NULL, 2, $2, $4);
+    }
+;
+
+caso_contrario:
+    /* vazio */ { $$ = ast_cria(AST_BLOCO, NULL, 0); }
+    | CASO_CONTRARIO DOISPONTOS bloco_conteudo {
+        $$ = ast_cria(AST_CASO_CONTRARIO, NULL, 1, $3);
+    }
+;
+
+incremento_decremento:
+    ID INCREMENTO {
+        checar_declaracao($1);
+        AST* id_node = ast_cria(AST_ID, strdup($1), 0);
+        $$ = ast_cria(AST_INCREMENTO, NULL, 1, id_node);
+    }
+    | ID DECREMENTO {
+        checar_declaracao($1);
+        AST* id_node = ast_cria(AST_ID, strdup($1), 0);
+        $$ = ast_cria(AST_DECREMENTO, NULL, 1, id_node);
+    }
+;
+
 
 %%
 

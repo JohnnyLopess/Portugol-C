@@ -1,0 +1,12 @@
+#include <stdio.h>
+
+int main() {
+    int parar;
+    parar = 1;
+
+    while (parar == 1) {
+        printf("deseja parar o laço? (0/1)");
+        scanf(" %d", &parar);
+    }
+    return 0;
+}

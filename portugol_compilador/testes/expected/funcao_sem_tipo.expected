@@ -1,0 +1,11 @@
+#include <stdio.h>
+
+void calcula() {
+    int numero = 1;
+    printf("%d\n", numero + 1);
+}
+
+int main(){
+    calcula();
+    return 0;
+}

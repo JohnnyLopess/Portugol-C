@@ -1,14 +1,17 @@
 programa
 {
-funcao inteiro fat(inteiro n)
-    se n == 0 entao
-        retorne 1
-    senao
-        retorne n * fat(n - 1)
-    fimse
-fimfuncao
+    funcao inteiro fat(inteiro n){
+        se (n == 0)
+        {
+            retorne 1
+        }
+        senao
+        {
+            retorne n * fat(n - 1)
+        }
+    }
 
-inicio
-    escreva(fat(5))
-fim
+    funcao inicio() {
+        escreva(fat(5))
+    }
 }

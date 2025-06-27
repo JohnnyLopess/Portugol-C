@@ -81,7 +81,7 @@ O desenvolvimento foi dividido em **13 sprints**, sendo elas semanais, iniciando
 
 **Objetivos:**
 - Ampliar o suporte para novos tipos de dados:
-    - `inteiro`, `real` e `caractere`
+    - `inteiro`, `real` e `caracter`
 - Corrigir a regra de declaração de variáveis no analisador sintático.
 
 **Critérios de Aceitação:**

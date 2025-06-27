@@ -1,0 +1,17 @@
+#include <stdio.h>
+
+int main(){
+    int opcao;
+    scanf("%d", &opcao);
+    switch(opcao) {
+    case 1:
+        printf("Opção 1");
+        break;
+    case 2:
+        printf("Opção 2");
+        break;
+    default:
+        printf("Opção inválida");
+}
+    return 0;
+}

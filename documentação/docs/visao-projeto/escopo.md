@@ -83,7 +83,7 @@ var
 
 ## ✅ Outros Elementos
 
-- `inicio ... fim` → delimita o início e o fim do algoritmo
+- O escopo de cada funcao é delimitado por abre e fecha chaves (`{}`)
 - `const` → declaração de constantes
 - `retorne` → retorno de valor em funções
 - `procedimento` / `funcao` → modularização de código

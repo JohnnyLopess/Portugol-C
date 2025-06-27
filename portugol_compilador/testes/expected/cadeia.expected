@@ -2,8 +2,7 @@
 #include <string.h>
 
 int main() {
-    float numero;
-    numero = 3.14;
-    printf("%f\n", numero);
+    char nome[256] = "fulano";
+    printf("%s\n", nome);
     return 0;
 }

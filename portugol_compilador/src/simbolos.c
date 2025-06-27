@@ -4,7 +4,6 @@
 #include "ast.h"
 #include "simbolos.h"
 #include "tipos.h"
-#include "ast.h"
 
 #define TAM 211
 
@@ -152,6 +151,9 @@ void imprimirTabela()
                 tipo_str = "float";
             else if (s->tipo == 2)
                 tipo_str = "char";
+            else if (s->tipo == 5) // <-- Adicionado para o tipo CADEIA
+                tipo_str = "cadeia";
+                
             const char *cat_str = "VAR";
             if (s->categoria == SIMBOLO_FUNCAO)
                 cat_str = "FUNCAO";

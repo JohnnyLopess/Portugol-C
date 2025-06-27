@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <string.h>
 
 int main() {
     //Neste caso de teste a variável teste foi inicializada como falso, e foi verificado se teste não é verdadeiro  

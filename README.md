@@ -56,6 +56,7 @@ make run FILE=exemplos/nome_exemplo.pg
 
 3. Para compilar e executar o código traduzido, use os comandos:
 ```bash
+cd build
 gcc saida.c -o programa
 ./programa
 ```

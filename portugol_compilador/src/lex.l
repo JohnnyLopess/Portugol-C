@@ -62,6 +62,8 @@
 ")"             { return FECHAPAR; }
 "{"             { printf("[TOKEN] ABRECHAVE\n"); return ABRECHAVE; }
 "}"             { printf("[TOKEN] FECHACHAVE\n"); return FECHACHAVE; }
+"["             { printf("[TOKEN] ABRECOLCHETE\n"); return ABRECOLCHETE; }
+"]"             { printf("[TOKEN] FECHACOLCHETE\n"); return FECHACOLCHETE; }
 ";"             { return PONTOEVIRGULA; }
 ","             { return VIRGULA; }
 ":"             { return DOISPONTOS; }

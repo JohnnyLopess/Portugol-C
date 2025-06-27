@@ -1,0 +1,7 @@
+programa {
+    funcao inicio() {
+        inteiro v[2]
+        v[0] = 42
+        escreva(v[0])
+    }
+}

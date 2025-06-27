@@ -487,6 +487,11 @@ expressao:
         $$ = novo;
 
     }
+    | STRING {
+        AST* str_node = ast_cria(AST_STRING, strdup($1), 0);
+        str_node->tipo_expr = TIPO_CHAR; // Assumindo que STRING representa um tipo CARACTER
+        $$ = str_node;
+    }
 ;
 
 lista_parametros:

@@ -1,0 +1,37 @@
+programa { 
+    funcao inicio() { 
+        real num1, num2, resultado caracter operacao
+
+        escreva("Digite o primeiro número: ")
+        leia(num1)
+        escreva("Digite a operação (+, -, *, /): ")
+        leia(operacao)
+        escreva("Digite o segundo número: ")
+        leia(num2)
+        
+        escolha(operacao) {
+            caso '+':
+                resultado = num1 + num2
+            pare
+            caso '-':
+                resultado = num1 - num2
+            pare
+            caso '*':
+                resultado = num1 * num2
+            pare
+            caso '/':
+                se (num2 != 0) {
+                    resultado = num1 / num2
+                } senao {
+                    escreva("Erro: Divisão por zero!")
+                    retorne 1
+                }
+            pare
+            caso contrario:
+                escreva("Operação inválida!")
+                retorne 1
+        }
+        
+        escreva("Resultado: ", resultado)
+    }
+}

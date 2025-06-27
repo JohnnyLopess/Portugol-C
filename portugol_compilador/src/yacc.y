@@ -40,6 +40,7 @@ Simbolo *inserirParametro(char *nome, int tipo, int escopo, int referencia);
 %token TIPO_INTEIRO TIPO_REAL TIPO_CARACTER TIPO_LOGICO TIPO_VAZIO
 %token SE SENAO ENTAO FIMSE
 %token ABRECHAVE FECHACHAVE
+%token ABRECOLCHETE FECHACOLCHETE
 %token ENQUANTO FACA FIMENQUANTO
 %token IGUAL COMPARA DIFERENTE MENOR MAIOR MENOR_IGUAL MAIOR_IGUAL
 %token SOMA SUB MUL DIV MODULO
@@ -241,6 +242,14 @@ declaracao:
         AST* atribuicao = ast_cria(AST_ATRIBUICAO, NULL, 2, $2->filhos[0], $4);
         $$ = ast_cria(AST_DECLARACAO, NULL, 2, ast_cria(AST_TIPO, strdup($1 == TIPO_INT ? "int" : $1 == TIPO_FLOAT ? "float" : $1 == TIPO_CHAR ? "char" : "bool"), 0), atribuicao);
     }
+    | tipo ID ABRECOLCHETE NUM FECHACOLCHETE {
+        inserirSimbolo($2, $1, escopo_atual);
+        AST* tamanho = ast_cria(AST_NUM, strdup($4), 0);
+        AST* id = ast_cria(AST_ID, strdup($2), 0);
+        $$ = ast_cria(AST_VETOR_DECLARACAO, NULL, 3, 
+                     ast_cria(AST_TIPO, strdup($1 == TIPO_INT ? "int" : $1 == TIPO_FLOAT ? "float" : $1 == TIPO_CHAR ? "char" : "bool"), 0), 
+                     id, tamanho);
+    }
 ;
 
 lista_ids:
@@ -271,6 +280,13 @@ leitura:
         marcarVariavelInicializada($3, escopo_atual);
         AST* id = ast_cria(AST_ID, strdup($3), 0);
         $$ = ast_cria(AST_LEITURA, NULL, 1, id);
+    }
+    | LEIA ABREPAR ID ABRECOLCHETE expressao FECHACOLCHETE FECHAPAR {
+        checar_declaracao($3);
+        marcarVariavelInicializada($3, escopo_atual);
+        AST* id = ast_cria(AST_ID, strdup($3), 0);
+        AST* acesso = ast_cria(AST_VETOR_ACESSO, NULL, 2, id, $5);
+        $$ = ast_cria(AST_LEITURA, NULL, 1, acesso);
     }
 ;
 
@@ -307,6 +323,13 @@ atribuicao:
         AST* id = ast_cria(AST_ID, strdup($1), 0);
         $$ = ast_cria(AST_ATRIBUICAO, NULL, 2, id, $3);
     }
+    | ID ABRECOLCHETE expressao FECHACOLCHETE IGUAL expressao {
+        checar_declaracao($1);
+        marcarVariavelInicializada($1, escopo_atual);
+        AST* id = ast_cria(AST_ID, strdup($1), 0);
+        AST* acesso = ast_cria(AST_VETOR_ACESSO, NULL, 2, id, $3);
+        $$ = ast_cria(AST_ATRIBUICAO, NULL, 2, acesso, $6);
+    }
 ;
 
 expressao:
@@ -328,6 +351,13 @@ expressao:
         AST* id = ast_cria(AST_ID, strdup($1), 0);
         id->tipo_expr = buscar_tipo_variavel($1);
         $$ = id;
+    }
+    | ID ABRECOLCHETE expressao FECHACOLCHETE {
+        checar_declaracao($1);
+        AST* id = ast_cria(AST_ID, strdup($1), 0);
+        AST* acesso = ast_cria(AST_VETOR_ACESSO, NULL, 2, id, $3);
+        acesso->tipo_expr = buscar_tipo_variavel($1);
+        $$ = acesso;
     }
     | expressao SOMA expressao {
         AST* novo = ast_cria(AST_EXPRESSAO, strdup("+"), 2, $1, $3);

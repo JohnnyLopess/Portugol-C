@@ -98,17 +98,35 @@ void ast_gera_c(AST *no, FILE *saida, int nivel_indent)
         case AST_LEITURA:
             for (int i = 0; i < nivel_indent; i++) fprintf(saida, "    ");
             if (no->n_filhos >= 1 && no->filhos[0]) {
-                char *nome = no->filhos[0]->valor;
-                Simbolo *s = buscarSimbolo(no->filhos[0]->valor, escopo_atual);
-                int tipo = s ? s->tipo : 0;
-                if (tipo == 0)
-                    fprintf(saida, "scanf(\"%%d\", &%s);\n", nome);
-                else if (tipo == 1)
-                    fprintf(saida, "scanf(\"%%f\", &%s);\n", nome);
-                else if (tipo == 2)
-                    fprintf(saida, "scanf(\" %%c\", &%s);\n", nome); // espaço antes do %c
-                else
-                    fprintf(saida, "scanf(\"%%d\", &%s);\n", nome); // padrão seguro
+                if (no->filhos[0]->tipo == AST_VETOR_ACESSO) {
+                    // Leitura de elemento de vetor
+                    char *nome = no->filhos[0]->filhos[0]->valor;
+                    Simbolo *s = buscarSimbolo(nome, escopo_atual);
+                    int tipo = s ? s->tipo : 0;
+                    if (tipo == 0)
+                        fprintf(saida, "scanf(\"%%d\", &");
+                    else if (tipo == 1)
+                        fprintf(saida, "scanf(\"%%f\", &");
+                    else if (tipo == 2)
+                        fprintf(saida, "scanf(\" %%c\", &"); // espaço antes do %c
+                    else
+                        fprintf(saida, "scanf(\"%%d\", &"); // padrão seguro
+                    ast_gera_c(no->filhos[0], saida, 0);
+                    fprintf(saida, ");\n");
+                } else {
+                    // Leitura de variável normal
+                    char *nome = no->filhos[0]->valor;
+                    Simbolo *s = buscarSimbolo(nome, escopo_atual);
+                    int tipo = s ? s->tipo : 0;
+                    if (tipo == 0)
+                        fprintf(saida, "scanf(\"%%d\", &%s);\n", nome);
+                    else if (tipo == 1)
+                        fprintf(saida, "scanf(\"%%f\", &%s);\n", nome);
+                    else if (tipo == 2)
+                        fprintf(saida, "scanf(\" %%c\", &%s);\n", nome); // espaço antes do %c
+                    else
+                        fprintf(saida, "scanf(\"%%d\", &%s);\n", nome); // padrão seguro
+                }
             }
             break;
 
@@ -204,7 +222,14 @@ void ast_gera_c(AST *no, FILE *saida, int nivel_indent)
         case AST_ATRIBUICAO:
             for (int i = 0; i < nivel_indent; i++) fprintf(saida, "    ");
             if (no->n_filhos >= 2 && no->filhos[0] && no->filhos[1]) {
-                fprintf(saida, "%s = ", no->filhos[0]->valor);
+                if (no->filhos[0]->tipo == AST_VETOR_ACESSO) {
+                    // Atribuição a elemento de vetor
+                    ast_gera_c(no->filhos[0], saida, 0);
+                } else {
+                    // Atribuição normal a variável
+                    fprintf(saida, "%s", no->filhos[0]->valor);
+                }
+                fprintf(saida, " = ");
                 ast_gera_c(no->filhos[1], saida, 0);
                 fprintf(saida, ";\n");
             }
@@ -454,6 +479,26 @@ void ast_gera_c(AST *no, FILE *saida, int nivel_indent)
                 } else {
                     fprintf(stderr, "[ERRO] Decremento aplicado a não-ID na AST.\n");
                 }
+            }
+            break;
+
+        case AST_VETOR_DECLARACAO:
+            for (int i = 0; i < nivel_indent; i++) fprintf(saida, "    ");
+            if (no->n_filhos >= 3 && no->filhos[0] && no->filhos[1] && no->filhos[2]) {
+                // Filhos: [0] = tipo, [1] = nome, [2] = tamanho
+                fprintf(saida, "%s %s[%s];\n", 
+                       no->filhos[0]->valor,     // tipo (int, float, char)
+                       no->filhos[1]->valor,     // nome do vetor
+                       no->filhos[2]->valor);    // tamanho
+            }
+            break;
+
+        case AST_VETOR_ACESSO:
+            if (no->n_filhos >= 2 && no->filhos[0] && no->filhos[1]) {
+                // Filhos: [0] = nome do vetor, [1] = índice
+                fprintf(saida, "%s[", no->filhos[0]->valor);
+                ast_gera_c(no->filhos[1], saida, 0);
+                fprintf(saida, "]");
             }
             break;
 

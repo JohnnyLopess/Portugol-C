@@ -1,0 +1,9 @@
+programa {
+    funcao inicio() {
+        inteiro v[2]
+        leia(v[0])
+        leia(v[1])
+        escreva(v[0])
+        escreva(v[1])
+    }
+}

@@ -12,6 +12,12 @@
     return STRING; 
 }
 
+'[^']'          {
+    yylval.str = strdup(yytext);
+    printf("[TOKEN] CARACTER (%s)\n", yytext);
+    return STRING; // Tratamos como string por simplicidade
+}
+
 "programa"      { printf("[TOKEN] PROGRAMA\n"); return PROGRAMA; }
 
 "inicio"        { printf("[TOKEN] INICIO\n"); return INICIO; }
@@ -62,6 +68,8 @@
 ")"             { return FECHAPAR; }
 "{"             { printf("[TOKEN] ABRECHAVE\n"); return ABRECHAVE; }
 "}"             { printf("[TOKEN] FECHACHAVE\n"); return FECHACHAVE; }
+"["             { printf("[TOKEN] ABRECOLCHETE\n"); return ABRECOLCHETE; }
+"]"             { printf("[TOKEN] FECHACOLCHETE\n"); return FECHACOLCHETE; }
 ";"             { return PONTOEVIRGULA; }
 ","             { return VIRGULA; }
 ":"             { return DOISPONTOS; }
@@ -74,6 +82,7 @@
 "^"             { return OP_BITWISE_XOR; }
 
 [0-9]+          { yylval.str = strdup(yytext); printf("[TOKEN] NUMERO (%s)\n", yytext); return NUM; }
+[0-9]+\.[0-9]+  { yylval.str = strdup(yytext); printf("[TOKEN] NUMERO (%s)\n", yytext); return NUM; }
 
 [a-zA-Z_][a-zA-Z0-9_]* {
     yylval.str = strdup(yytext);

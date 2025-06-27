@@ -1,0 +1,10 @@
+#include <stdio.h>
+
+int main() {
+    char v[3];
+    v[0] = 65;
+    v[1] = 66;
+    printf("%c\n", v[0]);
+    printf("%c\n", v[1]);
+    return 0;
+}

@@ -1,0 +1,8 @@
+#include <stdio.h>
+
+int main() {
+    char letra;
+    letra = 65;
+    printf("%c\n", letra);
+    return 0;
+}

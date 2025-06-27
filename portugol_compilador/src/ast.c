@@ -54,16 +54,17 @@ void ast_gera_c(AST *no, FILE *saida, int nivel_indent)
     switch (no->tipo)
     {
         case AST_PROGRAMA:
-            fprintf(saida, "#include <stdio.h>\n\n");
-            // Se tiver funções, gere-as antes do main
-            if (no->n_filhos > 1) { // Alterado de == 2 para > 1
-                ast_gera_c(no->filhos[0], saida, 0); // funções
+            // Adiciona includes necessários, como string.h para strcpy
+            fprintf(saida, "#include <stdio.h>\n");
+            fprintf(saida, "#include <string.h>\n\n"); // <-- Adicionado
+            if (no->n_filhos > 1) {
+                ast_gera_c(no->filhos[0], saida, 0);
                 fprintf(saida, "int main() {\n");
-                ast_gera_c(no->filhos[1], saida, 1); // bloco principal
+                ast_gera_c(no->filhos[1], saida, 1);
                 fprintf(saida, "    return 0;\n}\n");
             } else {
                 fprintf(saida, "int main() {\n");
-                ast_gera_c(no->filhos[0], saida, 1); // bloco principal
+                ast_gera_c(no->filhos[0], saida, 1);
                 fprintf(saida, "    return 0;\n}\n");
             }
             break;
@@ -79,46 +80,41 @@ void ast_gera_c(AST *no, FILE *saida, int nivel_indent)
 
         case AST_DECLARACAO:
             for (int i = 0; i < nivel_indent; i++) fprintf(saida, "    ");
-            if (no->n_filhos == 2 && no->filhos[1]->tipo == AST_ATRIBUICAO) {
-                // Declaração com inicialização simples (e.g., inteiro subtracao = b - a)
-                fprintf(saida, "%s %s = ", no->filhos[0]->valor, no->filhos[1]->filhos[0]->valor);
-                ast_gera_c(no->filhos[1]->filhos[1], saida, 0);
-                fprintf(saida, ";\n");
-            } else if (no->n_filhos == 2 && no->filhos[1]->tipo == AST_BLOCO) {
-                // Caso: múltiplas declarações (com ou sem inicialização)
-                AST* content_block = no->filhos[1];
-                if (content_block->n_filhos > 0 && content_block->filhos[0]->tipo == AST_ATRIBUICAO) {
-                    // Múltiplas declarações com inicialização (e.g., inteiro x = 10, y = 20)
-                    fprintf(saida, "%s ", no->filhos[0]->valor); // Imprime o tipo uma vez
+            
+            char* tipo_portugol = no->filhos[0]->valor;
+            AST* decl_content = no->filhos[1];
 
-                    for (int i = 0; i < content_block->n_filhos; i++) {
-                        AST* assign_node = content_block->filhos[i];
-                        if (assign_node && assign_node->tipo == AST_ATRIBUICAO) {
-                            if (i > 0) fprintf(saida, ", "); // Vírgula para declarações subsequentes
-                            ast_gera_c(assign_node->filhos[0], saida, 0); // ID
-                            fprintf(saida, " = ");
-                            ast_gera_c(assign_node->filhos[1], saida, 0); // Expressão
-                        } else {
-                            fprintf(stderr, "[ERRO] Nó de atribuição inesperado em AST_DECLARACAO com múltiplas inicializações.\n");
-                        }
+            char c_type[20];
+            int is_cadeia = (strcmp(tipo_portugol, "cadeia") == 0);
+
+            if (is_cadeia) strcpy(c_type, "char");
+            else if (strcmp(tipo_portugol, "real") == 0) strcpy(c_type, "float");
+            else strcpy(c_type, tipo_portugol);
+
+            fprintf(saida, "%s ", c_type);
+
+            if (decl_content->tipo == AST_ATRIBUICAO) {
+                fprintf(saida, "%s", decl_content->filhos[0]->valor);
+                if (is_cadeia) fprintf(saida, "[256]"); // Declara como array
+                fprintf(saida, " = ");
+                ast_gera_c(decl_content->filhos[1], saida, 0);
+            } else if (decl_content->tipo == AST_BLOCO) {
+                for (int i = 0; i < decl_content->n_filhos; i++) {
+                    if (i > 0) fprintf(saida, ", ");
+                    AST* item = decl_content->filhos[i];
+
+                    if (item->tipo == AST_ID) {
+                        fprintf(saida, "%s", item->valor);
+                        if (is_cadeia) fprintf(saida, "[256]");
+                    } else if (item->tipo == AST_ATRIBUICAO) {
+                        fprintf(saida, "%s", item->filhos[0]->valor);
+                        if (is_cadeia) fprintf(saida, "[256]");
+                        fprintf(saida, " = ");
+                        ast_gera_c(item->filhos[1], saida, 0);
                     }
-                    fprintf(saida, ";\n");
-                } else {
-                    // Declaração simples de múltiplos IDs (e.g., inteiro a, b)
-                    fprintf(saida, "%s ", no->filhos[0]->valor); // Imprime o tipo uma vez
-                    for (int i = 0; i < content_block->n_filhos; i++) {
-                        // Aqui, content_block->filhos[i] deve ser um nó AST_ID.
-                        if (content_block->filhos[i] && content_block->filhos[i]->tipo == AST_ID) {
-                            fprintf(saida, "%s", content_block->filhos[i]->valor);
-                            if (i < content_block->n_filhos - 1) fprintf(saida, ", ");
-                        } else {
-                            fprintf(stderr, "[ERRO] Nó de ID inesperado em AST_DECLARACAO com múltiplos IDs.\n");
-                        }
-                    }
-                    fprintf(saida, ";\n");
                 }
             }
-            // O bloco 'else' final foi removido pois os casos agora são tratados acima.
+            fprintf(saida, ";\n");
             break;
 
         case AST_LEITURA:
@@ -143,125 +139,125 @@ void ast_gera_c(AST *no, FILE *saida, int nivel_indent)
                     // Leitura de variável normal
                     char *nome = no->filhos[0]->valor;
                     Simbolo *s = buscarSimbolo(nome, escopo_atual);
-                    int tipo = s ? s->tipo : 0;
-                    if (tipo == 0)
-                        fprintf(saida, "scanf(\"%%d\", &%s);\n", nome);
-                    else if (tipo == 1)
-                        fprintf(saida, "scanf(\"%%f\", &%s);\n", nome);
-                    else if (tipo == 2)
-                        fprintf(saida, "scanf(\" %%c\", &%s);\n", nome); // espaço antes do %c
-                    else
-                        fprintf(saida, "scanf(\"%%d\", &%s);\n", nome); // padrão seguro
+                    int tipo = s ? s->tipo : -1;
+
+                    switch (tipo) {
+                        case TIPO_INT:
+                            fprintf(saida, "scanf(\"%%d\", &%s);\n", nome);
+                            break;
+                        case TIPO_FLOAT:
+                            fprintf(saida, "scanf(\"%%f\", &%s);\n", nome);
+                            break;
+                        case TIPO_CHAR:
+                            fprintf(saida, "scanf(\" %%c\", &%s);\n", nome);
+                            break;
+                        case TIPO_CAD:
+                            // Para strings em C (arrays de char), não se usa '&' com scanf
+                            fprintf(saida, "scanf(\"%%s\", %s);\n", nome);
+                            break;
+                        default:
+                            fprintf(saida, "scanf(\"%%d\", &%s);\n", nome); // Padrão seguro
+                            break;
+                    }
                 }
             }
             break;
 
-        case AST_ESCRITA:
-            for (int i = 0; i < nivel_indent; i++) fprintf(saida, "    ");
-            fprintf(saida, "printf(");
+            case AST_ESCRITA:  // Refatorado para suportar 'cadeia'
+                for (int i = 0; i < nivel_indent; i++) fprintf(saida, "    ");
+                fprintf(saida, "printf(");
 
-            AST* args_block = no->filhos[0]; // Deve ser um AST_BLOCO
-            if (args_block && args_block->tipo == AST_BLOCO) {
-                // Primeira passada: construir a string de formato
-                strncat(format_buffer, "\"", sizeof(format_buffer) - format_len - 1);
-                format_len++;
+                AST* args_block = no->filhos[0];
+                if (args_block && args_block->tipo == AST_BLOCO) {
+                    strncat(format_buffer, "\"", sizeof(format_buffer) - strlen(format_buffer) - 1);
 
-                for (int i = 0; i < args_block->n_filhos; i++) {
-                    AST* arg = args_block->filhos[i];
-                    if (arg->tipo == AST_STRING) {
-                        // Copia a string literal (com aspas) diretamente para o buffer
-                        char* temp_str = strdup(arg->valor);
-                        if (temp_str[0] == '"' && temp_str[strlen(temp_str) - 1] == '"') {
-                            temp_str[strlen(temp_str) - 1] = '\0';
-                            strncat(format_buffer, temp_str + 1, sizeof(format_buffer) - format_len - 1);
-                            format_len += strlen(temp_str + 1);
-                        } else {
-                            strncat(format_buffer, temp_str, sizeof(format_buffer) - format_len - 1);
-                            format_len += strlen(temp_str);
-                        }
-                        free(temp_str);
-                    } else {
-                        // Para expressões/variáveis, adiciona o especificador de formato
-                        int tipo = arg->tipo_expr;
-                        if (arg->tipo == AST_ID) {
-                            Simbolo* s = buscarSimbolo(arg->valor, escopo_atual);
-                            if (s) tipo = s->tipo;
-                        } else if (arg->tipo == AST_NUM) {
-                            if (strchr(arg->valor, '.') != NULL) {
-                                tipo = TIPO_FLOAT;
-                            } else {
-                                tipo = TIPO_INT;
-                            }
-                        }
-                        if (tipo == TIPO_FLOAT)
-                            strncat(format_buffer, "%f", sizeof(format_buffer) - format_len - 1);
-                        else if (tipo == TIPO_CHAR)
-                            strncat(format_buffer, "%c", sizeof(format_buffer) - format_len - 1);
-                        else if (tipo == TIPO_BOOL) // Add format specifier for boolean
-                             strncat(format_buffer, "%d", sizeof(format_buffer) - format_len - 1);
-                        else
-                            strncat(format_buffer, "%d", sizeof(format_buffer) - format_len - 1);
-                        format_len += 2; // comprimento de "%d", "%f" ou "%c"
+                    int tem_variavel = 0; // Flag para verificar se há variáveis no printf
 
-                        needs_comma_for_args = 1; // É necessário separar os argumentos depois
-                    }
-                }
-
-                // Ajusta o fechamento da string de formato
-                // Após construir o format_buffer com o loop, conte quantos argumentos não são literais
-                int nonStringCount = 0;
-                for (int i = 0; i < args_block->n_filhos; i++) {
-                    if (args_block->filhos[i]->tipo != AST_STRING)
-                        nonStringCount++;
-                }
-                // Se há exatamente um argumento e ele NÃO é literal, adiciona "\\n"
-                if (args_block->n_filhos == 1 && nonStringCount == 1) {
-                    int len = strlen(format_buffer);
-                    if (len > 0 && format_buffer[len - 1] == '"') {
-                        format_buffer[len - 1] = '\0';
-                    }
-                    strncat(format_buffer, "\\n\"", sizeof(format_buffer) - strlen(format_buffer) - 1);
-                } else {
-                    // Caso contrário, apenas fecha a string com aspas, se necessário.
-                    int len = strlen(format_buffer);
-                    if (len == 0 || format_buffer[len - 1] != '"') {
-                        strncat(format_buffer, "\"", sizeof(format_buffer) - len - 1);
-                    }
-                }
-                fprintf(saida, "%s", format_buffer); // Imprime a string de formato completa
-
-                // Segunda passada: gera os argumentos (imprime apenas os que não são literais)
-                if (nonStringCount > 0) {
-                    fprintf(saida, ", ");
-                    int first_arg_printed = 0;
                     for (int i = 0; i < args_block->n_filhos; i++) {
                         AST* arg = args_block->filhos[i];
-                        if (arg->tipo != AST_STRING) { // Apenas os argumentos não literais
-                            if (first_arg_printed) fprintf(saida, ", ");
-                            ast_gera_c(arg, saida, 0); // Gera a expressão/ID
-                            first_arg_printed = 1;
+                        if (arg->tipo == AST_STRING) {
+                            // Adiciona a string literal ao buffer
+                            char* temp_str = strdup(arg->valor);
+                            if (temp_str[0] == '"') { // Remove aspas externas
+                                temp_str[strlen(temp_str) - 1] = '\0';
+                                strncat(format_buffer, temp_str + 1, sizeof(format_buffer) - strlen(format_buffer) - 1);
+                            } else {
+                                strncat(format_buffer, temp_str, sizeof(format_buffer) - strlen(format_buffer) - 1);
+                            }
+                            free(temp_str);
+                        } else {
+                            // Adiciona o especificador de formato para variáveis
+                            int tipo = arg->tipo_expr;
+                            if (arg->tipo == AST_ID) {
+                                Simbolo* s = buscarSimbolo(arg->valor, escopo_atual);
+                                if (s) tipo = s->tipo;
+                            } else if (arg->tipo == AST_NUM) {
+                                tipo = (strchr(arg->valor, '.') != NULL) ? TIPO_FLOAT : TIPO_INT;
+                            }
+
+                            if (tipo == TIPO_FLOAT) strncat(format_buffer, "%f", sizeof(format_buffer) - strlen(format_buffer) - 1);
+                            else if (tipo == TIPO_CAD) strncat(format_buffer, "%s", sizeof(format_buffer) - strlen(format_buffer) - 1);
+                            else if (tipo == TIPO_CHAR) strncat(format_buffer, "%c", sizeof(format_buffer) - strlen(format_buffer) - 1);
+                            else if (tipo == TIPO_BOOL) strncat(format_buffer, "%d", sizeof(format_buffer) - strlen(format_buffer) - 1);
+                            else strncat(format_buffer, "%d", sizeof(format_buffer) - strlen(format_buffer) - 1);
+
+                            tem_variavel = 1; // Marca que há uma variável
+                        }
+                    }
+
+                    // Adiciona \n ao final apenas se houver variáveis
+                    if (tem_variavel) {
+                        strncat(format_buffer, "\\n", sizeof(format_buffer) - strlen(format_buffer) - 1);
+                    }
+
+                    strncat(format_buffer, "\"", sizeof(format_buffer) - strlen(format_buffer) - 1);
+                    fprintf(saida, "%s", format_buffer);
+
+                    // Gera os argumentos (variáveis) para o printf
+                    int first_arg_printed = 0;
+                    for (int i = 0; i < args_block->n_filhos; i++) {
+                        if (args_block->filhos[i]->tipo != AST_STRING) {
+                            if (!first_arg_printed) {
+                                fprintf(saida, ", ");
+                                first_arg_printed = 1;
+                            } else {
+                                fprintf(saida, ", ");
+                            }
+                            ast_gera_c(args_block->filhos[i], saida, 0);
                         }
                     }
                 }
-            }
-            fprintf(saida, ");\n");
-            break;
+                fprintf(saida, ");\n");
+                break;
 
-        case AST_ATRIBUICAO:
-            for (int i = 0; i < nivel_indent; i++) fprintf(saida, "    ");
-            if (no->n_filhos >= 2 && no->filhos[0] && no->filhos[1]) {
-                if (no->filhos[0]->tipo == AST_VETOR_ACESSO) {
-                    // Atribuição a elemento de vetor
-                    ast_gera_c(no->filhos[0], saida, 0);
-                } else {
-                    // Atribuição normal a variável
-                    fprintf(saida, "%s", no->filhos[0]->valor);
-                }
-                fprintf(saida, " = ");
-                ast_gera_c(no->filhos[1], saida, 0);
-                fprintf(saida, ";\n");
-            }
-            break;
+                case AST_ATRIBUICAO:  // Refatorado para suportar 'cadeia'
+                    for (int i = 0; i < nivel_indent; i++) fprintf(saida, "    ");
+                    if (no->n_filhos >= 2 && no->filhos[0] && no->filhos[1]) {
+                        Simbolo* s = NULL;
+                        if (no->filhos[0]->tipo == AST_ID) {
+                            s = buscarSimbolo(no->filhos[0]->valor, escopo_atual);
+                        }
+        
+                        // Se a variável for do tipo cadeia e a expressão for uma string literal,
+                        // usamos strcpy para a atribuição.
+                        if (s && s->tipo == TIPO_CAD && no->filhos[1]->tipo == AST_STRING) {
+                            fprintf(saida, "strcpy(%s, ", no->filhos[0]->valor);
+                            ast_gera_c(no->filhos[1], saida, 0);
+                            fprintf(saida, ");\n");
+                        } else {
+                            // Lógica original para outros tipos de atribuição
+                            if (no->filhos[0]->tipo == AST_VETOR_ACESSO) {
+                                ast_gera_c(no->filhos[0], saida, 0);
+                            } else {
+                                fprintf(saida, "%s", no->filhos[0]->valor);
+                            }
+                            fprintf(saida, " = ");
+                            ast_gera_c(no->filhos[1], saida, 0);
+                            fprintf(saida, ";\n");
+                        }
+                    }
+                    break;
+                
 
         case AST_IF:
             for (int i = 0; i < nivel_indent; i++) fprintf(saida, "    ");

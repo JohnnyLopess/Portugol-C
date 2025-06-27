@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <string.h>
 
 int fat(int n) {
     if (n == 0) {

@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <string.h>
 
 int main() {
     float num1, num2, resultado;
@@ -34,6 +35,6 @@ int main() {
             return 1;
     }
     
-    printf("Resultado: %f", resultado);
+    printf("Resultado: %f\n", resultado);
     return 0;
 }

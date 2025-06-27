@@ -22,6 +22,7 @@ Simbolo *inserirParametro(char *nome, int tipo, int escopo, int referencia);
 #define TIPO_CHAR 2
 #define TIPO_BOOL 3
 #define TIPO_VOID 4
+#define TIPO_CAD 5
 
 %}
 
@@ -37,7 +38,7 @@ Simbolo *inserirParametro(char *nome, int tipo, int escopo, int referencia);
 }
 
 %token PROGRAMA INICIO FIM LEIA ESCREVA
-%token TIPO_INTEIRO TIPO_REAL TIPO_CARACTER TIPO_LOGICO TIPO_VAZIO
+%token TIPO_INTEIRO TIPO_REAL TIPO_CARACTER TIPO_LOGICO TIPO_VAZIO TIPO_CADEIA
 %token SE SENAO ENTAO FIMSE
 %token ABRECHAVE FECHACHAVE
 %token ABRECOLCHETE FECHACOLCHETE
@@ -242,16 +243,34 @@ chamada_funcao:
 
 declaracao:
     tipo lista_ids {
-        for (int i = 0; i < $2->n_filhos; i++) {
-            inserirSimbolo($2->filhos[i]->valor, $1, escopo_atual);
-        }
-        $$ = ast_cria(AST_DECLARACAO, NULL, 2, ast_cria(AST_TIPO, strdup($1 == TIPO_INT ? "int" : $1 == TIPO_FLOAT ? "float" : $1 == TIPO_CHAR ? "char" : "bool"), 0), $2);
+            for (int i = 0; i < $2->n_filhos; i++) {
+                inserirSimbolo($2->filhos[i]->valor, $1, escopo_atual);
+            }
+            const char* tipo_str;
+            switch($1) {
+                case TIPO_INT: tipo_str = "int"; break;
+                case TIPO_FLOAT: tipo_str = "float"; break;
+                case TIPO_CHAR: tipo_str = "char"; break;
+                case TIPO_BOOL: tipo_str = "bool"; break;
+                case TIPO_CAD: tipo_str = "cadeia"; break;
+                default: tipo_str = "void";
+            }
+            $$ = ast_cria(AST_DECLARACAO, NULL, 2, ast_cria(AST_TIPO, strdup(tipo_str), 0), $2);
     }
     | tipo ID IGUAL expressao {
         inserirSimbolo($2, $1, escopo_atual);
         marcarVariavelInicializada($2, escopo_atual);
         AST* atribuicao = ast_cria(AST_ATRIBUICAO, NULL, 2, ast_cria(AST_ID, strdup($2), 0), $4);
-        $$ = ast_cria(AST_DECLARACAO, NULL, 2, ast_cria(AST_TIPO, strdup($1 == TIPO_INT ? "int" : $1 == TIPO_FLOAT ? "float" : $1 == TIPO_CHAR ? "char" : "bool"), 0), atribuicao);
+        const char* tipo_str;
+        switch($1) {
+            case TIPO_INT: tipo_str = "int"; break;
+            case TIPO_FLOAT: tipo_str = "float"; break;
+            case TIPO_CHAR: tipo_str = "char"; break;
+            case TIPO_BOOL: tipo_str = "bool"; break;
+            case TIPO_CAD: tipo_str = "cadeia"; break;
+            default: tipo_str = "void";
+        }
+        $$ = ast_cria(AST_DECLARACAO, NULL, 2, ast_cria(AST_TIPO, strdup(tipo_str), 0), atribuicao);
     }
     | tipo ID ABRECOLCHETE NUM FECHACOLCHETE {
         inserirSimbolo($2, $1, escopo_atual);
@@ -328,6 +347,7 @@ tipo:
     | TIPO_CARACTER { $$ = TIPO_CHAR; }
     | TIPO_LOGICO    { $$ = TIPO_BOOL; }
     | TIPO_VAZIO     { $$ = TIPO_VOID; }
+    | TIPO_CADEIA   { $$ = TIPO_CAD; }
 ;
 
 leitura:
@@ -538,9 +558,9 @@ expressao:
 
     }
     | STRING {
-        AST* str_node = ast_cria(AST_STRING, strdup($1), 0);
-        str_node->tipo_expr = TIPO_CHAR; // Assumindo que STRING representa um tipo CARACTER
-        $$ = str_node;
+            AST* str_node = ast_cria(AST_STRING, strdup($1), 0);
+            str_node->tipo_expr = TIPO_CAD;
+            $$ = str_node;
     }
     | ABREPAR expressao FECHAPAR {
         $$ = $2; // Parenthesized expressions

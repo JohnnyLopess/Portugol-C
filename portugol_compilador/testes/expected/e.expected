@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <string.h>
 
 int main() {
     //Teste utilizando o operador lógico "e" onde a deve ser igual a 2 e b deve ser igual a 2 também  

@@ -1,0 +1,12 @@
+programa {
+    funcao inicio() {
+        inteiro a[3]
+        inteiro b[3]
+        a[0] = 10
+        a[1] = 20
+        b[0] = a[0] + 5
+        b[1] = a[1] * 2
+        escreva(b[0])
+        escreva(b[1])
+    }
+}

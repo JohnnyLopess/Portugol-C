@@ -1,0 +1,9 @@
+programa {
+    funcao inicio() {
+        real v[3]
+        v[0] = 3.14
+        v[1] = 2.71
+        escreva(v[0])
+        escreva(v[1])
+    }
+}

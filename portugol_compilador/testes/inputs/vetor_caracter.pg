@@ -1,0 +1,9 @@
+programa {
+    funcao inicio() {
+        caracter v[3]
+        v[0] = 65
+        v[1] = 66
+        escreva(v[0])
+        escreva(v[1])
+    }
+}

@@ -1,0 +1,9 @@
+programa {
+    funcao inicio() {
+        logico v[2]
+        v[0] = 1
+        v[1] = 0
+        escreva(v[0])
+        escreva(v[1])
+    }
+}

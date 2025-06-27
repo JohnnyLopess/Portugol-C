@@ -1,0 +1,41 @@
+#include <stdio.h>
+
+int main() {
+    //Teste do operador 'e'
+    int a = 10;
+    int b = 20;
+    if (a > 5 && b < 25) {
+        printf("Condicao 1: Verdadeiro\n");
+    } else {
+        printf("Condicao 1: Falso\n");
+    }
+    //Teste do operador 'ou'
+    int x = 5;
+    int y = 15;
+    if (x == 5 || y == 10) {
+        printf("Condicao 2: Verdadeiro\n");
+    } else {
+        printf("Condicao 2: Falso\n");
+    }
+    //Teste do operador 'nao'
+    bool estaAtivo = 1;
+    if (!estaAtivo) {
+        printf("Condicao 3: Falso (inverteu)\n");
+    } else {
+        printf("Condicao 3: Verdadeiro (inverteu)\n");
+    }
+    //Combinação de operadores
+    int p = 1;
+    int q = 2;
+    int r = 3;
+    if (p < q && q < r || !p == r) {
+        printf("Condicao 4: Verdadeiro\n");
+    } else {
+        printf("Condicao 4: Falso\n");
+    }
+    //Teste de propagação de constantes lógicas
+    //Teste de dead code elimination em while
+    //Teste de dead code elimination em if
+    printf("Condicao 7: Else do if morto\n");
+    return 0;
+}

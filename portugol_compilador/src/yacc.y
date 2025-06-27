@@ -52,6 +52,9 @@ Simbolo *inserirParametro(char *nome, int tipo, int escopo, int referencia);
 %token <str> COMENTARIO_LINHA COMENTARIO_BLOCO
 %token ESCOLHA CASO PARE CASO_CONTRARIO
 %token INCREMENTO DECREMENTO
+%token E_LOGICO
+%token OU_LOGICO 
+%token NAO_LOGICO 
 %type <ast> programa corpo_programa lista_funcoes funcao cabecalho_funcao lista_args args bloco bloco_conteudo comando declaracao leitura escrita atribuicao expressao lista_parametros parametros parametro chamada_funcao condicional senao_bloco
 %type <inteiro> tipo
 %type <ast> comentario
@@ -64,7 +67,10 @@ Simbolo *inserirParametro(char *nome, int tipo, int escopo, int referencia);
 // token Bitwise
 %token OP_BITWISE_AND OP_BITWISE_NOT OP_BITWISE_OR OP_BITWISE_LEFT_SHIFT OP_BITWISE_RIGHT_SHIFT OP_BITWISE_XOR
 
-
+%left OU_LOGICO
+%left E_LOGICO
+%left COMPARA DIFERENTE MENOR MAIOR MENOR_IGUAL MAIOR_IGUAL
+%right NAO_LOGICO
 %left SOMA SUB
 %left MUL DIV MODULO
 
@@ -491,6 +497,27 @@ expressao:
         AST* str_node = ast_cria(AST_STRING, strdup($1), 0);
         str_node->tipo_expr = TIPO_CHAR; // Assumindo que STRING representa um tipo CARACTER
         $$ = str_node;
+    }
+    | ABREPAR expressao FECHAPAR {
+        $$ = $2; // Parenthesized expressions
+    }
+    | expressao E_LOGICO expressao {
+        // "e" lógico (AND)
+        AST* novo = ast_cria(AST_AND, NULL, 2, $1, $3);
+        novo->tipo_expr = TIPO_BOOL;
+        $$ = novo;
+    }
+    | expressao OU_LOGICO expressao {
+        // "ou" lógico (OR)
+        AST* novo = ast_cria(AST_OR, NULL, 2, $1, $3);
+        novo->tipo_expr = TIPO_BOOL;
+        $$ = novo;
+    }
+    | NAO_LOGICO expressao {
+        // "nao" lógico (NOT)
+        AST* novo = ast_cria(AST_NOT, NULL, 1, $2);
+        novo->tipo_expr = TIPO_BOOL;
+        $$ = novo;
     }
 ;
 

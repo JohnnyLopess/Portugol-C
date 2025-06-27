@@ -1,0 +1,70 @@
+programa
+{
+    funcao inicio()
+    {
+        // Teste do operador 'e'
+        inteiro a = 10
+        inteiro b = 20
+        se (a > 5 e b < 25)
+        {
+            escreva("Condicao 1: Verdadeiro\n")
+        }
+        senao
+        {
+            escreva("Condicao 1: Falso\n")
+        }
+
+        // Teste do operador 'ou'
+        inteiro x = 5
+        inteiro y = 15
+        se (x == 5 ou y == 10)
+        {
+            escreva("Condicao 2: Verdadeiro\n")
+        }
+        senao
+        {
+            escreva("Condicao 2: Falso\n")
+        }
+
+        // Teste do operador 'nao'
+        logico estaAtivo = 1
+        se (nao estaAtivo)
+        {
+            escreva("Condicao 3: Falso (inverteu)\n")
+        }
+        senao
+        {
+            escreva("Condicao 3: Verdadeiro (inverteu)\n")
+        }
+
+        // Combinação de operadores
+        inteiro p = 1
+        inteiro q = 2
+        inteiro r = 3
+        se ((p < q e q < r) ou nao (p == r))
+        {
+            escreva("Condicao 4: Verdadeiro\n")
+        }
+        senao
+        {
+            escreva("Condicao 4: Falso\n")
+        }
+        
+        // Teste de propagação de constantes lógicas
+        se (0 e 1) {
+            escreva("Condicao 5: Nunca deveria aparecer\n")
+        }
+        
+        // Teste de dead code elimination em while
+        enquanto (0) {
+            escreva("Condicao 6: Loop morto\n")
+        }
+
+        // Teste de dead code elimination em if
+        se (0) {
+            escreva("Condicao 7: If morto\n")
+        } senao {
+            escreva("Condicao 7: Else do if morto\n")
+        }
+    }
+}

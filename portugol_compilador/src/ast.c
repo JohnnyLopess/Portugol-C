@@ -171,6 +171,8 @@ void ast_gera_c(AST *no, FILE *saida, int nivel_indent)
                             strncat(format_buffer, "%f", sizeof(format_buffer) - format_len - 1);
                         else if (tipo == TIPO_CHAR)
                             strncat(format_buffer, "%c", sizeof(format_buffer) - format_len - 1);
+                        else if (tipo == TIPO_BOOL) // Add format specifier for boolean
+                             strncat(format_buffer, "%d", sizeof(format_buffer) - format_len - 1);
                         else
                             strncat(format_buffer, "%d", sizeof(format_buffer) - format_len - 1);
                         format_len += 2; // comprimento de "%d", "%f" ou "%c"
@@ -351,6 +353,20 @@ void ast_gera_c(AST *no, FILE *saida, int nivel_indent)
                 ast_gera_c(no->filhos[1], saida, 0);
             }
             break;
+        case AST_AND: // Added for logical AND
+            ast_gera_c(no->filhos[0], saida, 0);
+            fprintf(saida, " && ");
+            ast_gera_c(no->filhos[1], saida, 0);
+            break;
+        case AST_OR: // Added for logical OR
+            ast_gera_c(no->filhos[0], saida, 0);
+            fprintf(saida, " || ");
+            ast_gera_c(no->filhos[1], saida, 0);
+            break;
+        case AST_NOT: // Added for logical NOT
+            fprintf(saida, "!");
+            ast_gera_c(no->filhos[0], saida, 0);
+            break;
 
         case AST_NUM:
         case AST_ID:
@@ -525,33 +541,116 @@ AST* otimiza_ast_propagacao_constantes(AST* no) {
         AST *esq = no->filhos[0];
         AST *dir = no->filhos[1];
         if (esq->tipo == AST_NUM && dir->tipo == AST_NUM && no->valor) {
-            int v1 = atoi(esq->valor);
-            int v2 = atoi(dir->valor);
-            int resultado = 0;
-            int pode_otimizar = 1;
+            // Check for float operations
+            if (esq->tipo_expr == TIPO_FLOAT || dir->tipo_expr == TIPO_FLOAT) {
+                float v1 = atof(esq->valor);
+                float v2 = atof(dir->valor);
+                float resultado_f = 0.0f;
+                int pode_otimizar_f = 1;
 
-            if (strcmp(no->valor, "+") == 0) resultado = v1 + v2;
-            else if (strcmp(no->valor, "-") == 0) resultado = v1 - v2;
-            else if (strcmp(no->valor, "*") == 0) resultado = v1 * v2;
-            else if (strcmp(no->valor, "/") == 0 && v2 != 0) resultado = v1 / v2;
-            else pode_otimizar = 0;
+                if (strcmp(no->valor, "+") == 0) resultado_f = v1 + v2;
+                else if (strcmp(no->valor, "-") == 0) resultado_f = v1 - v2;
+                else if (strcmp(no->valor, "*") == 0) resultado_f = v1 * v2;
+                else if (strcmp(no->valor, "/") == 0 && v2 != 0) resultado_f = v1 / v2;
+                else pode_otimizar_f = 0;
 
-            if (pode_otimizar) {
-                ast_libera(esq);
-                ast_libera(dir);
-                free(no->filhos);
+                if (pode_otimizar_f) {
+                    ast_libera(esq);
+                    ast_libera(dir);
+                    free(no->filhos);
 
-                char buf[32];
-                sprintf(buf, "%d", resultado);
-                free(no->valor);
-                no->valor = strdup(buf);
-                no->tipo = AST_NUM;
-                no->n_filhos = 0;
-                no->filhos = NULL;
-                printf("[DEBUG] Redução de constante: %d %s %d = %d\n", v1, no->valor, v2, resultado);
+                    char buf[64]; // Increased buffer size for float
+                    sprintf(buf, "%f", resultado_f);
+                    free(no->valor);
+                    no->valor = strdup(buf);
+                    no->tipo = AST_NUM;
+                    no->tipo_expr = TIPO_FLOAT;
+                    no->n_filhos = 0;
+                    no->filhos = NULL;
+                    printf("[DEBUG] Redução de constante float: %f %s %f = %f\n", v1, no->valor, v2, resultado_f);
+                    return no;
+                }
+            } else { // Integer operations
+                int v1 = atoi(esq->valor);
+                int v2 = atoi(dir->valor);
+                int resultado = 0;
+                int pode_otimizar = 1;
+
+                if (strcmp(no->valor, "+") == 0) resultado = v1 + v2;
+                else if (strcmp(no->valor, "-") == 0) resultado = v1 - v2;
+                else if (strcmp(no->valor, "*") == 0) resultado = v1 * v2;
+                else if (strcmp(no->valor, "/") == 0 && v2 != 0) resultado = v1 / v2;
+                else pode_otimizar = 0;
+
+                if (pode_otimizar) {
+                    ast_libera(esq);
+                    ast_libera(dir);
+                    free(no->filhos);
+
+                    char buf[32];
+                    sprintf(buf, "%d", resultado);
+                    free(no->valor);
+                    no->valor = strdup(buf);
+                    no->tipo = AST_NUM;
+                    no->tipo_expr = TIPO_INT;
+                    no->n_filhos = 0;
+                    no->filhos = NULL;
+                    printf("[DEBUG] Redução de constante int: %d %s %d = %d\n", v1, no->valor, v2, resultado);
+                    return no;
+                }
             }
         }
     }
+    if ((no->tipo == AST_AND || no->tipo == AST_OR) && no->n_filhos == 2 && no->filhos[0] && no->filhos[1]) {
+        AST *esq = no->filhos[0];
+        AST *dir = no->filhos[1];
+        if (esq->tipo == AST_NUM && dir->tipo == AST_NUM) { // Assuming 0 for false, non-zero for true
+            int v1 = atoi(esq->valor);
+            int v2 = atoi(dir->valor);
+            int resultado_logico = 0;
+            if (no->tipo == AST_AND) {
+                resultado_logico = v1 && v2;
+                printf("[DEBUG] Redução de constante lógica AND: %d && %d = %d\n", v1, v2, resultado_logico);
+            } else if (no->tipo == AST_OR) {
+                resultado_logico = v1 || v2;
+                printf("[DEBUG] Redução de constante lógica OR: %d || %d = %d\n", v1, v2, resultado_logico);
+            }
+            ast_libera(esq);
+            ast_libera(dir);
+            free(no->filhos);
+
+            char buf[32];
+            sprintf(buf, "%d", resultado_logico);
+            free(no->valor);
+            no->valor = strdup(buf);
+            no->tipo = AST_NUM;
+            no->tipo_expr = TIPO_BOOL;
+            no->n_filhos = 0;
+            no->filhos = NULL;
+            return no;
+        }
+    } else if (no->tipo == AST_NOT && no->n_filhos == 1 && no->filhos[0]) {
+        AST *operand = no->filhos[0];
+        if (operand->tipo == AST_NUM) {
+            int v = atoi(operand->valor);
+            int resultado_logico = !v;
+            printf("[DEBUG] Redução de constante lógica NOT: !%d = %d\n", v, resultado_logico);
+            ast_libera(operand);
+            free(no->filhos);
+
+            char buf[32];
+            sprintf(buf, "%d", resultado_logico);
+            free(no->valor);
+            no->valor = strdup(buf);
+            no->tipo = AST_NUM;
+            no->tipo_expr = TIPO_BOOL;
+            no->n_filhos = 0;
+            no->filhos = NULL;
+            return no;
+        }
+    }
+
+
     return no;
 }
 
@@ -587,7 +686,8 @@ AST* otimiza_ast_dead_code(AST* no) {
     if (no->tipo == AST_IF && no->n_filhos >= 2 && no->filhos[0] && no->filhos[0]->tipo == AST_NUM) {
         int cond = atoi(no->filhos[0]->valor);
         if (cond) {
-            // if (1): substitui pelo bloco "then"
+            // if (true): substitui pelo bloco "then"
+            printf("[DEBUG] Removendo if com condição sempre verdadeira.\n");
             AST* bloco = no->filhos[1];
             ast_libera(no->filhos[0]);
             if (no->n_filhos > 2) ast_libera(no->filhos[2]);
@@ -597,7 +697,8 @@ AST* otimiza_ast_dead_code(AST* no) {
             free(no);
             return novo;
         } else {
-            // if (0): substitui pelo bloco "else" se existir, senão remove
+            // if (false): substitui pelo bloco "else" se existir, senão remove
+            printf("[DEBUG] Removendo if com condição sempre falsa.\n");
             AST* bloco = (no->n_filhos > 2) ? no->filhos[2] : NULL;
             ast_libera(no->filhos[0]);
             ast_libera(no->filhos[1]);
@@ -619,7 +720,8 @@ AST* otimiza_ast_dead_code(AST* no) {
     if (no->tipo == AST_WHILE && no->n_filhos >= 2 && no->filhos[0] && no->filhos[0]->tipo == AST_NUM) {
         int cond = atoi(no->filhos[0]->valor);
         if (!cond) {
-            // while (0): remove o laço
+            // while (false): remove o laço
+            printf("[DEBUG] Removendo while com condição sempre falsa.\n");
             ast_libera(no->filhos[0]);
             ast_libera(no->filhos[1]);
             free(no->filhos);
@@ -627,7 +729,7 @@ AST* otimiza_ast_dead_code(AST* no) {
             free(no);
             return NULL;
         }
-        // while (1): laço infinito, mantém
+        // while (true): laço infinito, mantém
     }
 
     return no;

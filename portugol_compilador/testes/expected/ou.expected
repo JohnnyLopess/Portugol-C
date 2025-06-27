@@ -1,0 +1,17 @@
+#include <stdio.h>
+
+int main() {
+    //Teste utilizando o operador lógico "ou" onde a deve ser igual a 2 ou pelo menos b deve ser igual a 2, qualquer um destes satisfaz o teste oferecendo-lhe verdadeiro como resposta  
+    int a = 2;
+    int b = 2;
+    if (a == 2 || b == 2) {
+        printf("Teste positivo");
+    }
+    //Neste caso c é igual a 2, entretanto d não é igual a 2, mas qualquer uma das condições oferece ao teste como resposta: verdadeiro  
+    int c = 2;
+    int d = 3;
+    if (c == 2 || d == 2) {
+        printf("Teste positivo");
+    }
+    return 0;
+}

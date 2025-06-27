@@ -1,0 +1,8 @@
+programa
+{
+    funcao inicio() {
+        logico verdadeiro
+        verdadeiro = 1
+        escreva(verdadeiro)
+    }
+}

@@ -32,17 +32,14 @@ Esta seção apresenta diversos exemplos práticos de programas em Portugol e su
     programa {
         funcao inicio() {
             inteiro idade
-            real altura
             caracter inicial
             logico ativo
-            
+
             idade = 25
-            altura = 1.75
             inicial = 65  // 'A'
             ativo = 1     // verdadeiro
-            
+
             escreva("Idade: ", idade)
-            escreva("Altura: ", altura)
             escreva("Inicial: ", inicial)
             escreva("Ativo: ", ativo)
         }
@@ -55,15 +52,12 @@ Esta seção apresenta diversos exemplos práticos de programas em Portugol e su
 
     int main() {
         int idade;
-        float altura;
         char inicial;
         bool ativo;
         idade = 25;
-        altura = 1.75;
         inicial = 65;
         ativo = 1;
         printf("Idade: %d\n", idade);
-        printf("Altura: %f\n", altura);
         printf("Inicial: %c\n", inicial);
         printf("Ativo: %d\n", ativo);
         return 0;
@@ -149,8 +143,8 @@ Esta seção apresenta diversos exemplos práticos de programas em Portugol e su
     programa {
         funcao inicio() {
             inteiro i
-            
-            para (i = 1; i <= 10; i = i + 1) {
+
+            para (inteiro i = 1; i <= 10; i++) {
                 escreva("Número: ", i)
             }
         }
@@ -162,7 +156,7 @@ Esta seção apresenta diversos exemplos práticos de programas em Portugol e su
     #include <stdio.h>
 
     int main() {
-        for (int i = 1; i <= 10; i = i + 1) {
+        for (int i = 1; i <= 10; i++) {
             printf("Número: %d\n", i);
         }
         return 0;
@@ -179,14 +173,14 @@ Esta seção apresenta diversos exemplos práticos de programas em Portugol e su
         funcao inicio() {
             inteiro numeros[5]
             inteiro i
-            
+
             // Preenchendo o vetor
-            para (i = 0; i < 5; i = i + 1) {
+            para (inteiro i = 0; i < 5; i++) {
                 numeros[i] = i * 10
             }
-            
+
             // Exibindo o vetor
-            para (i = 0; i < 5; i = i + 1) {
+            para (inteiro i = 0; i < 5; i++) {
                 escreva("numeros[", i, "] = ", numeros[i])
             }
         }
@@ -200,10 +194,10 @@ Esta seção apresenta diversos exemplos práticos de programas em Portugol e su
     int main() {
         int numeros[5];
         int i;
-        for (int i = 0; i < 5; i = i + 1) {
+        for (int i = 0; i < 5; i++) {
             numeros[i] = i * 10;
         }
-        for (int i = 0; i < 5; i = i + 1) {
+        for (int i = 0; i < 5; i++) {
             printf("numeros[%d] = %d\n", i, numeros[i]);
         }
         return 0;
@@ -363,41 +357,6 @@ Esta seção apresenta diversos exemplos práticos de programas em Portugol e su
             }
             
             escreva("Resultado: ", resultado)
-        }
-    }
-    ```
-
-### Busca em Vetor
-
-=== "Portugol"
-    ```portugol
-    programa {
-        funcao inicio() {
-            inteiro vetor[5]
-            inteiro busca, i, encontrado
-            
-            // Preenchendo o vetor
-            vetor[0] = 10
-            vetor[1] = 25
-            vetor[2] = 30
-            vetor[3] = 15
-            vetor[4] = 40
-            
-            escreva("Digite o número a buscar: ")
-            leia(busca)
-            
-            encontrado = 0
-            para (i = 0; i < 5; i = i + 1) {
-                se (vetor[i] == busca) {
-                    escreva("Número encontrado na posição: ", i)
-                    encontrado = 1
-                    pare
-                }
-            }
-            
-            se (encontrado == 0) {
-                escreva("Número não encontrado")
-            }
         }
     }
     ```

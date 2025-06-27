@@ -148,7 +148,7 @@ escolha (variavel) {
     caso valor2:
         // código para valor2
         pare;
-    padrao:
+    caso contrario:
         // código padrão
         pare;
 }
@@ -170,7 +170,7 @@ programa {
             caso 3:
                 escreva("Opção 3 selecionada\n");
                 pare;
-            padrao:
+            caso contrario:
                 escreva("Opção inválida\n");
                 pare;
         }
@@ -188,7 +188,7 @@ programa {
             caso 'C':
                 escreva("Satisfatório\n");
                 pare;
-            padrao:
+            caso contrario:
                 escreva("Nota inválida\n");
                 pare;
         }

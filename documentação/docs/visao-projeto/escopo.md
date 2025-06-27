@@ -56,6 +56,13 @@ var
 - `ou`
 - `nao`
 
+### Bit a Bit Unarios
+
+- `&` (bitwise AND)
+- `~` (bitwise NOT)
+- `|` (bitwise OR)
+- `^` (bitwise XOR)
+
 ---
 
 ## ✅ Tipos de Dados

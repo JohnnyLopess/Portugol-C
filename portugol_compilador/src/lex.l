@@ -47,6 +47,10 @@
 
 "para"          {printf("[TOKEN] PARA\n"); return PARA;}
 
+"e"              { printf("[TOKEN] E_LOGICO\n"); return E_LOGICO; }
+"ou"             { printf("[TOKEN] OU_LOGICO\n"); return OU_LOGICO; }
+"nao"            { printf("[TOKEN] NAO_LOGICO\n"); return NAO_LOGICO; }
+
 "=="            { printf("[TOKEN] COMPARA\n"); return COMPARA; }
 "="             { printf("[TOKEN] IGUAL\n"); return IGUAL; }
 "!="            { return DIFERENTE; }

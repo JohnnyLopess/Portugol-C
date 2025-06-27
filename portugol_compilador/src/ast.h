@@ -26,7 +26,10 @@ typedef enum {
     AST_INCREMENTO,
     AST_DECREMENTO,
     AST_VETOR_DECLARACAO,
-    AST_VETOR_ACESSO
+    AST_VETOR_ACESSO,
+    AST_AND,
+    AST_OR, 
+    AST_NOT  
 } ASTTipo;
 
 typedef struct AST {

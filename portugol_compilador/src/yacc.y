@@ -52,6 +52,9 @@ Simbolo *inserirParametro(char *nome, int tipo, int escopo, int referencia);
 %token <str> COMENTARIO_LINHA COMENTARIO_BLOCO
 %token ESCOLHA CASO PARE CASO_CONTRARIO
 %token INCREMENTO DECREMENTO
+%token E_LOGICO
+%token OU_LOGICO 
+%token NAO_LOGICO 
 %type <ast> programa corpo_programa lista_funcoes funcao cabecalho_funcao lista_args args bloco bloco_conteudo comando declaracao leitura escrita atribuicao expressao lista_parametros parametros parametro chamada_funcao condicional senao_bloco
 %type <inteiro> tipo
 %type <ast> comentario
@@ -59,11 +62,16 @@ Simbolo *inserirParametro(char *nome, int tipo, int escopo, int referencia);
 %type <ast> escolha caso lista_casos caso_contrario
 %type <ast> incremento_decremento
 %type <ast> lista_escrita_args escrita_arg
+%type <ast> iteracao_for
+%type <ast> declaracao_multipla_inicializacao // NOVO: para declarações com múltiplas inicializações
 
 // token Bitwise
 %token OP_BITWISE_AND OP_BITWISE_NOT OP_BITWISE_OR OP_BITWISE_LEFT_SHIFT OP_BITWISE_RIGHT_SHIFT OP_BITWISE_XOR
 
-
+%left OU_LOGICO
+%left E_LOGICO
+%left COMPARA DIFERENTE MENOR MAIOR MENOR_IGUAL MAIOR_IGUAL
+%right NAO_LOGICO
 %left SOMA SUB
 %left MUL DIV MODULO
 
@@ -188,7 +196,7 @@ comando:
     | ENQUANTO ABREPAR expressao FECHAPAR ABRECHAVE bloco FECHACHAVE {
         $$ = ast_cria(AST_WHILE, NULL, 2, $3, $6);
     }
-    | PARA ABREPAR declaracao PONTOEVIRGULA expressao PONTOEVIRGULA expressao FECHAPAR ABRECHAVE bloco FECHACHAVE {
+    | PARA ABREPAR declaracao PONTOEVIRGULA expressao PONTOEVIRGULA iteracao_for FECHAPAR ABRECHAVE bloco FECHACHAVE {
         $$ = ast_cria(AST_FOR, NULL, 4, $3, $5, $7, $10);
     }
     | RETORNE expressao {
@@ -196,6 +204,11 @@ comando:
     }
     | chamada_funcao { $$ = $1; }
     | incremento_decremento { $$ = $1; }
+;
+
+iteracao_for:
+    expressao { $$ = $1; }
+    | atribuicao { $$ = $1; }
 ;
 
 condicional:
@@ -234,12 +247,10 @@ declaracao:
         }
         $$ = ast_cria(AST_DECLARACAO, NULL, 2, ast_cria(AST_TIPO, strdup($1 == TIPO_INT ? "int" : $1 == TIPO_FLOAT ? "float" : $1 == TIPO_CHAR ? "char" : "bool"), 0), $2);
     }
-    | tipo lista_ids IGUAL expressao {
-        for (int i = 0; i < $2->n_filhos; i++) {
-            inserirSimbolo($2->filhos[i]->valor, $1, escopo_atual);
-            marcarVariavelInicializada($2->filhos[i]->valor, escopo_atual);
-        }
-        AST* atribuicao = ast_cria(AST_ATRIBUICAO, NULL, 2, $2->filhos[0], $4);
+    | tipo ID IGUAL expressao {
+        inserirSimbolo($2, $1, escopo_atual);
+        marcarVariavelInicializada($2, escopo_atual);
+        AST* atribuicao = ast_cria(AST_ATRIBUICAO, NULL, 2, ast_cria(AST_ID, strdup($2), 0), $4);
         $$ = ast_cria(AST_DECLARACAO, NULL, 2, ast_cria(AST_TIPO, strdup($1 == TIPO_INT ? "int" : $1 == TIPO_FLOAT ? "float" : $1 == TIPO_CHAR ? "char" : "bool"), 0), atribuicao);
     }
     | tipo ID ABRECOLCHETE NUM FECHACOLCHETE {
@@ -247,10 +258,55 @@ declaracao:
         AST* tamanho = ast_cria(AST_NUM, strdup($4), 0);
         AST* id = ast_cria(AST_ID, strdup($2), 0);
         $$ = ast_cria(AST_VETOR_DECLARACAO, NULL, 3, 
-                     ast_cria(AST_TIPO, strdup($1 == TIPO_INT ? "int" : $1 == TIPO_FLOAT ? "float" : $1 == TIPO_CHAR ? "char" : "bool"), 0), 
-                     id, tamanho);
+                            ast_cria(AST_TIPO, strdup($1 == TIPO_INT ? "int" : $1 == TIPO_FLOAT ? "float" : $1 == TIPO_CHAR ? "char" : "bool"), 0), 
+                            id, tamanho);
+    }
+    // NOVO: Regra para declaração com múltiplas inicializações (e.g., inteiro x = 10, y = 20)
+    | tipo declaracao_multipla_inicializacao {
+        AST* type_node = ast_cria(AST_TIPO, strdup($1 == TIPO_INT ? "int" : $1 == TIPO_FLOAT ? "float" : $1 == TIPO_CHAR ? "char" : "bool"), 0);
+        // $2 é um AST_BLOCO contendo nós AST_ATRIBUICAO
+        AST* assignments_block = $2; 
+
+        // Cria um novo AST_BLOCO para conter as declarações + atribuições
+        AST* combined_declarations = ast_cria(AST_BLOCO, NULL, 0);
+        combined_declarations->n_filhos = assignments_block->n_filhos;
+        combined_declarations->filhos = assignments_block->filhos; // Transfere a propriedade dos filhos
+
+        for (int i = 0; i < combined_declarations->n_filhos; i++) {
+            AST* assign_node = combined_declarations->filhos[i]; // Este é um AST_ATRIBUICAO
+            if (assign_node && assign_node->tipo == AST_ATRIBUICAO && assign_node->filhos[0] && assign_node->filhos[0]->tipo == AST_ID) {
+                inserirSimbolo(assign_node->filhos[0]->valor, $1, escopo_atual);
+                marcarVariavelInicializada(assign_node->filhos[0]->valor, escopo_atual);
+            } else {
+                fprintf(stderr, "[ERRO SEMÂNTICO] Estrutura de atribuição inesperada em declaração múltipla.\n");
+                exit(1);
+            }
+        }
+        $$ = ast_cria(AST_DECLARACAO, NULL, 2, type_node, combined_declarations);
     }
 ;
+
+// NOVO: Define a regra para múltiplas inicializações na mesma linha
+declaracao_multipla_inicializacao:
+    ID IGUAL expressao {
+        AST* id_node = ast_cria(AST_ID, strdup($1), 0);
+        $$ = ast_cria(AST_BLOCO, NULL, 1, ast_cria(AST_ATRIBUICAO, NULL, 2, id_node, $3));
+    }
+    | declaracao_multipla_inicializacao VIRGULA ID IGUAL expressao {
+        int n = $1->n_filhos + 1;
+        // Realloc precisa ser feito no pai, então precisamos criar um novo bloco aqui
+        // ou $1 já deve ser um bloco que podemos reallocar.
+        // A lógica do realloc está implícita no ast_cria do bloco pai.
+        // Aqui, $1 é o AST_BLOCO que já contém as atribuições anteriores.
+        AST** filhos = realloc($1->filhos, sizeof(AST*) * n);
+        AST* id_node = ast_cria(AST_ID, strdup($3), 0);
+        filhos[n-1] = ast_cria(AST_ATRIBUICAO, NULL, 2, id_node, $5);
+        $1->n_filhos = n;
+        $1->filhos = filhos;
+        $$ = $1;
+    }
+;
+
 
 lista_ids:
     ID { $$ = ast_cria(AST_BLOCO, NULL, 1, ast_cria(AST_ID, strdup($1), 0)); }
@@ -480,6 +536,32 @@ expressao:
         novo->tipo_expr = TIPO_INT;
         $$ = novo;
 
+    }
+    | STRING {
+        AST* str_node = ast_cria(AST_STRING, strdup($1), 0);
+        str_node->tipo_expr = TIPO_CHAR; // Assumindo que STRING representa um tipo CARACTER
+        $$ = str_node;
+    }
+    | ABREPAR expressao FECHAPAR {
+        $$ = $2; // Parenthesized expressions
+    }
+    | expressao E_LOGICO expressao {
+        // "e" lógico (AND)
+        AST* novo = ast_cria(AST_AND, NULL, 2, $1, $3);
+        novo->tipo_expr = TIPO_BOOL;
+        $$ = novo;
+    }
+    | expressao OU_LOGICO expressao {
+        // "ou" lógico (OR)
+        AST* novo = ast_cria(AST_OR, NULL, 2, $1, $3);
+        novo->tipo_expr = TIPO_BOOL;
+        $$ = novo;
+    }
+    | NAO_LOGICO expressao {
+        // "nao" lógico (NOT)
+        AST* novo = ast_cria(AST_NOT, NULL, 1, $2);
+        novo->tipo_expr = TIPO_BOOL;
+        $$ = novo;
     }
 ;
 

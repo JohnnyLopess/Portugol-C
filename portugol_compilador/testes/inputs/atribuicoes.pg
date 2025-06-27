@@ -1,0 +1,12 @@
+programa{
+    funcao inicio(){
+        inteiro a, b
+        a = 1
+        b = 2
+        inteiro subtracao = b - a
+        escreva(subtracao)
+        inteiro x = 10, y = 20
+        inteiro soma = x + y
+        escreva(soma)
+    }
+}

@@ -1,6 +1,32 @@
-# Bem-vindo ao Nosso Projeto de Compiladores
+# Bem-vindo ao Compilador Portugol-C
 
 Este projeto faz parte da disciplina de **Compiladores 1 (2025/1)**, Ministrada pelo professor Dr. Sergio Freitas na Universidade de Brasília e tem como objetivo desenvolver um compilador, consolidando os conceitos aprendidos ao longo do semestre. A equipe é formada por estudantes dedicados que aplicam a metodologia **Problem Based Learning (PBL)** para integrar teoria e prática.
+
+
+## 🚀 Sobre o Projeto
+
+Este compilador traduz programas escritos em **Portugol** — com sintaxe inspirada no Portugol Studio — para a linguagem **C**, utilizando as ferramentas **Flex** (para análise léxica) e **Bison** (para análise sintática). 
+
+### ✨ Principais Características
+
+- 🔄 **Tradução completa**: Portugol → C
+- 🧪 **32 testes automatizados** garantindo qualidade
+- ⚡ **Otimizações integradas**: propagação de constantes e eliminação de código morto
+- 📊 **Suporte a vetores**: arrays de todos os tipos
+- 🎯 **Análise semântica**: verificação de tipos e escopos
+- 🔍 **Relatórios de erro** claros e precisos
+
+### 🛠️ Funcionalidades Implementadas
+
+| Categoria | Funcionalidades |
+|-----------|----------------|
+| **Tipos de Dados** | `inteiro`, `real`, `caracter`, `logico` |
+| **Estruturas** | Vetores unidimensionais, variáveis simples |
+| **Controle** | `se/senao`, `enquanto`, `para`, `escolha/caso` |
+| **Operadores** | Aritméticos, relacionais, lógicos, bitwise |
+| **I/O** | `leia()`, `escreva()` com múltiplos argumentos |
+| **Funções** | Declaração, parâmetros, tipos de retorno |
+
 
 ## Nossa Equipe
 
@@ -19,9 +45,74 @@ Este projeto faz parte da disciplina de **Compiladores 1 (2025/1)**, Ministrada 
 
 </center>
 
-## Sobre o Projeto
+## 🎯 Começando
 
-Este compilador tem como finalidade traduzir programas escritos em Portugol — com sintaxe inspirada no Portugol Studio — para a linguagem C, utilizando as ferramentas Flex (para análise léxica) e Bison (para análise sintática). O projeto visa facilitar a compreensão dos processos de compilação e a transição entre linguagens de alto e baixo nível. Além da tradução, o compilador conta com testes automatizados que garantem a validade e a consistência do código gerado em C.
+### Instalação Rápida
 
-🔗 Repositório no GitHub: [Nosso Projeto](https://github.com/JohnnyLopess/Trabalho_compiladores)
+```bash
+# Clonar o repositório
+git clone https://github.com/JohnnyLopess/Portugol-C.git
+cd Portugol-C/portugol_compilador
 
+# Instalar dependências (Ubuntu/Debian)
+sudo apt install -y gcc flex bison make
+
+# Compilar o projeto
+make
+
+# Executar testes
+make test
+```
+
+### Primeiro Programa
+
+```portugol
+programa {
+    funcao inicio() {
+        inteiro idade
+        idade = 25
+        escreva("Minha idade é: ", idade)
+    }
+}
+```
+
+```bash
+# Compilar
+make run FILE=meu_programa.pg
+
+# Resultado em build/saida.c:
+# #include <stdio.h>
+# int main() {
+#     int idade;
+#     idade = 25;
+#     printf("Minha idade é: %d\n", idade);
+#     return 0;
+# }
+```
+
+## 📊 Qualidade e Testes
+
+### 🧪 Sistema de Testes Robusto
+- **32 casos de teste** automatizados
+- **100% de taxa de sucesso**
+- **Cobertura completa** das funcionalidades
+- **CI/CD integrado** com GitHub Actions
+
+### 📈 Métricas de Qualidade
+- ✅ Todos os tipos de dados testados
+- ✅ Estruturas de controle validadas  
+- ✅ Operadores verificados
+- ✅ Vetores completamente suportados
+- ✅ Otimizações funcionais
+
+## 🔗 Links Importantes
+
+- � **Repositório**: [GitHub - Portugol-C](https://github.com/JohnnyLopess/Portugol-C)
+- 📖 **Documentação Completa**: Navegue pelas seções desta documentação
+- 🧪 **Sistema de Testes**: Veja todos os casos de teste implementados
+- 🏗️ **Arquitetura**: Entenda como o compilador funciona internamente
+---
+**🎓 Disciplina**: Compiladores 1 (2025/1)  
+**🏫 Universidade**: Universidade de Brasília (UnB)  
+**👨‍🏫 Professor**: Dr. Sergio Freitas  
+**📚 Metodologia**: Problem Based Learning (PBL)

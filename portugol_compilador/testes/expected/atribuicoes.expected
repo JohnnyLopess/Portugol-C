@@ -1,0 +1,13 @@
+#include <stdio.h>
+
+int main() {
+    int a, b;
+    a = 1;
+    b = 2;
+    int subtracao = b - a;
+    printf("%d\n", subtracao);
+    int x = 10, y = 20;
+    int soma = x + y;
+    printf("%d\n", soma);
+    return 0;
+}

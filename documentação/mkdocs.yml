@@ -5,6 +5,26 @@ site_name: Compilador Portugol-C
 
 nav:
   - Início: index.md
+  - Guia do Usuário:
+      - Instalação: guia-usuario/instalacao.md
+      - Como Usar: guia-usuario/como-usar.md
+      - Exemplos: guia-usuario/exemplos.md
+  - Funcionalidades:
+      - Visão Geral: funcionalidades/visao-geral.md
+      - Tipos de Dados: funcionalidades/tipos-dados.md
+      - Estruturas de Controle: funcionalidades/estruturas-controle.md
+      - Funções: funcionalidades/funcoes.md
+      - Vetores: funcionalidades/vetores.md
+      - Operadores: funcionalidades/operadores.md
+  - Testes:
+      - Sistema de Testes: testes/sistema-testes.md
+      - Casos de Teste: testes/casos-teste.md
+      - Cobertura: testes/cobertura.md
+  - Documentação Técnica:
+      - Arquitetura: tecnica/arquitetura.md
+      - Análise Léxica: tecnica/analise-lexica.md
+      - Análise Sintática: tecnica/analise-sintatica.md
+      - Geração de Código: tecnica/geracao-codigo.md
   - Visão Projeto:
       - Projeto: visao-projeto/visaoProduto.md
       - Escopo Portugol: visao-projeto/escopo.md

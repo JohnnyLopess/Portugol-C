@@ -80,19 +80,45 @@ void ast_gera_c(AST *no, FILE *saida, int nivel_indent)
         case AST_DECLARACAO:
             for (int i = 0; i < nivel_indent; i++) fprintf(saida, "    ");
             if (no->n_filhos == 2 && no->filhos[1]->tipo == AST_ATRIBUICAO) {
-                // Declaração com inicialização
+                // Declaração com inicialização simples (e.g., inteiro subtracao = b - a)
                 fprintf(saida, "%s %s = ", no->filhos[0]->valor, no->filhos[1]->filhos[0]->valor);
                 ast_gera_c(no->filhos[1]->filhos[1], saida, 0);
                 fprintf(saida, ";\n");
-            } else {
-                // Declaração simples
-                fprintf(saida, "%s ", no->filhos[0]->valor);
-                for (int i = 0; i < no->filhos[1]->n_filhos; i++) {
-                    fprintf(saida, "%s", no->filhos[1]->filhos[i]->valor);
-                    if (i < no->filhos[1]->n_filhos - 1) fprintf(saida, ", ");
+            } else if (no->n_filhos == 2 && no->filhos[1]->tipo == AST_BLOCO) {
+                // Caso: múltiplas declarações (com ou sem inicialização)
+                AST* content_block = no->filhos[1];
+                if (content_block->n_filhos > 0 && content_block->filhos[0]->tipo == AST_ATRIBUICAO) {
+                    // Múltiplas declarações com inicialização (e.g., inteiro x = 10, y = 20)
+                    fprintf(saida, "%s ", no->filhos[0]->valor); // Imprime o tipo uma vez
+
+                    for (int i = 0; i < content_block->n_filhos; i++) {
+                        AST* assign_node = content_block->filhos[i];
+                        if (assign_node && assign_node->tipo == AST_ATRIBUICAO) {
+                            if (i > 0) fprintf(saida, ", "); // Vírgula para declarações subsequentes
+                            ast_gera_c(assign_node->filhos[0], saida, 0); // ID
+                            fprintf(saida, " = ");
+                            ast_gera_c(assign_node->filhos[1], saida, 0); // Expressão
+                        } else {
+                            fprintf(stderr, "[ERRO] Nó de atribuição inesperado em AST_DECLARACAO com múltiplas inicializações.\n");
+                        }
+                    }
+                    fprintf(saida, ";\n");
+                } else {
+                    // Declaração simples de múltiplos IDs (e.g., inteiro a, b)
+                    fprintf(saida, "%s ", no->filhos[0]->valor); // Imprime o tipo uma vez
+                    for (int i = 0; i < content_block->n_filhos; i++) {
+                        // Aqui, content_block->filhos[i] deve ser um nó AST_ID.
+                        if (content_block->filhos[i] && content_block->filhos[i]->tipo == AST_ID) {
+                            fprintf(saida, "%s", content_block->filhos[i]->valor);
+                            if (i < content_block->n_filhos - 1) fprintf(saida, ", ");
+                        } else {
+                            fprintf(stderr, "[ERRO] Nó de ID inesperado em AST_DECLARACAO com múltiplos IDs.\n");
+                        }
+                    }
+                    fprintf(saida, ";\n");
                 }
-                fprintf(saida, ";\n");
             }
+            // O bloco 'else' final foi removido pois os casos agora são tratados acima.
             break;
 
         case AST_LEITURA:
@@ -281,28 +307,28 @@ void ast_gera_c(AST *no, FILE *saida, int nivel_indent)
                     no->filhos[0]->n_filhos == 2 &&
                     no->filhos[0]->filhos[1]->tipo == AST_ATRIBUICAO) {
 
-                    AST* type_node = no->filhos[0]->filhos[0]; // AST_TIPO node (e.g., "int")
-                    AST* assign_node = no->filhos[0]->filhos[1]; // AST_ATRIBUICAO node
-                    AST* id_node_in_assign = assign_node->filhos[0]; // AST_ID node (variable name)
-                    AST* init_expr_node = assign_node->filhos[1]; // Expression node for initial value
+                    AST* type_node = no->filhos[0]->filhos[0]; // Nó AST_TIPO (ex: "int")
+                    AST* assign_node = no->filhos[0]->filhos[1]; // Nó AST_ATRIBUICAO
+                    AST* id_node_in_assign = assign_node->filhos[0]; // Nó AST_ID (nome da variável)
+                    AST* init_expr_node = assign_node->filhos[1]; // Nó da expressão para o valor inicial
 
-                    // Print type
+                    // Imprime o tipo
                     if (type_node && type_node->valor) {
                         fprintf(saida, "%s ", type_node->valor);
                     } else {
-                         // Default to "int" if type is not found (shouldn't happen with proper parsing)
+                         // Padrão para "int" se o tipo não for encontrado (não deve acontecer com análise correta)
                          fprintf(saida, "int ");
                     }
 
-                    // Print variable name
+                    // Imprime o nome da variável
                     if (id_node_in_assign && id_node_in_assign->valor) {
                         fprintf(saida, "%s = ", id_node_in_assign->valor);
                     } else {
                         fprintf(stderr, "[ERRO] ID não encontrado na inicialização do FOR.\n");
                     }
 
-                    // Print initial expression
-                    ast_gera_c(init_expr_node, saida, 0); // Generate the expression (e.g., "0")
+                    // Imprime a expressão inicial
+                    ast_gera_c(init_expr_node, saida, 0); // Gera a expressão (ex: "0")
 
                 } else {
                     fprintf(stderr, "[ERRO] Formato inesperado para a inicialização do loop 'para'.\n");
@@ -310,16 +336,16 @@ void ast_gera_c(AST *no, FILE *saida, int nivel_indent)
                 }
 
                 fprintf(saida, "; ");
-                // Condition part
+                // Parte da condição
                 ast_gera_c(no->filhos[1], saida, 0);
                 fprintf(saida, "; ");
 
-                // Increment/Decrement part: gera inline sem indentação e sem ';' ou nova linha
+                // Parte de incremento/decremento: gera inline sem indentação e sem ';' ou nova linha
                 ast_gera_c(no->filhos[2], saida, -1); 
                 fprintf(saida, ") {\n");
 
-                // Body of the loop
-                ast_gera_c(no->filhos[3], saida, nivel_indent + 1); // Generate the block content
+                // Corpo do loop
+                ast_gera_c(no->filhos[3], saida, nivel_indent + 1); // Gera o conteúdo do bloco
                 for (int i = 0; i < nivel_indent; i++) fprintf(saida, "    ");
                 fprintf(saida, "}\n");
             }
@@ -341,7 +367,7 @@ void ast_gera_c(AST *no, FILE *saida, int nivel_indent)
                     ast_gera_c(args->filhos[i], saida, 0);
                 }
                 fprintf(saida, ")");
-            } else if (no->n_filhos == 1 && (strcmp(no->valor, "~") == 0 || strcmp(no->valor, "-") == 0) ) { // possivel implementacao de operador unario negativo
+            } else if (no->n_filhos == 1 && (strcmp(no->valor, "~") == 0 || strcmp(no->valor, "-") == 0) ) { // possível implementação de operador unário negativo
                 // Gera código para operador unário ~ ou -
                 fprintf(saida, no->valor);
                 ast_gera_c(no->filhos[0], saida, 0);
@@ -353,17 +379,17 @@ void ast_gera_c(AST *no, FILE *saida, int nivel_indent)
                 ast_gera_c(no->filhos[1], saida, 0);
             }
             break;
-        case AST_AND: // Added for logical AND
+        case AST_AND: // Adicionado para AND lógico
             ast_gera_c(no->filhos[0], saida, 0);
             fprintf(saida, " && ");
             ast_gera_c(no->filhos[1], saida, 0);
             break;
-        case AST_OR: // Added for logical OR
+        case AST_OR: // Adicionado para OR lógico
             ast_gera_c(no->filhos[0], saida, 0);
             fprintf(saida, " || ");
             ast_gera_c(no->filhos[1], saida, 0);
             break;
-        case AST_NOT: // Added for logical NOT
+        case AST_NOT: // Adicionado para NOT lógico
             fprintf(saida, "!");
             ast_gera_c(no->filhos[0], saida, 0);
             break;
@@ -541,7 +567,7 @@ AST* otimiza_ast_propagacao_constantes(AST* no) {
         AST *esq = no->filhos[0];
         AST *dir = no->filhos[1];
         if (esq->tipo == AST_NUM && dir->tipo == AST_NUM && no->valor) {
-            // Check for float operations
+            // Verifica operações com ponto flutuante
             if (esq->tipo_expr == TIPO_FLOAT || dir->tipo_expr == TIPO_FLOAT) {
                 float v1 = atof(esq->valor);
                 float v2 = atof(dir->valor);
@@ -559,7 +585,7 @@ AST* otimiza_ast_propagacao_constantes(AST* no) {
                     ast_libera(dir);
                     free(no->filhos);
 
-                    char buf[64]; // Increased buffer size for float
+                    char buf[64]; // Aumenta o tamanho do buffer para floats
                     sprintf(buf, "%f", resultado_f);
                     free(no->valor);
                     no->valor = strdup(buf);
@@ -570,7 +596,7 @@ AST* otimiza_ast_propagacao_constantes(AST* no) {
                     printf("[DEBUG] Redução de constante float: %f %s %f = %f\n", v1, no->valor, v2, resultado_f);
                     return no;
                 }
-            } else { // Integer operations
+            } else { // Operações com inteiros
                 int v1 = atoi(esq->valor);
                 int v2 = atoi(dir->valor);
                 int resultado = 0;
@@ -604,7 +630,7 @@ AST* otimiza_ast_propagacao_constantes(AST* no) {
     if ((no->tipo == AST_AND || no->tipo == AST_OR) && no->n_filhos == 2 && no->filhos[0] && no->filhos[1]) {
         AST *esq = no->filhos[0];
         AST *dir = no->filhos[1];
-        if (esq->tipo == AST_NUM && dir->tipo == AST_NUM) { // Assuming 0 for false, non-zero for true
+        if (esq->tipo == AST_NUM && dir->tipo == AST_NUM) { // Assumindo 0 para falso, diferente de zero para verdadeiro
             int v1 = atoi(esq->valor);
             int v2 = atoi(dir->valor);
             int resultado_logico = 0;

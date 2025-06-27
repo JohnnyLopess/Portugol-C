@@ -59,6 +59,7 @@ Simbolo *inserirParametro(char *nome, int tipo, int escopo, int referencia);
 %type <ast> escolha caso lista_casos caso_contrario
 %type <ast> incremento_decremento
 %type <ast> lista_escrita_args escrita_arg
+%type <ast> iteracao_for
 
 // token Bitwise
 %token OP_BITWISE_AND OP_BITWISE_NOT OP_BITWISE_OR OP_BITWISE_LEFT_SHIFT OP_BITWISE_RIGHT_SHIFT OP_BITWISE_XOR
@@ -188,7 +189,7 @@ comando:
     | ENQUANTO ABREPAR expressao FECHAPAR ABRECHAVE bloco FECHACHAVE {
         $$ = ast_cria(AST_WHILE, NULL, 2, $3, $6);
     }
-    | PARA ABREPAR declaracao PONTOEVIRGULA expressao PONTOEVIRGULA expressao FECHAPAR ABRECHAVE bloco FECHACHAVE {
+    | PARA ABREPAR declaracao PONTOEVIRGULA expressao PONTOEVIRGULA iteracao_for FECHAPAR ABRECHAVE bloco FECHACHAVE {
         $$ = ast_cria(AST_FOR, NULL, 4, $3, $5, $7, $10);
     }
     | RETORNE expressao {
@@ -196,6 +197,11 @@ comando:
     }
     | chamada_funcao { $$ = $1; }
     | incremento_decremento { $$ = $1; }
+;
+
+iteracao_for:
+    expressao { $$ = $1; }
+    | atribuicao { $$ = $1; }
 ;
 
 condicional:

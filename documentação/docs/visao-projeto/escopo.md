@@ -58,6 +58,14 @@ var
 
 ---
 
+### Bit a Bit Unarios
+
+- `&` (bitwise AND)
+- `~` (bitwise NOT)
+- `|` (bitwise OR)
+- `^` (bitwise XOR)
+---
+
 ## ✅ Tipos de Dados
 
 - `inteiro`
@@ -77,6 +85,7 @@ var
 ## ✅ Outros Elementos
 
 - `inicio ... fim` → delimita o início e o fim do algoritmo
+- O escopo de cada funcao é delimitado por abre e fecha chaves (`{}`)
 - `const` → declaração de constantes
 - `retorne` → retorno de valor em funções
 - `procedimento` / `funcao` → modularização de código

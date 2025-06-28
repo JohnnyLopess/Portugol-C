@@ -1,0 +1,2636 @@
+
+<!doctype html>
+<html lang="pt" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://johnnylopess.github.io/Portugol-C/testes/sistema-testes/">
+      
+      
+        <link rel="prev" href="../../funcionalidades/operadores/">
+      
+      
+        <link rel="next" href="../casos-teste/">
+      
+      
+      <link rel="icon" href="../../assets/logo.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.14">
+    
+    
+      
+        <title>Sistema de Testes - Compilador Portugol-C</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.342714a4.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="green" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#sistema-de-testes" class="md-skip">
+          Pular para conteúdo
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Cabeçalho">
+    <a href="../.." title="Compilador Portugol-C" class="md-header__button md-logo" aria-label="Compilador Portugol-C" data-md-component="logo">
+      
+  <img src="../../assets/logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Compilador Portugol-C
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Sistema de Testes
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="green" data-md-color-accent="indigo"  aria-label="Mudar para o modo escuro"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Mudar para o modo escuro" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2m0 2a8 8 0 0 1 8 8 8 8 0 0 1-8 8z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="green" data-md-color-accent="indigo"  aria-label="Mudar para o modo claro"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Mudar para o modo claro" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2m0 2a8 8 0 0 1 8 8 8 8 0 0 1-8 8z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Buscar" placeholder="Buscar" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Pesquisar">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Limpar" aria-label="Limpar" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Inicializando busca
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/JohnnyLopess/Portugol-C" title="Ir para repositório" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Compilador Portugol-C
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Abas" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Início
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../guia-usuario/instalacao/" class="md-tabs__link">
+          
+  
+  
+  Guia do Usuário
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../funcionalidades/visao-geral/" class="md-tabs__link">
+          
+  
+  
+  Funcionalidades
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="./" class="md-tabs__link">
+          
+  
+  
+  Testes
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../tecnica/arquitetura/" class="md-tabs__link">
+          
+  
+  
+  Documentação Técnica
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../visao-projeto/visaoProduto/" class="md-tabs__link">
+          
+  
+  
+  Visão Projeto
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../resultados/sprint1/" class="md-tabs__link">
+          
+  
+  
+  Resultados
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navegação" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Compilador Portugol-C" class="md-nav__button md-logo" aria-label="Compilador Portugol-C" data-md-component="logo">
+      
+  <img src="../../assets/logo.png" alt="logo">
+
+    </a>
+    Compilador Portugol-C
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/JohnnyLopess/Portugol-C" title="Ir para repositório" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Compilador Portugol-C
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Início
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Guia do Usuário
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Guia do Usuário
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guia-usuario/instalacao/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Instalação
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guia-usuario/como-usar/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Como Usar
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guia-usuario/exemplos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Exemplos
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Funcionalidades
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Funcionalidades
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../funcionalidades/visao-geral/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Visão Geral
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../funcionalidades/tipos-dados/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Tipos de Dados
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../funcionalidades/estruturas-controle.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Estruturas de Controle
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../funcionalidades/funcoes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Funções
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../funcionalidades/vetores/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Vetores
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../funcionalidades/operadores/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Operadores
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    Testes
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Testes
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Sistema de Testes
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    Sistema de Testes
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Índice">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Índice
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#visao-geral" class="md-nav__link">
+    <span class="md-ellipsis">
+      Visão Geral
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Visão Geral">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#estatisticas-dos-testes" class="md-nav__link">
+    <span class="md-ellipsis">
+      📊 Estatísticas dos Testes
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#objetivos" class="md-nav__link">
+    <span class="md-ellipsis">
+      🎯 Objetivos
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#estrutura-dos-testes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Estrutura dos Testes
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Estrutura dos Testes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#organizacao-dos-arquivos" class="md-nav__link">
+    <span class="md-ellipsis">
+      📁 Organização dos Arquivos
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fluxo-de-execucao" class="md-nav__link">
+    <span class="md-ellipsis">
+      🔄 Fluxo de Execução
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#categorias-de-testes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Categorias de Testes
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Categorias de Testes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tipos-basicos" class="md-nav__link">
+    <span class="md-ellipsis">
+      🔤 Tipos Básicos
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vetores-arrays" class="md-nav__link">
+    <span class="md-ellipsis">
+      📊 Vetores (Arrays)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#estruturas-de-controle" class="md-nav__link">
+    <span class="md-ellipsis">
+      🎛️ Estruturas de Controle
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#operadores" class="md-nav__link">
+    <span class="md-ellipsis">
+      ⚙️ Operadores
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#entradasaida" class="md-nav__link">
+    <span class="md-ellipsis">
+      📝 Entrada/Saída
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#funcionalidades-avancadas" class="md-nav__link">
+    <span class="md-ellipsis">
+      🔧 Funcionalidades Avançadas
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#otimizacoes" class="md-nav__link">
+    <span class="md-ellipsis">
+      ⚡ Otimizações
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#casos-especiais" class="md-nav__link">
+    <span class="md-ellipsis">
+      🧪 Casos Especiais
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#executando-os-testes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Executando os Testes
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Executando os Testes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#comando-principal" class="md-nav__link">
+    <span class="md-ellipsis">
+      🚀 Comando Principal
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#saida-dos-testes" class="md-nav__link">
+    <span class="md-ellipsis">
+      📋 Saída dos Testes
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#teste-individual" class="md-nav__link">
+    <span class="md-ellipsis">
+      🔍 Teste Individual
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#adicionando-novos-testes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Adicionando Novos Testes
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Adicionando Novos Testes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#passo-a-passo" class="md-nav__link">
+    <span class="md-ellipsis">
+      📝 Passo a Passo
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#convencoes-de-nomenclatura" class="md-nav__link">
+    <span class="md-ellipsis">
+      📋 Convenções de Nomenclatura
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#integracao-continua" class="md-nav__link">
+    <span class="md-ellipsis">
+      Integração Contínua
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Integração Contínua">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#github-actions" class="md-nav__link">
+    <span class="md-ellipsis">
+      🔄 GitHub Actions
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#beneficios-da-ci" class="md-nav__link">
+    <span class="md-ellipsis">
+      🎯 Benefícios da CI
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#depuracao-de-testes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Depuração de Testes
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Depuração de Testes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#teste-falhando" class="md-nav__link">
+    <span class="md-ellipsis">
+      🐛 Teste Falhando
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#solucoes-comuns" class="md-nav__link">
+    <span class="md-ellipsis">
+      🔧 Soluções Comuns
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#metricas-de-qualidade" class="md-nav__link">
+    <span class="md-ellipsis">
+      Métricas de Qualidade
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Métricas de Qualidade">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cobertura-de-codigo" class="md-nav__link">
+    <span class="md-ellipsis">
+      📈 Cobertura de Código
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#performance" class="md-nav__link">
+    <span class="md-ellipsis">
+      ⏱️ Performance
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#qualidade" class="md-nav__link">
+    <span class="md-ellipsis">
+      🎯 Qualidade
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../casos-teste/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Casos de Teste
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cobertura/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Cobertura
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Documentação Técnica
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Documentação Técnica
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tecnica/arquitetura/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Arquitetura
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tecnica/analise-lexica/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Análise Léxica
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tecnica/analise-sintatica/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Análise Sintática
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tecnica/geracao-codigo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Geração de Código
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Visão Projeto
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            Visão Projeto
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../visao-projeto/visaoProduto/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Projeto
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../visao-projeto/escopo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Escopo Portugol
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../visao-projeto/sprints/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Sprints
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Resultados
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            Resultados
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../resultados/sprint1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Sprint 1
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../resultados/sprint2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Sprint 2
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../resultados/sprint3/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Sprint 3
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../resultados/sprint4/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Sprint 4
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../resultados/sprint5/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Sprint 5
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../resultados/sprint6/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Sprint 6
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../resultados/sprint7/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Sprint 7
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../resultados/sprint8/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Sprint 8
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../resultados/sprint9/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Sprint 9
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Índice">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Índice
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#visao-geral" class="md-nav__link">
+    <span class="md-ellipsis">
+      Visão Geral
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Visão Geral">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#estatisticas-dos-testes" class="md-nav__link">
+    <span class="md-ellipsis">
+      📊 Estatísticas dos Testes
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#objetivos" class="md-nav__link">
+    <span class="md-ellipsis">
+      🎯 Objetivos
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#estrutura-dos-testes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Estrutura dos Testes
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Estrutura dos Testes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#organizacao-dos-arquivos" class="md-nav__link">
+    <span class="md-ellipsis">
+      📁 Organização dos Arquivos
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fluxo-de-execucao" class="md-nav__link">
+    <span class="md-ellipsis">
+      🔄 Fluxo de Execução
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#categorias-de-testes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Categorias de Testes
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Categorias de Testes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tipos-basicos" class="md-nav__link">
+    <span class="md-ellipsis">
+      🔤 Tipos Básicos
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vetores-arrays" class="md-nav__link">
+    <span class="md-ellipsis">
+      📊 Vetores (Arrays)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#estruturas-de-controle" class="md-nav__link">
+    <span class="md-ellipsis">
+      🎛️ Estruturas de Controle
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#operadores" class="md-nav__link">
+    <span class="md-ellipsis">
+      ⚙️ Operadores
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#entradasaida" class="md-nav__link">
+    <span class="md-ellipsis">
+      📝 Entrada/Saída
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#funcionalidades-avancadas" class="md-nav__link">
+    <span class="md-ellipsis">
+      🔧 Funcionalidades Avançadas
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#otimizacoes" class="md-nav__link">
+    <span class="md-ellipsis">
+      ⚡ Otimizações
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#casos-especiais" class="md-nav__link">
+    <span class="md-ellipsis">
+      🧪 Casos Especiais
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#executando-os-testes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Executando os Testes
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Executando os Testes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#comando-principal" class="md-nav__link">
+    <span class="md-ellipsis">
+      🚀 Comando Principal
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#saida-dos-testes" class="md-nav__link">
+    <span class="md-ellipsis">
+      📋 Saída dos Testes
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#teste-individual" class="md-nav__link">
+    <span class="md-ellipsis">
+      🔍 Teste Individual
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#adicionando-novos-testes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Adicionando Novos Testes
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Adicionando Novos Testes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#passo-a-passo" class="md-nav__link">
+    <span class="md-ellipsis">
+      📝 Passo a Passo
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#convencoes-de-nomenclatura" class="md-nav__link">
+    <span class="md-ellipsis">
+      📋 Convenções de Nomenclatura
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#integracao-continua" class="md-nav__link">
+    <span class="md-ellipsis">
+      Integração Contínua
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Integração Contínua">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#github-actions" class="md-nav__link">
+    <span class="md-ellipsis">
+      🔄 GitHub Actions
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#beneficios-da-ci" class="md-nav__link">
+    <span class="md-ellipsis">
+      🎯 Benefícios da CI
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#depuracao-de-testes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Depuração de Testes
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Depuração de Testes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#teste-falhando" class="md-nav__link">
+    <span class="md-ellipsis">
+      🐛 Teste Falhando
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#solucoes-comuns" class="md-nav__link">
+    <span class="md-ellipsis">
+      🔧 Soluções Comuns
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#metricas-de-qualidade" class="md-nav__link">
+    <span class="md-ellipsis">
+      Métricas de Qualidade
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Métricas de Qualidade">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cobertura-de-codigo" class="md-nav__link">
+    <span class="md-ellipsis">
+      📈 Cobertura de Código
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#performance" class="md-nav__link">
+    <span class="md-ellipsis">
+      ⏱️ Performance
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#qualidade" class="md-nav__link">
+    <span class="md-ellipsis">
+      🎯 Qualidade
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="sistema-de-testes">Sistema de Testes</h1>
+<p>O Compilador Portugol-C possui um sistema robusto de testes automatizados que garante a qualidade e confiabilidade do código gerado.</p>
+<h2 id="visao-geral">Visão Geral</h2>
+<h3 id="estatisticas-dos-testes">📊 Estatísticas dos Testes</h3>
+<ul>
+<li><strong>Total de testes</strong>: 32 casos de teste</li>
+<li><strong>Taxa de sucesso</strong>: 100%</li>
+<li><strong>Cobertura</strong>: Todas as funcionalidades implementadas</li>
+<li><strong>Tempo de execução</strong>: ~5-10 segundos</li>
+</ul>
+<h3 id="objetivos">🎯 Objetivos</h3>
+<ul>
+<li>Validar a corretude da tradução Portugol → C</li>
+<li>Garantir a manutenção da funcionalidade durante mudanças</li>
+<li>Detectar regressões automaticamente</li>
+<li>Facilitar a integração contínua</li>
+</ul>
+<h2 id="estrutura-dos-testes">Estrutura dos Testes</h2>
+<h3 id="organizacao-dos-arquivos">📁 Organização dos Arquivos</h3>
+<div class="highlight"><pre><span></span><code>testes/
+├── run_tests.sh          # Script principal de execução
+├── inputs/               # Arquivos de entrada (.pg)
+│   ├── hello.pg
+│   ├── inteiro.pg
+│   ├── vetor_inteiro.pg
+│   └── ...
+├── expected/             # Saídas esperadas (.expected)
+│   ├── hello.expected
+│   ├── inteiro.expected
+│   ├── vetor_inteiro.expected
+│   └── ...
+└── build/
+    └── test_outputs/     # Saídas geradas durante testes
+</code></pre></div>
+<h3 id="fluxo-de-execucao">🔄 Fluxo de Execução</h3>
+<div class="highlight"><pre><span></span><code>graph TD
+    A[Script run_tests.sh] --&gt; B[Para cada arquivo .pg]
+    B --&gt; C[Executar compilador]
+    C --&gt; D[Gerar saida.c]
+    D --&gt; E[Comparar com .expected]
+    E --&gt; F{Arquivos iguais?}
+    F --&gt;|Sim| G[Teste PASSOU ✅]
+    F --&gt;|Não| H[Teste FALHOU ❌]
+    H --&gt; I[Mostrar diferenças]
+    G --&gt; J[Próximo teste]
+    I --&gt; J
+</code></pre></div>
+<h2 id="categorias-de-testes">Categorias de Testes</h2>
+<h3 id="tipos-basicos">🔤 Tipos Básicos</h3>
+<table>
+<thead>
+<tr>
+<th>Teste</th>
+<th>Funcionalidade</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>inteiro.pg</code></td>
+<td>Variáveis inteiras</td>
+<td>✅</td>
+</tr>
+<tr>
+<td><code>real.pg</code></td>
+<td>Números decimais</td>
+<td>✅</td>
+</tr>
+<tr>
+<td><code>caracter.pg</code></td>
+<td>Caracteres</td>
+<td>✅</td>
+</tr>
+<tr>
+<td><code>logico.pg</code></td>
+<td>Valores booleanos</td>
+<td>✅</td>
+</tr>
+</tbody>
+</table>
+<h3 id="vetores-arrays">📊 Vetores (Arrays)</h3>
+<table>
+<thead>
+<tr>
+<th>Teste</th>
+<th>Funcionalidade</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>vetor_inteiro.pg</code></td>
+<td>Arrays de inteiros</td>
+<td>✅</td>
+</tr>
+<tr>
+<td><code>vetor_real.pg</code></td>
+<td>Arrays de reais</td>
+<td>✅</td>
+</tr>
+<tr>
+<td><code>vetor_caracter.pg</code></td>
+<td>Arrays de caracteres</td>
+<td>✅</td>
+</tr>
+<tr>
+<td><code>vetor_logico.pg</code></td>
+<td>Arrays lógicos</td>
+<td>✅</td>
+</tr>
+<tr>
+<td><code>vetor_leitura.pg</code></td>
+<td>Leitura de arrays</td>
+<td>✅</td>
+</tr>
+<tr>
+<td><code>vetor_operacoes.pg</code></td>
+<td>Operações com arrays</td>
+<td>✅</td>
+</tr>
+</tbody>
+</table>
+<h3 id="estruturas-de-controle">🎛️ Estruturas de Controle</h3>
+<table>
+<thead>
+<tr>
+<th>Teste</th>
+<th>Funcionalidade</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>If_aninhado.pg</code></td>
+<td>Condicionais aninhadas</td>
+<td>✅</td>
+</tr>
+<tr>
+<td><code>enquanto.pg</code></td>
+<td>Laços while</td>
+<td>✅</td>
+</tr>
+<tr>
+<td><code>para.pg</code></td>
+<td>Laços for</td>
+<td>✅</td>
+</tr>
+<tr>
+<td><code>switch_case.pg</code></td>
+<td>Switch/case</td>
+<td>✅</td>
+</tr>
+</tbody>
+</table>
+<h3 id="operadores">⚙️ Operadores</h3>
+<table>
+<thead>
+<tr>
+<th>Teste</th>
+<th>Funcionalidade</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>bitwise.pg</code></td>
+<td>Operadores bitwise</td>
+<td>✅</td>
+</tr>
+<tr>
+<td><code>logicos.pg</code></td>
+<td>Operadores lógicos</td>
+<td>✅</td>
+</tr>
+<tr>
+<td><code>incremento_decremento.pg</code></td>
+<td>++/--</td>
+<td>✅</td>
+</tr>
+<tr>
+<td><code>modulo.pg</code></td>
+<td>Operador módulo</td>
+<td>✅</td>
+</tr>
+<tr>
+<td><code>diferente.pg</code></td>
+<td>Operador !=</td>
+<td>✅</td>
+</tr>
+<tr>
+<td><code>menor_igual.pg</code></td>
+<td>Operador &lt;=</td>
+<td>✅</td>
+</tr>
+</tbody>
+</table>
+<h3 id="entradasaida">📝 Entrada/Saída</h3>
+<table>
+<thead>
+<tr>
+<th>Teste</th>
+<th>Funcionalidade</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>hello.pg</code></td>
+<td>Hello World</td>
+<td>✅</td>
+</tr>
+<tr>
+<td><code>escreva_diversos.pg</code></td>
+<td>Múltiplos argumentos</td>
+<td>✅</td>
+</tr>
+<tr>
+<td><code>escreva_variaveis.pg</code></td>
+<td>Variáveis na saída</td>
+<td>✅</td>
+</tr>
+<tr>
+<td><code>variavel.pg</code></td>
+<td>Entrada de dados</td>
+<td>✅</td>
+</tr>
+</tbody>
+</table>
+<h3 id="funcionalidades-avancadas">🔧 Funcionalidades Avançadas</h3>
+<table>
+<thead>
+<tr>
+<th>Teste</th>
+<th>Funcionalidade</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>funcao_sem_parametro.pg</code></td>
+<td>Funções simples</td>
+<td>✅</td>
+</tr>
+<tr>
+<td><code>funcao_sem_tipo.pg</code></td>
+<td>Funções void</td>
+<td>✅</td>
+</tr>
+<tr>
+<td><code>fatorial.pg</code></td>
+<td>Recursão</td>
+<td>✅</td>
+</tr>
+<tr>
+<td><code>comment.pg</code></td>
+<td>Comentários</td>
+<td>✅</td>
+</tr>
+</tbody>
+</table>
+<h3 id="otimizacoes">⚡ Otimizações</h3>
+<table>
+<thead>
+<tr>
+<th>Teste</th>
+<th>Funcionalidade</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>otimizacao_propagacao_de_contante.pg</code></td>
+<td>Propagação de constantes</td>
+<td>✅</td>
+</tr>
+<tr>
+<td><code>otimizacao_codigo_morto.pg</code></td>
+<td>Eliminação de código morto</td>
+<td>✅</td>
+</tr>
+</tbody>
+</table>
+<h3 id="casos-especiais">🧪 Casos Especiais</h3>
+<table>
+<thead>
+<tr>
+<th>Teste</th>
+<th>Funcionalidade</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>atribuicao_direta.pg</code></td>
+<td>Inicialização direta</td>
+<td>✅</td>
+</tr>
+<tr>
+<td><code>num_negativo.pg</code></td>
+<td>Números negativos</td>
+<td>✅</td>
+</tr>
+</tbody>
+</table>
+<h2 id="executando-os-testes">Executando os Testes</h2>
+<h3 id="comando-principal">🚀 Comando Principal</h3>
+<div class="highlight"><pre><span></span><code><span class="c1"># Executar todos os testes</span>
+make<span class="w"> </span><span class="nb">test</span>
+</code></pre></div>
+<h3 id="saida-dos-testes">📋 Saída dos Testes</h3>
+<div class="highlight"><pre><span></span><code>Iniciando testes automatizados...
+🔹 Testando hello...
+✅ hello passou
+🔹 Testando inteiro...
+✅ inteiro passou
+🔹 Testando vetor_inteiro...
+✅ vetor_inteiro passou
+...
+✅ Passaram: 32
+❌ Falharam: 0
+</code></pre></div>
+<h3 id="teste-individual">🔍 Teste Individual</h3>
+<div class="highlight"><pre><span></span><code><span class="c1"># Testar um arquivo específico</span>
+make<span class="w"> </span>run<span class="w"> </span><span class="nv">FILE</span><span class="o">=</span>testes/inputs/hello.pg
+
+<span class="c1"># Verificar saída gerada</span>
+cat<span class="w"> </span>build/saida.c
+</code></pre></div>
+<h2 id="adicionando-novos-testes">Adicionando Novos Testes</h2>
+<h3 id="passo-a-passo">📝 Passo a Passo</h3>
+<ol>
+<li>
+<p><strong>Criar arquivo de entrada</strong>:
+   <div class="highlight"><pre><span></span><code><span class="c1"># Criar novo teste</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s1">&#39;programa {</span>
+<span class="s1">    funcao inicio() {</span>
+<span class="s1">        // Seu código aqui</span>
+<span class="s1">    }</span>
+<span class="s1">}&#39;</span><span class="w"> </span>&gt;<span class="w"> </span>testes/inputs/meu_teste.pg
+</code></pre></div></p>
+</li>
+<li>
+<p><strong>Gerar saída esperada</strong>:
+   <div class="highlight"><pre><span></span><code><span class="c1"># Compilar para gerar saída</span>
+make<span class="w"> </span>run<span class="w"> </span><span class="nv">FILE</span><span class="o">=</span>testes/inputs/meu_teste.pg
+
+<span class="c1"># Copiar saída como esperada</span>
+cp<span class="w"> </span>build/saida.c<span class="w"> </span>testes/expected/meu_teste.expected
+</code></pre></div></p>
+</li>
+<li>
+<p><strong>Executar teste</strong>:
+   <div class="highlight"><pre><span></span><code>make<span class="w"> </span><span class="nb">test</span>
+</code></pre></div></p>
+</li>
+</ol>
+<h3 id="convencoes-de-nomenclatura">📋 Convenções de Nomenclatura</h3>
+<ul>
+<li><strong>Arquivo de entrada</strong>: <code>nome_teste.pg</code></li>
+<li><strong>Arquivo esperado</strong>: <code>nome_teste.expected</code></li>
+<li><strong>Nome descritivo</strong>: Use nomes que descrevam a funcionalidade testada</li>
+</ul>
+<h2 id="integracao-continua">Integração Contínua</h2>
+<h3 id="github-actions">🔄 GitHub Actions</h3>
+<p>O projeto possui integração com GitHub Actions que executa os testes automaticamente:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># .github/workflows/compiler-tests.yml</span>
+<span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Compilador Portugol-C Tests</span>
+
+<span class="nt">on</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">push</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">paths</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&#39;portugol_compilador/**&#39;</span>
+<span class="w">  </span><span class="nt">pull_request</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">paths</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&#39;portugol_compilador/**&#39;</span>
+
+<span class="nt">jobs</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">test</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">runs-on</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ubuntu-latest</span>
+<span class="w">    </span><span class="nt">steps</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">actions/checkout@v4</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Instalar dependências</span>
+<span class="w">      </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<span class="w">        </span><span class="no">sudo apt-get update</span>
+<span class="w">        </span><span class="no">sudo apt-get install -y gcc flex bison make</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Compilar o projeto</span>
+<span class="w">      </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<span class="w">        </span><span class="no">cd portugol_compilador</span>
+<span class="w">        </span><span class="no">make</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Executar testes</span>
+<span class="w">      </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<span class="w">        </span><span class="no">cd portugol_compilador</span>
+<span class="w">        </span><span class="no">make test</span>
+</code></pre></div>
+<h3 id="beneficios-da-ci">🎯 Benefícios da CI</h3>
+<ul>
+<li><strong>Testes automáticos</strong> em cada push/PR</li>
+<li><strong>Validação</strong> antes do merge</li>
+<li><strong>Feedback imediato</strong> sobre problemas</li>
+<li><strong>Histórico</strong> de execução dos testes</li>
+</ul>
+<h2 id="depuracao-de-testes">Depuração de Testes</h2>
+<h3 id="teste-falhando">🐛 Teste Falhando</h3>
+<p>Quando um teste falha, o sistema mostra as diferenças:
+<div class="highlight"><pre><span></span><code>❌<span class="w"> </span>meu_teste<span class="w"> </span>falhou
+🔍<span class="w"> </span>Diferença:
+---<span class="w"> </span>build/test_outputs/meu_teste.c
++++<span class="w"> </span>testes/expected/meu_teste.expected
+@@<span class="w"> </span>-3,7<span class="w"> </span>+3,7<span class="w"> </span>@@
+<span class="w"> </span>int<span class="w"> </span>main<span class="o">()</span><span class="w"> </span><span class="o">{</span>
+<span class="w">     </span>int<span class="w"> </span>x<span class="p">;</span>
+-<span class="w">    </span><span class="nv">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">10</span><span class="p">;</span>
++<span class="w">    </span><span class="nv">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">20</span><span class="p">;</span>
+<span class="w">     </span>printf<span class="o">(</span><span class="s2">&quot;%d\n&quot;</span>,<span class="w"> </span>x<span class="o">)</span><span class="p">;</span>
+<span class="w">     </span><span class="k">return</span><span class="w"> </span><span class="m">0</span><span class="p">;</span>
+<span class="w"> </span><span class="o">}</span>
+</code></pre></div></p>
+<h3 id="solucoes-comuns">🔧 Soluções Comuns</h3>
+<ol>
+<li>
+<p><strong>Atualizar arquivo expected</strong>:
+   <div class="highlight"><pre><span></span><code>cp<span class="w"> </span>build/test_outputs/meu_teste.c<span class="w"> </span>testes/expected/meu_teste.expected
+</code></pre></div></p>
+</li>
+<li>
+<p><strong>Corrigir código fonte</strong>:</p>
+</li>
+<li>Verificar lógica do compilador</li>
+<li>
+<p>Corrigir geração de código</p>
+</li>
+<li>
+<p><strong>Verificar entrada</strong>:</p>
+</li>
+<li>Validar sintaxe do arquivo .pg</li>
+<li>Confirmar funcionalidade esperada</li>
+</ol>
+<h2 id="metricas-de-qualidade">Métricas de Qualidade</h2>
+<h3 id="cobertura-de-codigo">📈 Cobertura de Código</h3>
+<ul>
+<li><strong>Funcionalidades</strong>: 100% das implementadas</li>
+<li><strong>Tipos de dados</strong>: Todos suportados</li>
+<li><strong>Operadores</strong>: Cobertura completa</li>
+<li><strong>Estruturas</strong>: Todas testadas</li>
+</ul>
+<h3 id="performance">⏱️ Performance</h3>
+<ul>
+<li><strong>Tempo médio por teste</strong>: ~0.2s</li>
+<li><strong>Tempo total</strong>: ~5-10s</li>
+<li><strong>Paralelização</strong>: Potencial para melhoria</li>
+</ul>
+<h3 id="qualidade">🎯 Qualidade</h3>
+<ul>
+<li><strong>Falsos positivos</strong>: 0%</li>
+<li><strong>Falsos negativos</strong>: 0%</li>
+<li><strong>Estabilidade</strong>: 100% dos testes passam consistentemente</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Voltar para o topo
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs", "navigation.top"], "search": "../../assets/javascripts/workers/search.d50fe291.min.js", "tags": null, "translations": {"clipboard.copied": "Copiado para \u00e1rea de transfer\u00eancia", "clipboard.copy": "Copiar para \u00e1rea de transfer\u00eancia", "search.result.more.one": "mais 1 nesta p\u00e1gina", "search.result.more.other": "# mais nesta p\u00e1gina", "search.result.none": "Nenhum documento encontrado", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Digite para iniciar a busca", "search.result.term.missing": "Ausente", "select.version": "Selecione a vers\u00e3o"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.13a4f30d.min.js"></script>
+      
+    
+  </body>
+</html>

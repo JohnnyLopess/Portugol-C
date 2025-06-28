@@ -1,0 +1,3172 @@
+
+<!doctype html>
+<html lang="pt" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://johnnylopess.github.io/Portugol-C/tecnica/analise-lexica/">
+      
+      
+        <link rel="prev" href="../arquitetura/">
+      
+      
+        <link rel="next" href="../analise-sintatica/">
+      
+      
+      <link rel="icon" href="../../assets/logo.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.14">
+    
+    
+      
+        <title>Análise Léxica - Compilador Portugol-C</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.342714a4.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="green" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#analise-lexica" class="md-skip">
+          Pular para conteúdo
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Cabeçalho">
+    <a href="../.." title="Compilador Portugol-C" class="md-header__button md-logo" aria-label="Compilador Portugol-C" data-md-component="logo">
+      
+  <img src="../../assets/logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Compilador Portugol-C
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Análise Léxica
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="green" data-md-color-accent="indigo"  aria-label="Mudar para o modo escuro"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Mudar para o modo escuro" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2m0 2a8 8 0 0 1 8 8 8 8 0 0 1-8 8z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="green" data-md-color-accent="indigo"  aria-label="Mudar para o modo claro"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Mudar para o modo claro" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2m0 2a8 8 0 0 1 8 8 8 8 0 0 1-8 8z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Buscar" placeholder="Buscar" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Pesquisar">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Limpar" aria-label="Limpar" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Inicializando busca
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/JohnnyLopess/Portugol-C" title="Ir para repositório" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Compilador Portugol-C
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Abas" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Início
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../guia-usuario/instalacao/" class="md-tabs__link">
+          
+  
+  
+  Guia do Usuário
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../funcionalidades/visao-geral/" class="md-tabs__link">
+          
+  
+  
+  Funcionalidades
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../testes/sistema-testes/" class="md-tabs__link">
+          
+  
+  
+  Testes
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../arquitetura/" class="md-tabs__link">
+          
+  
+  
+  Documentação Técnica
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../visao-projeto/visaoProduto/" class="md-tabs__link">
+          
+  
+  
+  Visão Projeto
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../resultados/sprint1/" class="md-tabs__link">
+          
+  
+  
+  Resultados
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navegação" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Compilador Portugol-C" class="md-nav__button md-logo" aria-label="Compilador Portugol-C" data-md-component="logo">
+      
+  <img src="../../assets/logo.png" alt="logo">
+
+    </a>
+    Compilador Portugol-C
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/JohnnyLopess/Portugol-C" title="Ir para repositório" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Compilador Portugol-C
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Início
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Guia do Usuário
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Guia do Usuário
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guia-usuario/instalacao/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Instalação
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guia-usuario/como-usar/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Como Usar
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guia-usuario/exemplos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Exemplos
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Funcionalidades
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Funcionalidades
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../funcionalidades/visao-geral/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Visão Geral
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../funcionalidades/tipos-dados/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Tipos de Dados
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../funcionalidades/estruturas-controle.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Estruturas de Controle
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../funcionalidades/funcoes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Funções
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../funcionalidades/vetores/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Vetores
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../funcionalidades/operadores/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Operadores
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Testes
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Testes
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../testes/sistema-testes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Sistema de Testes
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../testes/casos-teste/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Casos de Teste
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../testes/cobertura/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Cobertura
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    Documentação Técnica
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Documentação Técnica
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../arquitetura/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Arquitetura
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Análise Léxica
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    Análise Léxica
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Índice">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Índice
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#visao-geral" class="md-nav__link">
+    <span class="md-ellipsis">
+      Visão Geral
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Visão Geral">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#arquivo-principal" class="md-nav__link">
+    <span class="md-ellipsis">
+      Arquivo Principal
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#funcao-principal" class="md-nav__link">
+    <span class="md-ellipsis">
+      Função Principal
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#estrutura-do-arquivo-lexl" class="md-nav__link">
+    <span class="md-ellipsis">
+      Estrutura do Arquivo lex.l
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Estrutura do Arquivo lex.l">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-secao-de-definicoes" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Seção de Definições
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Seção de Definições">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#inclusoes-e-declaracoes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Inclusões e Declarações
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#definicoes-de-padroes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Definições de Padrões
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-secao-de-regras" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Seção de Regras
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Seção de Regras">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#palavras-chave" class="md-nav__link">
+    <span class="md-ellipsis">
+      Palavras-chave
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tipos-de-dados" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tipos de Dados
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#operadores-aritmeticos" class="md-nav__link">
+    <span class="md-ellipsis">
+      Operadores Aritméticos
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#operadores-de-atribuicao" class="md-nav__link">
+    <span class="md-ellipsis">
+      Operadores de Atribuição
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#operadores-relacionais" class="md-nav__link">
+    <span class="md-ellipsis">
+      Operadores Relacionais
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#operadores-logicos" class="md-nav__link">
+    <span class="md-ellipsis">
+      Operadores Lógicos
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#operadores-bitwise" class="md-nav__link">
+    <span class="md-ellipsis">
+      Operadores Bitwise
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#delimitadores" class="md-nav__link">
+    <span class="md-ellipsis">
+      Delimitadores
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#literais" class="md-nav__link">
+    <span class="md-ellipsis">
+      Literais
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tratamento-de-espacos-e-comentarios" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tratamento de Espaços e Comentários
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-secao-de-codigo-do-usuario" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Seção de Código do Usuário
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tokens-definidos" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tokens Definidos
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Tokens Definidos">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#classificacao-dos-tokens" class="md-nav__link">
+    <span class="md-ellipsis">
+      Classificação dos Tokens
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tratamento-de-caracteres-especiais" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tratamento de Caracteres Especiais
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Tratamento de Caracteres Especiais">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#escape-sequences-em-caracteres" class="md-nav__link">
+    <span class="md-ellipsis">
+      Escape Sequences em Caracteres
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#implementacao-no-lexer" class="md-nav__link">
+    <span class="md-ellipsis">
+      Implementação no Lexer
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tratamento-de-numeros" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tratamento de Números
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Tratamento de Números">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#numeros-inteiros" class="md-nav__link">
+    <span class="md-ellipsis">
+      Números Inteiros
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#numeros-reais" class="md-nav__link">
+    <span class="md-ellipsis">
+      Números Reais
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#validacao-de-numeros" class="md-nav__link">
+    <span class="md-ellipsis">
+      Validação de Números
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tratamento-de-comentarios" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tratamento de Comentários
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Tratamento de Comentários">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#comentarios-de-linha" class="md-nav__link">
+    <span class="md-ellipsis">
+      Comentários de Linha
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#comentarios-de-bloco" class="md-nav__link">
+    <span class="md-ellipsis">
+      Comentários de Bloco
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#comentarios-aninhados-nao-suportado" class="md-nav__link">
+    <span class="md-ellipsis">
+      Comentários Aninhados (Não Suportado)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gerenciamento-de-estados" class="md-nav__link">
+    <span class="md-ellipsis">
+      Gerenciamento de Estados
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Gerenciamento de Estados">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#estados-do-lexer" class="md-nav__link">
+    <span class="md-ellipsis">
+      Estados do Lexer
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tratamento-de-erros-lexicos" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tratamento de Erros Léxicos
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Tratamento de Erros Léxicos">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#caracteres-invalidos" class="md-nav__link">
+    <span class="md-ellipsis">
+      Caracteres Inválidos
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#strings-nao-fechadas" class="md-nav__link">
+    <span class="md-ellipsis">
+      Strings Não Fechadas
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#funcao-de-erro-personalizada" class="md-nav__link">
+    <span class="md-ellipsis">
+      Função de Erro Personalizada
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#interface-com-o-parser" class="md-nav__link">
+    <span class="md-ellipsis">
+      Interface com o Parser
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Interface com o Parser">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#variaveis-globais-compartilhadas" class="md-nav__link">
+    <span class="md-ellipsis">
+      Variáveis Globais Compartilhadas
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#funcao-principal-do-lexer" class="md-nav__link">
+    <span class="md-ellipsis">
+      Função Principal do Lexer
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#otimizacoes-e-performance" class="md-nav__link">
+    <span class="md-ellipsis">
+      Otimizações e Performance
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Otimizações e Performance">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#buffering" class="md-nav__link">
+    <span class="md-ellipsis">
+      Buffering
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#compilacao-otimizada" class="md-nav__link">
+    <span class="md-ellipsis">
+      Compilação Otimizada
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#medicao-de-performance" class="md-nav__link">
+    <span class="md-ellipsis">
+      Medição de Performance
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exemplo-de-uso" class="md-nav__link">
+    <span class="md-ellipsis">
+      Exemplo de Uso
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Exemplo de Uso">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#codigo-portugol-de-entrada" class="md-nav__link">
+    <span class="md-ellipsis">
+      Código Portugol de Entrada
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sequencia-de-tokens-gerados" class="md-nav__link">
+    <span class="md-ellipsis">
+      Sequência de Tokens Gerados
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#debugging-e-testes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Debugging e Testes
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Debugging e Testes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#modo-debug" class="md-nav__link">
+    <span class="md-ellipsis">
+      Modo Debug
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#testes-unitarios-do-lexer" class="md-nav__link">
+    <span class="md-ellipsis">
+      Testes Unitários do Lexer
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#manutencao-e-extensoes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Manutenção e Extensões
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Manutenção e Extensões">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#adicionando-novos-tokens" class="md-nav__link">
+    <span class="md-ellipsis">
+      Adicionando Novos Tokens
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#modificando-comportamento" class="md-nav__link">
+    <span class="md-ellipsis">
+      Modificando Comportamento
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../analise-sintatica/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Análise Sintática
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../geracao-codigo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Geração de Código
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Visão Projeto
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            Visão Projeto
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../visao-projeto/visaoProduto/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Projeto
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../visao-projeto/escopo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Escopo Portugol
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../visao-projeto/sprints/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Sprints
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Resultados
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            Resultados
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../resultados/sprint1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Sprint 1
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../resultados/sprint2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Sprint 2
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../resultados/sprint3/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Sprint 3
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../resultados/sprint4/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Sprint 4
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../resultados/sprint5/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Sprint 5
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../resultados/sprint6/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Sprint 6
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../resultados/sprint7/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Sprint 7
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../resultados/sprint8/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Sprint 8
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../resultados/sprint9/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Sprint 9
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Índice">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Índice
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#visao-geral" class="md-nav__link">
+    <span class="md-ellipsis">
+      Visão Geral
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Visão Geral">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#arquivo-principal" class="md-nav__link">
+    <span class="md-ellipsis">
+      Arquivo Principal
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#funcao-principal" class="md-nav__link">
+    <span class="md-ellipsis">
+      Função Principal
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#estrutura-do-arquivo-lexl" class="md-nav__link">
+    <span class="md-ellipsis">
+      Estrutura do Arquivo lex.l
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Estrutura do Arquivo lex.l">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-secao-de-definicoes" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Seção de Definições
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Seção de Definições">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#inclusoes-e-declaracoes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Inclusões e Declarações
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#definicoes-de-padroes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Definições de Padrões
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-secao-de-regras" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Seção de Regras
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Seção de Regras">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#palavras-chave" class="md-nav__link">
+    <span class="md-ellipsis">
+      Palavras-chave
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tipos-de-dados" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tipos de Dados
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#operadores-aritmeticos" class="md-nav__link">
+    <span class="md-ellipsis">
+      Operadores Aritméticos
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#operadores-de-atribuicao" class="md-nav__link">
+    <span class="md-ellipsis">
+      Operadores de Atribuição
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#operadores-relacionais" class="md-nav__link">
+    <span class="md-ellipsis">
+      Operadores Relacionais
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#operadores-logicos" class="md-nav__link">
+    <span class="md-ellipsis">
+      Operadores Lógicos
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#operadores-bitwise" class="md-nav__link">
+    <span class="md-ellipsis">
+      Operadores Bitwise
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#delimitadores" class="md-nav__link">
+    <span class="md-ellipsis">
+      Delimitadores
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#literais" class="md-nav__link">
+    <span class="md-ellipsis">
+      Literais
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tratamento-de-espacos-e-comentarios" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tratamento de Espaços e Comentários
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-secao-de-codigo-do-usuario" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Seção de Código do Usuário
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tokens-definidos" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tokens Definidos
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Tokens Definidos">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#classificacao-dos-tokens" class="md-nav__link">
+    <span class="md-ellipsis">
+      Classificação dos Tokens
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tratamento-de-caracteres-especiais" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tratamento de Caracteres Especiais
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Tratamento de Caracteres Especiais">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#escape-sequences-em-caracteres" class="md-nav__link">
+    <span class="md-ellipsis">
+      Escape Sequences em Caracteres
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#implementacao-no-lexer" class="md-nav__link">
+    <span class="md-ellipsis">
+      Implementação no Lexer
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tratamento-de-numeros" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tratamento de Números
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Tratamento de Números">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#numeros-inteiros" class="md-nav__link">
+    <span class="md-ellipsis">
+      Números Inteiros
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#numeros-reais" class="md-nav__link">
+    <span class="md-ellipsis">
+      Números Reais
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#validacao-de-numeros" class="md-nav__link">
+    <span class="md-ellipsis">
+      Validação de Números
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tratamento-de-comentarios" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tratamento de Comentários
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Tratamento de Comentários">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#comentarios-de-linha" class="md-nav__link">
+    <span class="md-ellipsis">
+      Comentários de Linha
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#comentarios-de-bloco" class="md-nav__link">
+    <span class="md-ellipsis">
+      Comentários de Bloco
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#comentarios-aninhados-nao-suportado" class="md-nav__link">
+    <span class="md-ellipsis">
+      Comentários Aninhados (Não Suportado)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gerenciamento-de-estados" class="md-nav__link">
+    <span class="md-ellipsis">
+      Gerenciamento de Estados
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Gerenciamento de Estados">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#estados-do-lexer" class="md-nav__link">
+    <span class="md-ellipsis">
+      Estados do Lexer
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tratamento-de-erros-lexicos" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tratamento de Erros Léxicos
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Tratamento de Erros Léxicos">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#caracteres-invalidos" class="md-nav__link">
+    <span class="md-ellipsis">
+      Caracteres Inválidos
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#strings-nao-fechadas" class="md-nav__link">
+    <span class="md-ellipsis">
+      Strings Não Fechadas
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#funcao-de-erro-personalizada" class="md-nav__link">
+    <span class="md-ellipsis">
+      Função de Erro Personalizada
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#interface-com-o-parser" class="md-nav__link">
+    <span class="md-ellipsis">
+      Interface com o Parser
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Interface com o Parser">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#variaveis-globais-compartilhadas" class="md-nav__link">
+    <span class="md-ellipsis">
+      Variáveis Globais Compartilhadas
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#funcao-principal-do-lexer" class="md-nav__link">
+    <span class="md-ellipsis">
+      Função Principal do Lexer
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#otimizacoes-e-performance" class="md-nav__link">
+    <span class="md-ellipsis">
+      Otimizações e Performance
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Otimizações e Performance">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#buffering" class="md-nav__link">
+    <span class="md-ellipsis">
+      Buffering
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#compilacao-otimizada" class="md-nav__link">
+    <span class="md-ellipsis">
+      Compilação Otimizada
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#medicao-de-performance" class="md-nav__link">
+    <span class="md-ellipsis">
+      Medição de Performance
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exemplo-de-uso" class="md-nav__link">
+    <span class="md-ellipsis">
+      Exemplo de Uso
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Exemplo de Uso">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#codigo-portugol-de-entrada" class="md-nav__link">
+    <span class="md-ellipsis">
+      Código Portugol de Entrada
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sequencia-de-tokens-gerados" class="md-nav__link">
+    <span class="md-ellipsis">
+      Sequência de Tokens Gerados
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#debugging-e-testes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Debugging e Testes
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Debugging e Testes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#modo-debug" class="md-nav__link">
+    <span class="md-ellipsis">
+      Modo Debug
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#testes-unitarios-do-lexer" class="md-nav__link">
+    <span class="md-ellipsis">
+      Testes Unitários do Lexer
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#manutencao-e-extensoes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Manutenção e Extensões
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Manutenção e Extensões">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#adicionando-novos-tokens" class="md-nav__link">
+    <span class="md-ellipsis">
+      Adicionando Novos Tokens
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#modificando-comportamento" class="md-nav__link">
+    <span class="md-ellipsis">
+      Modificando Comportamento
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="analise-lexica">Análise Léxica</h1>
+<p>A análise léxica é a primeira fase do compilador Portugol-C, responsável por transformar o código fonte em uma sequência de tokens. Este documento descreve o analisador léxico implementado usando Flex (lex).</p>
+<h2 id="visao-geral">Visão Geral</h2>
+<h3 id="arquivo-principal">Arquivo Principal</h3>
+<ul>
+<li><strong>Localização</strong>: <code>src/lex.l</code></li>
+<li><strong>Ferramenta</strong>: Flex (Fast Lexical Analyzer Generator)</li>
+<li><strong>Saída</strong>: <code>lex.yy.c</code> (código C gerado)</li>
+</ul>
+<h3 id="funcao-principal">Função Principal</h3>
+<p><div class="highlight"><pre><span></span><code><span class="kt">int</span><span class="w"> </span><span class="n">yylex</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+</code></pre></div>
+- Retorna o próximo token do código fonte
+- Atualiza a variável global <code>yylval</code> com o valor do token
+- Incrementa contadores de linha e coluna para mensagens de erro</p>
+<h2 id="estrutura-do-arquivo-lexl">Estrutura do Arquivo <code>lex.l</code></h2>
+<h3 id="1-secao-de-definicoes">1. Seção de Definições</h3>
+<h4 id="inclusoes-e-declaracoes">Inclusões e Declarações</h4>
+<div class="highlight"><pre><span></span><code><span class="o">%</span><span class="p">{</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdlib.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;string.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;y.tab.h&quot;</span><span class="c1">  // Tokens definidos pelo parser</span>
+<span class="k">extern</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">yylval</span><span class="p">;</span>
+<span class="kt">int</span><span class="w"> </span><span class="n">linha</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w">      </span><span class="c1">// Contador de linhas</span>
+<span class="kt">int</span><span class="w"> </span><span class="n">coluna</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w">     </span><span class="c1">// Contador de colunas</span>
+<span class="o">%</span><span class="p">}</span>
+</code></pre></div>
+<h4 id="definicoes-de-padroes">Definições de Padrões</h4>
+<div class="highlight"><pre><span></span><code>DIGITO          [0-9]
+LETRA           [a-zA-Z_]
+IDENTIFICADOR   {LETRA}({LETRA}|{DIGITO})*
+INTEIRO         {DIGITO}+
+REAL            {DIGITO}+\.{DIGITO}+
+CARACTER        &#39;([^&#39;\\]|\\.|\\[0-7]{1,3}|\\x[0-9a-fA-F]{1,2})&#39;
+ESPACO          [ \t]+
+NOVA_LINHA      \n
+COMENTARIO_LINHA &quot;//&quot;.*
+COMENTARIO_BLOCO &quot;/*&quot;([^*]|\*+[^*/])*\*+&quot;/&quot;
+</code></pre></div>
+<h3 id="2-secao-de-regras">2. Seção de Regras</h3>
+<h4 id="palavras-chave">Palavras-chave</h4>
+<div class="highlight"><pre><span></span><code>&quot;programa&quot;      { return PROGRAMA; }
+&quot;funcao&quot;        { return FUNCAO; }
+&quot;inicio&quot;        { return INICIO; }
+&quot;se&quot;            { return SE; }
+&quot;senao&quot;         { return SENAO; }
+&quot;para&quot;          { return PARA; }
+&quot;enquanto&quot;      { return ENQUANTO; }
+&quot;faca&quot;          { return FACA; }
+&quot;escolha&quot;       { return ESCOLHA; }
+&quot;caso&quot;          { return CASO; }
+&quot;padrao&quot;        { return PADRAO; }
+&quot;pare&quot;          { return PARE; }
+&quot;retorne&quot;       { return RETORNE; }
+&quot;leia&quot;          { return LEIA; }
+&quot;escreva&quot;       { return ESCREVA; }
+</code></pre></div>
+<h4 id="tipos-de-dados">Tipos de Dados</h4>
+<div class="highlight"><pre><span></span><code>&quot;inteiro&quot;       { return TIPO_INTEIRO; }
+&quot;real&quot;          { return TIPO_REAL; }
+&quot;caracter&quot;      { return TIPO_CARACTER; }
+&quot;logico&quot;        { return TIPO_LOGICO; }
+&quot;verdadeiro&quot;    { yylval = 1; return VERDADEIRO; }
+&quot;falso&quot;         { yylval = 0; return FALSO; }
+</code></pre></div>
+<h4 id="operadores-aritmeticos">Operadores Aritméticos</h4>
+<div class="highlight"><pre><span></span><code>&quot;+&quot;             { return MAIS; }
+&quot;-&quot;             { return MENOS; }
+&quot;*&quot;             { return MULTIPLICACAO; }
+&quot;/&quot;             { return DIVISAO; }
+&quot;%&quot;             { return MODULO; }
+&quot;++&quot;            { return INCREMENTO; }
+&quot;--&quot;            { return DECREMENTO; }
+</code></pre></div>
+<h4 id="operadores-de-atribuicao">Operadores de Atribuição</h4>
+<div class="highlight"><pre><span></span><code>&quot;=&quot;             { return ATRIBUICAO; }
+&quot;+=&quot;            { return MAIS_IGUAL; }
+&quot;-=&quot;            { return MENOS_IGUAL; }
+&quot;*=&quot;            { return MULT_IGUAL; }
+&quot;/=&quot;            { return DIV_IGUAL; }
+&quot;%=&quot;            { return MOD_IGUAL; }
+</code></pre></div>
+<h4 id="operadores-relacionais">Operadores Relacionais</h4>
+<div class="highlight"><pre><span></span><code>&quot;==&quot;            { return IGUAL; }
+&quot;!=&quot;            { return DIFERENTE; }
+&quot;&lt;&quot;             { return MENOR; }
+&quot;&lt;=&quot;            { return MENOR_IGUAL; }
+&quot;&gt;&quot;             { return MAIOR; }
+&quot;&gt;=&quot;            { return MAIOR_IGUAL; }
+</code></pre></div>
+<h4 id="operadores-logicos">Operadores Lógicos</h4>
+<div class="highlight"><pre><span></span><code>&quot;&amp;&amp;&quot;            { return E_LOGICO; }
+&quot;||&quot;            { return OU_LOGICO; }
+&quot;!&quot;             { return NAO_LOGICO; }
+</code></pre></div>
+<h4 id="operadores-bitwise">Operadores Bitwise</h4>
+<div class="highlight"><pre><span></span><code>&quot;&amp;&quot;             { return E_BITWISE; }
+&quot;|&quot;             { return OU_BITWISE; }
+&quot;^&quot;             { return XOR_BITWISE; }
+&quot;~&quot;             { return COMPLEMENTO; }
+&quot;&lt;&lt;&quot;            { return DESLOC_ESQUERDA; }
+&quot;&gt;&gt;&quot;            { return DESLOC_DIREITA; }
+</code></pre></div>
+<h4 id="delimitadores">Delimitadores</h4>
+<div class="highlight"><pre><span></span><code>&quot;(&quot;             { return ABRE_PARENTESES; }
+&quot;)&quot;             { return FECHA_PARENTESES; }
+&quot;{&quot;             { return ABRE_CHAVES; }
+&quot;}&quot;             { return FECHA_CHAVES; }
+&quot;[&quot;             { return ABRE_COLCHETES; }
+&quot;]&quot;             { return FECHA_COLCHETES; }
+&quot;;&quot;             { return PONTO_VIRGULA; }
+&quot;,&quot;             { return VIRGULA; }
+&quot;:&quot;             { return DOIS_PONTOS; }
+</code></pre></div>
+<h4 id="literais">Literais</h4>
+<div class="highlight"><pre><span></span><code>{INTEIRO}       { 
+                  yylval = atoi(yytext); 
+                  return NUM_INTEIRO; 
+                }
+{REAL}          { 
+                  yylval = (int)(atof(yytext) * 1000); // Para preservar decimais
+                  return NUM_REAL; 
+                }
+{CARACTER}      { 
+                  yylval = yytext[1]; // Caractere entre aspas
+                  return CARACTER_LITERAL; 
+                }
+{IDENTIFICADOR} { 
+                  yylval = (int)strdup(yytext);
+                  return IDENTIFICADOR; 
+                }
+</code></pre></div>
+<h4 id="tratamento-de-espacos-e-comentarios">Tratamento de Espaços e Comentários</h4>
+<div class="highlight"><pre><span></span><code>{ESPACO}        { coluna += yyleng; }
+{NOVA_LINHA}    { linha++; coluna = 1; }
+{COMENTARIO_LINHA}      { /* Ignora comentários de linha */ }
+{COMENTARIO_BLOCO}      { 
+                          // Conta linhas em comentários de bloco
+                          char *p = yytext;
+                          while (*p) {
+                              if (*p == &#39;\n&#39;) linha++;
+                              p++;
+                          }
+                        }
+</code></pre></div>
+<h3 id="3-secao-de-codigo-do-usuario">3. Seção de Código do Usuário</h3>
+<div class="highlight"><pre><span></span><code><span class="kt">int</span><span class="w"> </span><span class="nf">yywrap</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="c1">// Indica fim do arquivo</span>
+<span class="p">}</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">yyerror</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">msg</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Erro léxico na linha %d, coluna %d: %s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span>
+<span class="w">            </span><span class="n">linha</span><span class="p">,</span><span class="w"> </span><span class="n">coluna</span><span class="p">,</span><span class="w"> </span><span class="n">msg</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div>
+<h2 id="tokens-definidos">Tokens Definidos</h2>
+<h3 id="classificacao-dos-tokens">Classificação dos Tokens</h3>
+<table>
+<thead>
+<tr>
+<th>Categoria</th>
+<th>Tokens</th>
+<th>Quantidade</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Palavras-chave</strong></td>
+<td><code>programa</code>, <code>funcao</code>, <code>inicio</code>, <code>se</code>, <code>senao</code>, etc.</td>
+<td>14</td>
+</tr>
+<tr>
+<td><strong>Tipos</strong></td>
+<td><code>inteiro</code>, <code>real</code>, <code>caracter</code>, <code>logico</code></td>
+<td>4</td>
+</tr>
+<tr>
+<td><strong>Operadores</strong></td>
+<td><code>+</code>, <code>-</code>, <code>*</code>, <code>/</code>, <code>==</code>, <code>!=</code>, <code>&amp;&amp;</code>, <code>||</code>, etc.</td>
+<td>25</td>
+</tr>
+<tr>
+<td><strong>Delimitadores</strong></td>
+<td><code>(</code>, <code>)</code>, <code>{</code>, <code>}</code>, <code>[</code>, <code>]</code>, <code>;</code>, <code>,</code></td>
+<td>8</td>
+</tr>
+<tr>
+<td><strong>Literais</strong></td>
+<td>Números, caracteres, booleanos</td>
+<td>4</td>
+</tr>
+<tr>
+<td><strong>Identificadores</strong></td>
+<td>Nomes de variáveis e funções</td>
+<td>1</td>
+</tr>
+<tr>
+<td>### Códigos de Token (em <code>y.tab.h</code>)</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><div class="highlight"><pre><span></span><code><span class="c1">// Palavras-chave</span>
+<span class="cp">#define PROGRAMA        256</span>
+<span class="cp">#define FUNCAO          257</span>
+<span class="cp">#define INICIO          258</span>
+<span class="cp">#define SE              259</span>
+<span class="cp">#define SENAO           260</span>
+<span class="c1">// ... outros tokens</span>
+<span class="c1">// Tipos</span>
+<span class="cp">#define TIPO_INTEIRO    300</span>
+<span class="cp">#define TIPO_REAL       301</span>
+<span class="cp">#define TIPO_CARACTER   302</span>
+<span class="cp">#define TIPO_LOGICO     303</span>
+<span class="c1">// Operadores</span>
+<span class="cp">#define MAIS            400</span>
+<span class="cp">#define MENOS           401</span>
+<span class="cp">#define MULTIPLICACAO   402</span>
+<span class="c1">// ... outros operadores</span>
+<span class="c1">// Literais</span>
+<span class="cp">#define NUM_INTEIRO     500</span>
+<span class="cp">#define NUM_REAL        501</span>
+<span class="cp">#define CARACTER_LITERAL 502</span>
+<span class="cp">#define VERDADEIRO      503</span>
+<span class="cp">#define FALSO           504</span>
+<span class="cp">#define IDENTIFICADOR   505</span>
+</code></pre></div></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2 id="tratamento-de-caracteres-especiais">Tratamento de Caracteres Especiais</h2>
+<h3 id="escape-sequences-em-caracteres">Escape Sequences em Caracteres</h3>
+<div class="highlight"><pre><span></span><code><span class="c1">// Sequências de escape suportadas</span>
+<span class="sc">&#39;a&#39;</span><span class="w">     </span><span class="c1">// Caractere normal</span>
+<span class="sc">&#39;\n&#39;</span><span class="w">    </span><span class="c1">// Nova linha</span>
+<span class="sc">&#39;\t&#39;</span><span class="w">    </span><span class="c1">// Tab</span>
+<span class="sc">&#39;\\&#39;</span><span class="w">    </span><span class="c1">// Barra invertida</span>
+<span class="sc">&#39;\&#39;&#39;</span><span class="w">    </span><span class="c1">// Aspas simples</span>
+<span class="sc">&#39;\&quot;&#39;</span><span class="w">    </span><span class="c1">// Aspas duplas (em strings)</span>
+<span class="sc">&#39;\0&#39;</span><span class="w">    </span><span class="c1">// Caractere nulo</span>
+<span class="sc">&#39;\123&#39;</span><span class="w">  </span><span class="c1">// Octal (até 3 dígitos)</span>
+<span class="sc">&#39;\x41&#39;</span><span class="w">  </span><span class="c1">// Hexadecimal (até 2 dígitos)</span>
+</code></pre></div>
+<h3 id="implementacao-no-lexer">Implementação no Lexer</h3>
+<div class="highlight"><pre><span></span><code>CARACTER        &#39;([^&#39;\\]|\\.|\\[0-7]{1,3}|\\x[0-9a-fA-F]{1,2})&#39;
+{CARACTER}      { 
+                  char c = yytext[1];
+                  if (c == &#39;\\&#39;) {
+                      // Tratar escape sequences
+                      switch (yytext[2]) {
+                          case &#39;n&#39;: c = &#39;\n&#39;; break;
+                          case &#39;t&#39;: c = &#39;\t&#39;; break;
+                          case &#39;\\&#39;: c = &#39;\\&#39;; break;
+                          case &#39;\&#39;&#39;: c = &#39;\&#39;&#39;; break;
+                          case &#39;0&#39;: c = &#39;\0&#39;; break;
+                          // Casos octais e hexadecimais...
+                      }
+                  }
+                  yylval = (int)c;
+                  return CARACTER_LITERAL;
+                }
+</code></pre></div>
+<h2 id="tratamento-de-numeros">Tratamento de Números</h2>
+<h3 id="numeros-inteiros">Números Inteiros</h3>
+<div class="highlight"><pre><span></span><code>INTEIRO         [0-9]+
+INTEIRO_NEG     -[0-9]+
+{INTEIRO}       { 
+                  yylval = atoi(yytext);
+                  return NUM_INTEIRO;
+                }
+{INTEIRO_NEG}   {
+                  yylval = atoi(yytext);
+                  return NUM_INTEIRO;
+                }
+</code></pre></div>
+<h3 id="numeros-reais">Números Reais</h3>
+<div class="highlight"><pre><span></span><code>REAL            [0-9]+\.[0-9]+
+REAL_NEG        -[0-9]+\.[0-9]+
+{REAL}          {
+                  // Multiplica por 1000 para preservar 3 casas decimais
+                  double valor = atof(yytext);
+                  yylval = (int)(valor * 1000);
+                  return NUM_REAL;
+                }
+</code></pre></div>
+<h3 id="validacao-de-numeros">Validação de Números</h3>
+<div class="highlight"><pre><span></span><code><span class="c1">// Função auxiliar para validar limites</span>
+<span class="kt">int</span><span class="w"> </span><span class="nf">validar_inteiro</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">texto</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">long</span><span class="w"> </span><span class="n">valor</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">strtol</span><span class="p">(</span><span class="n">texto</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">);</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">valor</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">INT_MAX</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">valor</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">INT_MIN</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">yyerror</span><span class="p">(</span><span class="s">&quot;Número inteiro fora dos limites&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="n">valor</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+<h2 id="tratamento-de-comentarios">Tratamento de Comentários</h2>
+<h3 id="comentarios-de-linha">Comentários de Linha</h3>
+<div class="highlight"><pre><span></span><code>COMENTARIO_LINHA    &quot;//&quot;.*$
+{COMENTARIO_LINHA}  { 
+                      // Ignora até o final da linha
+                      coluna += yyleng;
+                    }
+</code></pre></div>
+<h3 id="comentarios-de-bloco">Comentários de Bloco</h3>
+<div class="highlight"><pre><span></span><code>COMENTARIO_BLOCO    &quot;/*&quot;([^*]|\*+[^*/])*\*+&quot;/&quot;
+{COMENTARIO_BLOCO}  {
+                      // Conta linhas dentro do comentário
+                      for (int i = 0; i &lt; yyleng; i++) {
+                          if (yytext[i] == &#39;\n&#39;) {
+                              linha++;
+                              coluna = 1;
+                          } else {
+                              coluna++;
+                          }
+                      }
+                    }
+</code></pre></div>
+<h3 id="comentarios-aninhados-nao-suportado">Comentários Aninhados (Não Suportado)</h3>
+<div class="highlight"><pre><span></span><code><span class="c1">// Comentários aninhados não são suportados</span>
+<span class="cm">/* Comentário externo /* interno */</span><span class="w"> </span><span class="n">ainda</span><span class="w"> </span><span class="n">externo</span><span class="w"> </span><span class="o">*/</span><span class="w"> </span><span class="c1">// ERRO!</span>
+</code></pre></div>
+<h2 id="gerenciamento-de-estados">Gerenciamento de Estados</h2>
+<h3 id="estados-do-lexer">Estados do Lexer</h3>
+<div class="highlight"><pre><span></span><code>%x COMENTARIO_BLOCO
+%%
+&quot;/*&quot;                { BEGIN(COMENTARIO_BLOCO); }
+&lt;COMENTARIO_BLOCO&gt;&quot;*/&quot;  { BEGIN(INITIAL); }
+&lt;COMENTARIO_BLOCO&gt;\n    { linha++; coluna = 1; }
+&lt;COMENTARIO_BLOCO&gt;.     { coluna++; }
+&lt;COMENTARIO_BLOCO&gt;&lt;&lt;EOF&gt;&gt; { 
+                          yyerror(&quot;Comentário de bloco não fechado&quot;); 
+                          return 0; 
+                        }
+</code></pre></div>
+<h2 id="tratamento-de-erros-lexicos">Tratamento de Erros Léxicos</h2>
+<h3 id="caracteres-invalidos">Caracteres Inválidos</h3>
+<div class="highlight"><pre><span></span><code>.               { 
+                  char msg[100];
+                  sprintf(msg, &quot;Caractere inválido: &#39;%c&#39; (ASCII %d)&quot;, 
+                          yytext[0], yytext[0]);
+                  yyerror(msg);
+                  coluna++;
+                }
+</code></pre></div>
+<h3 id="strings-nao-fechadas">Strings Não Fechadas</h3>
+<div class="highlight"><pre><span></span><code>&quot;               { 
+                  yyerror(&quot;String literal não fechada&quot;);
+                  return 0;
+                }
+</code></pre></div>
+<h3 id="funcao-de-erro-personalizada">Função de Erro Personalizada</h3>
+<div class="highlight"><pre><span></span><code><span class="kt">void</span><span class="w"> </span><span class="nf">erro_lexico</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">mensagem</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">token</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;ERRO LÉXICO [%d:%d]: %s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">linha</span><span class="p">,</span><span class="w"> </span><span class="n">coluna</span><span class="p">,</span><span class="w"> </span><span class="n">mensagem</span><span class="p">);</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">token</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Token problemático: &#39;%s&#39;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">token</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div>
+<h2 id="interface-com-o-parser">Interface com o Parser</h2>
+<h3 id="variaveis-globais-compartilhadas">Variáveis Globais Compartilhadas</h3>
+<div class="highlight"><pre><span></span><code><span class="k">extern</span><span class="w"> </span><span class="n">YYSTYPE</span><span class="w"> </span><span class="n">yylval</span><span class="p">;</span><span class="w">  </span><span class="c1">// Valor semântico do token</span>
+<span class="k">extern</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">yylineno</span><span class="p">;</span><span class="w">    </span><span class="c1">// Número da linha atual</span>
+<span class="k">extern</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">yytext</span><span class="p">;</span><span class="w">    </span><span class="c1">// Texto do token atual</span>
+<span class="k">extern</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">yyleng</span><span class="p">;</span><span class="w">      </span><span class="c1">// Tamanho do token atual</span>
+</code></pre></div>
+<h3 id="funcao-principal-do-lexer">Função Principal do Lexer</h3>
+<div class="highlight"><pre><span></span><code><span class="kt">int</span><span class="w"> </span><span class="nf">yylex</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">token</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">flex_yylex</span><span class="p">();</span>
+
+<span class="w">    </span><span class="c1">// Log de debugging (opcional)</span>
+<span class="w">    </span><span class="cp">#ifdef DEBUG_LEXER</span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Token: %d, Texto: &#39;%s&#39;, Linha: %d, Coluna: %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span>
+<span class="w">           </span><span class="n">token</span><span class="p">,</span><span class="w"> </span><span class="n">yytext</span><span class="p">,</span><span class="w"> </span><span class="n">linha</span><span class="p">,</span><span class="w"> </span><span class="n">coluna</span><span class="p">);</span>
+<span class="w">    </span><span class="cp">#endif</span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">token</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+<h2 id="otimizacoes-e-performance">Otimizações e Performance</h2>
+<h3 id="buffering">Buffering</h3>
+<div class="highlight"><pre><span></span><code><span class="c1">// Flex usa buffering automático, mas pode ser configurado</span>
+<span class="cp">#define YY_BUF_SIZE 16384  </span><span class="c1">// Tamanho do buffer (padrão: 8192)</span>
+</code></pre></div>
+<h3 id="compilacao-otimizada">Compilação Otimizada</h3>
+<div class="highlight"><pre><span></span><code><span class="c"># Flags para otimização do lexer</span>
+<span class="nv">FLEX_FLAGS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>-8<span class="w"> </span>-f<span class="w"> </span>-i<span class="w"> </span>-s
+<span class="c"># -8: Gerar tabelas de 8 bits</span>
+<span class="c"># -f: Scanner mais rápido</span>
+<span class="c"># -i: Case-insensitive (se necessário)</span>
+<span class="c"># -s: Suprimir warnings</span>
+</code></pre></div>
+<h3 id="medicao-de-performance">Medição de Performance</h3>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;time.h&gt;</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">medir_performance_lexer</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">arquivo</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">clock_t</span><span class="w"> </span><span class="n">inicio</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">clock</span><span class="p">();</span>
+
+<span class="w">    </span><span class="kt">FILE</span><span class="o">*</span><span class="w"> </span><span class="n">fp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fopen</span><span class="p">(</span><span class="n">arquivo</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;r&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="n">yyin</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fp</span><span class="p">;</span>
+
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">token</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">contador</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">while</span><span class="w"> </span><span class="p">((</span><span class="n">token</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">yylex</span><span class="p">())</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">contador</span><span class="o">++</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="n">fclose</span><span class="p">(</span><span class="n">fp</span><span class="p">);</span>
+
+<span class="w">    </span><span class="kt">clock_t</span><span class="w"> </span><span class="n">fim</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">clock</span><span class="p">();</span>
+<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="n">tempo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">((</span><span class="kt">double</span><span class="p">)(</span><span class="n">fim</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">inicio</span><span class="p">))</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">CLOCKS_PER_SEC</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Tokens processados: %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">contador</span><span class="p">);</span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Tempo de análise: %.4f segundos</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">tempo</span><span class="p">);</span>
+<span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Tokens/segundo: %.0f</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">contador</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">tempo</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div>
+<h2 id="exemplo-de-uso">Exemplo de Uso</h2>
+<h3 id="codigo-portugol-de-entrada">Código Portugol de Entrada</h3>
+<div class="highlight"><pre><span></span><code><span class="n">programa</span><span class="w"> </span><span class="err">{</span>
+<span class="w">    </span><span class="k">funcao</span><span class="w"> </span><span class="k">inicio</span><span class="p">()</span><span class="w"> </span><span class="err">{</span>
+<span class="w">        </span><span class="kt">inteiro</span><span class="w"> </span><span class="n">idade</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">25</span><span class="err">;</span>
+<span class="w">        </span><span class="kt">real</span><span class="w"> </span><span class="n">salario</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">350</span><span class="mf">0.50</span><span class="err">;</span>
+<span class="w">        </span><span class="n">caracter</span><span class="w"> </span><span class="n">inicial</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="err">&#39;</span><span class="n">J</span><span class="err">&#39;;</span>
+<span class="w">        </span><span class="kt">logico</span><span class="w"> </span><span class="n">ativo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">verdadeiro</span><span class="err">;</span>
+
+<span class="w">        </span><span class="k">se</span><span class="w"> </span><span class="p">(</span><span class="n">idade</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">18</span><span class="w"> </span><span class="err">&amp;&amp;</span><span class="w"> </span><span class="n">ativo</span><span class="p">)</span><span class="w"> </span><span class="err">{</span>
+<span class="w">            </span><span class="k">escreva</span><span class="p">(</span><span class="s">&quot;Usuário válido\n&quot;</span><span class="p">)</span><span class="err">;</span>
+<span class="w">        </span><span class="err">}</span><span class="w"> </span><span class="k">senao</span><span class="w"> </span><span class="err">{</span>
+<span class="w">            </span><span class="k">escreva</span><span class="p">(</span><span class="s">&quot;Usuário inválido\n&quot;</span><span class="p">)</span><span class="err">;</span>
+<span class="w">        </span><span class="err">}</span>
+<span class="w">    </span><span class="err">}</span>
+<span class="err">}</span>
+</code></pre></div>
+<h3 id="sequencia-de-tokens-gerados">Sequência de Tokens Gerados</h3>
+<div class="highlight"><pre><span></span><code>PROGRAMA (256)
+ABRE_CHAVES (123)
+FUNCAO (257)
+IDENTIFICADOR (505) -&gt; &quot;inicio&quot;
+ABRE_PARENTESES (40)
+FECHA_PARENTESES (41)
+ABRE_CHAVES (123)
+TIPO_INTEIRO (300)
+IDENTIFICADOR (505) -&gt; &quot;idade&quot;
+ATRIBUICAO (61)
+NUM_INTEIRO (500) -&gt; 25
+PONTO_VIRGULA (59)
+TIPO_REAL (301)
+IDENTIFICADOR (505) -&gt; &quot;salario&quot;
+ATRIBUICAO (61)
+NUM_REAL (501) -&gt; 3500500  // (3500.50 * 1000)
+PONTO_VIRGULA (59)
+// ... continuação
+</code></pre></div>
+<h2 id="debugging-e-testes">Debugging e Testes</h2>
+<h3 id="modo-debug">Modo Debug</h3>
+<div class="highlight"><pre><span></span><code><span class="c1"># Compilar com debug</span>
+flex<span class="w"> </span>-d<span class="w"> </span>lex.l
+gcc<span class="w"> </span>-DDEBUG_LEXER<span class="w"> </span>lex.yy.c<span class="w"> </span>-o<span class="w"> </span>lexer_debug
+
+<span class="c1"># Executar teste</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;inteiro x = 42;&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>./lexer_debug
+</code></pre></div>
+<h3 id="testes-unitarios-do-lexer">Testes Unitários do Lexer</h3>
+<div class="highlight"><pre><span></span><code><span class="c1">// Teste individual de tokens</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">teste_token</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">entrada</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">token_esperado</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">yy_scan_string</span><span class="p">(</span><span class="n">entrada</span><span class="p">);</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">token</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">yylex</span><span class="p">();</span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">token</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">token_esperado</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;✓ &#39;%s&#39; -&gt; %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">entrada</span><span class="p">,</span><span class="w"> </span><span class="n">token</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;✗ &#39;%s&#39; -&gt; %d (esperado %d)</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">entrada</span><span class="p">,</span><span class="w"> </span><span class="n">token</span><span class="p">,</span><span class="w"> </span><span class="n">token_esperado</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">teste_token</span><span class="p">(</span><span class="s">&quot;programa&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">PROGRAMA</span><span class="p">);</span>
+<span class="w">    </span><span class="n">teste_token</span><span class="p">(</span><span class="s">&quot;123&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">NUM_INTEIRO</span><span class="p">);</span>
+<span class="w">    </span><span class="n">teste_token</span><span class="p">(</span><span class="s">&quot;3.14&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">NUM_REAL</span><span class="p">);</span>
+<span class="w">    </span><span class="n">teste_token</span><span class="p">(</span><span class="s">&quot;&#39;A&#39;&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">CARACTER_LITERAL</span><span class="p">);</span>
+<span class="w">    </span><span class="n">teste_token</span><span class="p">(</span><span class="s">&quot;verdadeiro&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">VERDADEIRO</span><span class="p">);</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+<h2 id="manutencao-e-extensoes">Manutenção e Extensões</h2>
+<h3 id="adicionando-novos-tokens">Adicionando Novos Tokens</h3>
+<ol>
+<li>
+<p><strong>Definir padrão em <code>lex.l</code></strong>:
+<div class="highlight"><pre><span></span><code>&quot;nova_palavra&quot;  { return NOVA_PALAVRA; }
+</code></pre></div></p>
+</li>
+<li>
+<p><strong>Adicionar token em <code>yacc.y</code></strong>:
+<div class="highlight"><pre><span></span><code>%token NOVA_PALAVRA
+</code></pre></div></p>
+</li>
+<li>
+<p><strong>Atualizar gramática conforme necessário</strong></p>
+</li>
+</ol>
+<h3 id="modificando-comportamento">Modificando Comportamento</h3>
+<div class="highlight"><pre><span></span><code>// Exemplo: Tornar palavras-chave case-insensitive
+(?i:programa)   { return PROGRAMA; }
+(?i:funcao)     { return FUNCAO; }
+</code></pre></div>
+<p>O analisador léxico é fundamental para o funcionamento do compilador, transformando o texto source em tokens que o parser pode processar. Sua implementação robusta garante que todos os elementos da linguagem Portugol sejam corretamente reconhecidos e categorizados.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Voltar para o topo
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs", "navigation.top"], "search": "../../assets/javascripts/workers/search.d50fe291.min.js", "tags": null, "translations": {"clipboard.copied": "Copiado para \u00e1rea de transfer\u00eancia", "clipboard.copy": "Copiar para \u00e1rea de transfer\u00eancia", "search.result.more.one": "mais 1 nesta p\u00e1gina", "search.result.more.other": "# mais nesta p\u00e1gina", "search.result.none": "Nenhum documento encontrado", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Digite para iniciar a busca", "search.result.term.missing": "Ausente", "select.version": "Selecione a vers\u00e3o"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.13a4f30d.min.js"></script>
+      
+    
+  </body>
+</html>

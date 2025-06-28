@@ -1,0 +1,3275 @@
+
+<!doctype html>
+<html lang="pt" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://johnnylopess.github.io/Portugol-C/testes/casos-teste/">
+      
+      
+        <link rel="prev" href="../sistema-testes/">
+      
+      
+        <link rel="next" href="../cobertura/">
+      
+      
+      <link rel="icon" href="../../assets/logo.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.14">
+    
+    
+      
+        <title>Casos de Teste - Compilador Portugol-C</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.342714a4.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="green" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#casos-de-teste" class="md-skip">
+          Pular para conteúdo
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Cabeçalho">
+    <a href="../.." title="Compilador Portugol-C" class="md-header__button md-logo" aria-label="Compilador Portugol-C" data-md-component="logo">
+      
+  <img src="../../assets/logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Compilador Portugol-C
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Casos de Teste
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="green" data-md-color-accent="indigo"  aria-label="Mudar para o modo escuro"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Mudar para o modo escuro" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2m0 2a8 8 0 0 1 8 8 8 8 0 0 1-8 8z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="green" data-md-color-accent="indigo"  aria-label="Mudar para o modo claro"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Mudar para o modo claro" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2m0 2a8 8 0 0 1 8 8 8 8 0 0 1-8 8z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Buscar" placeholder="Buscar" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Pesquisar">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Limpar" aria-label="Limpar" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Inicializando busca
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/JohnnyLopess/Portugol-C" title="Ir para repositório" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Compilador Portugol-C
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Abas" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Início
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../guia-usuario/instalacao/" class="md-tabs__link">
+          
+  
+  
+  Guia do Usuário
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../funcionalidades/visao-geral/" class="md-tabs__link">
+          
+  
+  
+  Funcionalidades
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../sistema-testes/" class="md-tabs__link">
+          
+  
+  
+  Testes
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../tecnica/arquitetura/" class="md-tabs__link">
+          
+  
+  
+  Documentação Técnica
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../visao-projeto/visaoProduto/" class="md-tabs__link">
+          
+  
+  
+  Visão Projeto
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../resultados/sprint1/" class="md-tabs__link">
+          
+  
+  
+  Resultados
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navegação" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Compilador Portugol-C" class="md-nav__button md-logo" aria-label="Compilador Portugol-C" data-md-component="logo">
+      
+  <img src="../../assets/logo.png" alt="logo">
+
+    </a>
+    Compilador Portugol-C
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/JohnnyLopess/Portugol-C" title="Ir para repositório" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Compilador Portugol-C
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Início
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Guia do Usuário
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Guia do Usuário
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guia-usuario/instalacao/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Instalação
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guia-usuario/como-usar/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Como Usar
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guia-usuario/exemplos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Exemplos
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Funcionalidades
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Funcionalidades
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../funcionalidades/visao-geral/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Visão Geral
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../funcionalidades/tipos-dados/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Tipos de Dados
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../funcionalidades/estruturas-controle.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Estruturas de Controle
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../funcionalidades/funcoes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Funções
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../funcionalidades/vetores/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Vetores
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../funcionalidades/operadores/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Operadores
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    Testes
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Testes
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sistema-testes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Sistema de Testes
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Casos de Teste
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    Casos de Teste
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Índice">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Índice
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#estrutura-dos-testes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Estrutura dos Testes
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Estrutura dos Testes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#organizacao-dos-arquivos" class="md-nav__link">
+    <span class="md-ellipsis">
+      Organização dos Arquivos
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#como-funcionam-os-testes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Como Funcionam os Testes
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#casos-de-teste-por-categoria" class="md-nav__link">
+    <span class="md-ellipsis">
+      Casos de Teste por Categoria
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Casos de Teste por Categoria">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-testes-basicos" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Testes Básicos
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Testes Básicos">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#hello-world-hellopg" class="md-nav__link">
+    <span class="md-ellipsis">
+      Hello World (hello.pg)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#comentarios-commentpg" class="md-nav__link">
+    <span class="md-ellipsis">
+      Comentários (comment.pg)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-testes-de-tipos-de-dados" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Testes de Tipos de Dados
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Testes de Tipos de Dados">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#inteiros-inteiropg" class="md-nav__link">
+    <span class="md-ellipsis">
+      Inteiros (inteiro.pg)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#numeros-reais-realpg" class="md-nav__link">
+    <span class="md-ellipsis">
+      Números Reais (real.pg)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#caracteres-caracterpg" class="md-nav__link">
+    <span class="md-ellipsis">
+      Caracteres (caracter.pg)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#logicos-logicopg" class="md-nav__link">
+    <span class="md-ellipsis">
+      Lógicos (logico.pg)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-testes-de-variaveis" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Testes de Variáveis
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Testes de Variáveis">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#declaracao-de-variaveis-variavelpg" class="md-nav__link">
+    <span class="md-ellipsis">
+      Declaração de Variáveis (variavel.pg)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#atribuicao-direta-atribuicao_diretapg" class="md-nav__link">
+    <span class="md-ellipsis">
+      Atribuição Direta (atribuicao_direta.pg)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-testes-de-vetores" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Testes de Vetores
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Testes de Vetores">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#vetores-de-inteiros-vetor_inteiropg" class="md-nav__link">
+    <span class="md-ellipsis">
+      Vetores de Inteiros (vetor_inteiro.pg)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vetores-de-reais-vetor_realpg" class="md-nav__link">
+    <span class="md-ellipsis">
+      Vetores de Reais (vetor_real.pg)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vetores-de-caracteres-vetor_caracterpg" class="md-nav__link">
+    <span class="md-ellipsis">
+      Vetores de Caracteres (vetor_caracter.pg)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vetores-logicos-vetor_logicopg" class="md-nav__link">
+    <span class="md-ellipsis">
+      Vetores Lógicos (vetor_logico.pg)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#leitura-de-vetores-vetor_leiturapg" class="md-nav__link">
+    <span class="md-ellipsis">
+      Leitura de Vetores (vetor_leitura.pg)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#operacoes-com-vetores-vetor_operacoespg" class="md-nav__link">
+    <span class="md-ellipsis">
+      Operações com Vetores (vetor_operacoes.pg)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-testes-de-estruturas-de-controle" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Testes de Estruturas de Controle
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Testes de Estruturas de Controle">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#estruturas-condicionais-if_aninhadopg" class="md-nav__link">
+    <span class="md-ellipsis">
+      Estruturas Condicionais (If_aninhado.pg)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#loop-para-parapg" class="md-nav__link">
+    <span class="md-ellipsis">
+      Loop Para (para.pg)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#loop-enquanto-enquantopg" class="md-nav__link">
+    <span class="md-ellipsis">
+      Loop Enquanto (enquanto.pg)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#switch-case-switch_casepg" class="md-nav__link">
+    <span class="md-ellipsis">
+      Switch-Case (switch_case.pg)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-testes-de-operadores" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. Testes de Operadores
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. Testes de Operadores">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#operadores-logicos-logicospg" class="md-nav__link">
+    <span class="md-ellipsis">
+      Operadores Lógicos (logicos.pg)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#operadores-bitwise-bitwisepg" class="md-nav__link">
+    <span class="md-ellipsis">
+      Operadores Bitwise (bitwise.pg)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#operadores-de-comparacao-diferentepg-menor_igualpg" class="md-nav__link">
+    <span class="md-ellipsis">
+      Operadores de Comparação (diferente.pg, menor_igual.pg)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#modulo-modulopg" class="md-nav__link">
+    <span class="md-ellipsis">
+      Módulo (modulo.pg)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#incremento-e-decremento-incremento_e_decrementopg" class="md-nav__link">
+    <span class="md-ellipsis">
+      Incremento e Decremento (incremento_e_decremento.pg)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#7-testes-de-funcoes" class="md-nav__link">
+    <span class="md-ellipsis">
+      7. Testes de Funções
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7. Testes de Funções">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#funcao-sem-parametros-funcao_sem_parametropg" class="md-nav__link">
+    <span class="md-ellipsis">
+      Função Sem Parâmetros (funcao_sem_parametro.pg)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#funcao-sem-tipo-de-retorno-funcao_sem_tipopg" class="md-nav__link">
+    <span class="md-ellipsis">
+      Função Sem Tipo de Retorno (funcao_sem_tipo.pg)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fatorial-fatorialpg" class="md-nav__link">
+    <span class="md-ellipsis">
+      Fatorial (fatorial.pg)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#8-testes-de-entrada-e-saida" class="md-nav__link">
+    <span class="md-ellipsis">
+      8. Testes de Entrada e Saída
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8. Testes de Entrada e Saída">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#escrita-de-diversos-tipos-escreva_diversospg" class="md-nav__link">
+    <span class="md-ellipsis">
+      Escrita de Diversos Tipos (escreva_diversos.pg)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#escrita-de-variaveis-escreva_variaveispg" class="md-nav__link">
+    <span class="md-ellipsis">
+      Escrita de Variáveis (escreva_variaveis.pg)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#9-testes-de-casos-especiais" class="md-nav__link">
+    <span class="md-ellipsis">
+      9. Testes de Casos Especiais
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="9. Testes de Casos Especiais">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#numeros-negativos-num_negativopg" class="md-nav__link">
+    <span class="md-ellipsis">
+      Números Negativos (num_negativo.pg)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#10-testes-de-otimizacao" class="md-nav__link">
+    <span class="md-ellipsis">
+      10. Testes de Otimização
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="10. Testes de Otimização">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#codigo-morto-otimizacao_codigo_mortoexpected" class="md-nav__link">
+    <span class="md-ellipsis">
+      Código Morto (otimizacao_codigo_morto.expected)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#propagacao-de-constantes-otimizacao_propagacao_de_contanteexpected" class="md-nav__link">
+    <span class="md-ellipsis">
+      Propagação de Constantes (otimizacao_propagacao_de_contante.expected)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#execucao-dos-testes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Execução dos Testes
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Execução dos Testes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#script-de-execucao-run_testssh" class="md-nav__link">
+    <span class="md-ellipsis">
+      Script de Execução (run_tests.sh)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#como-executar" class="md-nav__link">
+    <span class="md-ellipsis">
+      Como Executar
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cobertura-de-testes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Cobertura de Testes
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Cobertura de Testes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#funcionalidades-testadas" class="md-nav__link">
+    <span class="md-ellipsis">
+      Funcionalidades Testadas
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#metricas-de-cobertura" class="md-nav__link">
+    <span class="md-ellipsis">
+      Métricas de Cobertura
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#adicao-de-novos-testes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Adição de Novos Testes
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Adição de Novos Testes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#processo" class="md-nav__link">
+    <span class="md-ellipsis">
+      Processo
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#template-de-teste" class="md-nav__link">
+    <span class="md-ellipsis">
+      Template de Teste
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#boas-praticas" class="md-nav__link">
+    <span class="md-ellipsis">
+      Boas Práticas
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cobertura/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Cobertura
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Documentação Técnica
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Documentação Técnica
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tecnica/arquitetura/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Arquitetura
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tecnica/analise-lexica/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Análise Léxica
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tecnica/analise-sintatica/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Análise Sintática
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tecnica/geracao-codigo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Geração de Código
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Visão Projeto
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            Visão Projeto
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../visao-projeto/visaoProduto/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Projeto
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../visao-projeto/escopo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Escopo Portugol
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../visao-projeto/sprints/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Sprints
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Resultados
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            Resultados
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../resultados/sprint1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Sprint 1
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../resultados/sprint2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Sprint 2
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../resultados/sprint3/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Sprint 3
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../resultados/sprint4/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Sprint 4
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../resultados/sprint5/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Sprint 5
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../resultados/sprint6/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Sprint 6
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../resultados/sprint7/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Sprint 7
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../resultados/sprint8/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Sprint 8
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../resultados/sprint9/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Sprint 9
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Índice">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Índice
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#estrutura-dos-testes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Estrutura dos Testes
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Estrutura dos Testes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#organizacao-dos-arquivos" class="md-nav__link">
+    <span class="md-ellipsis">
+      Organização dos Arquivos
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#como-funcionam-os-testes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Como Funcionam os Testes
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#casos-de-teste-por-categoria" class="md-nav__link">
+    <span class="md-ellipsis">
+      Casos de Teste por Categoria
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Casos de Teste por Categoria">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-testes-basicos" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Testes Básicos
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Testes Básicos">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#hello-world-hellopg" class="md-nav__link">
+    <span class="md-ellipsis">
+      Hello World (hello.pg)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#comentarios-commentpg" class="md-nav__link">
+    <span class="md-ellipsis">
+      Comentários (comment.pg)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-testes-de-tipos-de-dados" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Testes de Tipos de Dados
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Testes de Tipos de Dados">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#inteiros-inteiropg" class="md-nav__link">
+    <span class="md-ellipsis">
+      Inteiros (inteiro.pg)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#numeros-reais-realpg" class="md-nav__link">
+    <span class="md-ellipsis">
+      Números Reais (real.pg)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#caracteres-caracterpg" class="md-nav__link">
+    <span class="md-ellipsis">
+      Caracteres (caracter.pg)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#logicos-logicopg" class="md-nav__link">
+    <span class="md-ellipsis">
+      Lógicos (logico.pg)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-testes-de-variaveis" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Testes de Variáveis
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Testes de Variáveis">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#declaracao-de-variaveis-variavelpg" class="md-nav__link">
+    <span class="md-ellipsis">
+      Declaração de Variáveis (variavel.pg)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#atribuicao-direta-atribuicao_diretapg" class="md-nav__link">
+    <span class="md-ellipsis">
+      Atribuição Direta (atribuicao_direta.pg)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-testes-de-vetores" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Testes de Vetores
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Testes de Vetores">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#vetores-de-inteiros-vetor_inteiropg" class="md-nav__link">
+    <span class="md-ellipsis">
+      Vetores de Inteiros (vetor_inteiro.pg)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vetores-de-reais-vetor_realpg" class="md-nav__link">
+    <span class="md-ellipsis">
+      Vetores de Reais (vetor_real.pg)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vetores-de-caracteres-vetor_caracterpg" class="md-nav__link">
+    <span class="md-ellipsis">
+      Vetores de Caracteres (vetor_caracter.pg)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vetores-logicos-vetor_logicopg" class="md-nav__link">
+    <span class="md-ellipsis">
+      Vetores Lógicos (vetor_logico.pg)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#leitura-de-vetores-vetor_leiturapg" class="md-nav__link">
+    <span class="md-ellipsis">
+      Leitura de Vetores (vetor_leitura.pg)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#operacoes-com-vetores-vetor_operacoespg" class="md-nav__link">
+    <span class="md-ellipsis">
+      Operações com Vetores (vetor_operacoes.pg)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-testes-de-estruturas-de-controle" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Testes de Estruturas de Controle
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Testes de Estruturas de Controle">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#estruturas-condicionais-if_aninhadopg" class="md-nav__link">
+    <span class="md-ellipsis">
+      Estruturas Condicionais (If_aninhado.pg)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#loop-para-parapg" class="md-nav__link">
+    <span class="md-ellipsis">
+      Loop Para (para.pg)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#loop-enquanto-enquantopg" class="md-nav__link">
+    <span class="md-ellipsis">
+      Loop Enquanto (enquanto.pg)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#switch-case-switch_casepg" class="md-nav__link">
+    <span class="md-ellipsis">
+      Switch-Case (switch_case.pg)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-testes-de-operadores" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. Testes de Operadores
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. Testes de Operadores">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#operadores-logicos-logicospg" class="md-nav__link">
+    <span class="md-ellipsis">
+      Operadores Lógicos (logicos.pg)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#operadores-bitwise-bitwisepg" class="md-nav__link">
+    <span class="md-ellipsis">
+      Operadores Bitwise (bitwise.pg)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#operadores-de-comparacao-diferentepg-menor_igualpg" class="md-nav__link">
+    <span class="md-ellipsis">
+      Operadores de Comparação (diferente.pg, menor_igual.pg)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#modulo-modulopg" class="md-nav__link">
+    <span class="md-ellipsis">
+      Módulo (modulo.pg)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#incremento-e-decremento-incremento_e_decrementopg" class="md-nav__link">
+    <span class="md-ellipsis">
+      Incremento e Decremento (incremento_e_decremento.pg)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#7-testes-de-funcoes" class="md-nav__link">
+    <span class="md-ellipsis">
+      7. Testes de Funções
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7. Testes de Funções">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#funcao-sem-parametros-funcao_sem_parametropg" class="md-nav__link">
+    <span class="md-ellipsis">
+      Função Sem Parâmetros (funcao_sem_parametro.pg)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#funcao-sem-tipo-de-retorno-funcao_sem_tipopg" class="md-nav__link">
+    <span class="md-ellipsis">
+      Função Sem Tipo de Retorno (funcao_sem_tipo.pg)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fatorial-fatorialpg" class="md-nav__link">
+    <span class="md-ellipsis">
+      Fatorial (fatorial.pg)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#8-testes-de-entrada-e-saida" class="md-nav__link">
+    <span class="md-ellipsis">
+      8. Testes de Entrada e Saída
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8. Testes de Entrada e Saída">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#escrita-de-diversos-tipos-escreva_diversospg" class="md-nav__link">
+    <span class="md-ellipsis">
+      Escrita de Diversos Tipos (escreva_diversos.pg)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#escrita-de-variaveis-escreva_variaveispg" class="md-nav__link">
+    <span class="md-ellipsis">
+      Escrita de Variáveis (escreva_variaveis.pg)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#9-testes-de-casos-especiais" class="md-nav__link">
+    <span class="md-ellipsis">
+      9. Testes de Casos Especiais
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="9. Testes de Casos Especiais">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#numeros-negativos-num_negativopg" class="md-nav__link">
+    <span class="md-ellipsis">
+      Números Negativos (num_negativo.pg)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#10-testes-de-otimizacao" class="md-nav__link">
+    <span class="md-ellipsis">
+      10. Testes de Otimização
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="10. Testes de Otimização">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#codigo-morto-otimizacao_codigo_mortoexpected" class="md-nav__link">
+    <span class="md-ellipsis">
+      Código Morto (otimizacao_codigo_morto.expected)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#propagacao-de-constantes-otimizacao_propagacao_de_contanteexpected" class="md-nav__link">
+    <span class="md-ellipsis">
+      Propagação de Constantes (otimizacao_propagacao_de_contante.expected)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#execucao-dos-testes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Execução dos Testes
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Execução dos Testes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#script-de-execucao-run_testssh" class="md-nav__link">
+    <span class="md-ellipsis">
+      Script de Execução (run_tests.sh)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#como-executar" class="md-nav__link">
+    <span class="md-ellipsis">
+      Como Executar
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cobertura-de-testes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Cobertura de Testes
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Cobertura de Testes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#funcionalidades-testadas" class="md-nav__link">
+    <span class="md-ellipsis">
+      Funcionalidades Testadas
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#metricas-de-cobertura" class="md-nav__link">
+    <span class="md-ellipsis">
+      Métricas de Cobertura
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#adicao-de-novos-testes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Adição de Novos Testes
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Adição de Novos Testes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#processo" class="md-nav__link">
+    <span class="md-ellipsis">
+      Processo
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#template-de-teste" class="md-nav__link">
+    <span class="md-ellipsis">
+      Template de Teste
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#boas-praticas" class="md-nav__link">
+    <span class="md-ellipsis">
+      Boas Práticas
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="casos-de-teste">Casos de Teste</h1>
+<p>Este documento descreve todos os casos de teste implementados no compilador Portugol-C, organizados por categoria e funcionalidade.</p>
+<h2 id="estrutura-dos-testes">Estrutura dos Testes</h2>
+<h3 id="organizacao-dos-arquivos">Organização dos Arquivos</h3>
+<div class="highlight"><pre><span></span><code>testes/
+├── run_tests.sh           # Script principal de execução
+├── inputs/                # Arquivos fonte .pg
+│   ├── hello.pg
+│   ├── variavel.pg
+│   ├── vetor_inteiro.pg
+│   └── ...
+└── expected/              # Saídas esperadas .expected
+    ├── hello.expected
+    ├── variavel.expected
+    ├── vetor_inteiro.expected
+    └── ...
+</code></pre></div>
+<h3 id="como-funcionam-os-testes">Como Funcionam os Testes</h3>
+<ol>
+<li><strong>Compilação</strong>: Cada arquivo <code>.pg</code> é compilado para C</li>
+<li><strong>Execução</strong>: O código C é compilado e executado</li>
+<li><strong>Comparação</strong>: A saída é comparada com o arquivo <code>.expected</code></li>
+<li><strong>Resultado</strong>: Teste passa se as saídas forem idênticas</li>
+</ol>
+<h2 id="casos-de-teste-por-categoria">Casos de Teste por Categoria</h2>
+<h3 id="1-testes-basicos">1. Testes Básicos</h3>
+<h4 id="hello-world-hellopg">Hello World (<code>hello.pg</code>)</h4>
+<p><strong>Objetivo</strong>: Verificar funcionamento básico do compilador</p>
+<p><strong>Código</strong>:
+<div class="highlight"><pre><span></span><code><span class="n">programa</span><span class="w"> </span><span class="err">{</span>
+<span class="w">    </span><span class="k">funcao</span><span class="w"> </span><span class="k">inicio</span><span class="p">()</span><span class="w"> </span><span class="err">{</span>
+<span class="w">        </span><span class="k">escreva</span><span class="p">(</span><span class="s">&quot;Hello, World!\n&quot;</span><span class="p">)</span><span class="err">;</span>
+<span class="w">    </span><span class="err">}</span>
+<span class="err">}</span>
+</code></pre></div></p>
+<p><strong>Saída Esperada</strong>:
+<div class="highlight"><pre><span></span><code>Hello, World!
+</code></pre></div></p>
+<h4 id="comentarios-commentpg">Comentários (<code>comment.pg</code>)</h4>
+<p><strong>Objetivo</strong>: Verificar processamento de comentários</p>
+<p><strong>Código</strong>:
+<div class="highlight"><pre><span></span><code><span class="n">programa</span><span class="w"> </span><span class="err">{</span>
+<span class="w">    </span><span class="c1">// Comentário de linha</span>
+<span class="w">    </span><span class="o">/*</span><span class="w"> </span><span class="n">Coment</span><span class="err">á</span><span class="n">rio</span><span class="w"> </span><span class="n">de</span><span class="w"> </span><span class="n">bloco</span><span class="w"> </span><span class="o">*/</span>
+<span class="w">    </span><span class="k">funcao</span><span class="w"> </span><span class="k">inicio</span><span class="p">()</span><span class="w"> </span><span class="err">{</span>
+<span class="w">        </span><span class="k">escreva</span><span class="p">(</span><span class="s">&quot;Comentários funcionam\n&quot;</span><span class="p">)</span><span class="err">;</span>
+<span class="w">        </span><span class="c1">// Outro comentário</span>
+<span class="w">    </span><span class="err">}</span>
+<span class="err">}</span>
+</code></pre></div></p>
+<p><strong>Saída Esperada</strong>:
+<div class="highlight"><pre><span></span><code>Comentários funcionam
+</code></pre></div></p>
+<h3 id="2-testes-de-tipos-de-dados">2. Testes de Tipos de Dados</h3>
+<h4 id="inteiros-inteiropg">Inteiros (<code>inteiro.pg</code>)</h4>
+<p><strong>Objetivo</strong>: Testar operações com números inteiros</p>
+<p><strong>Código</strong>:
+<div class="highlight"><pre><span></span><code><span class="n">programa</span><span class="w"> </span><span class="err">{</span>
+<span class="w">    </span><span class="k">funcao</span><span class="w"> </span><span class="k">inicio</span><span class="p">()</span><span class="w"> </span><span class="err">{</span>
+<span class="w">        </span><span class="kt">inteiro</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="err">;</span>
+<span class="w">        </span><span class="kt">inteiro</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">20</span><span class="err">;</span>
+<span class="w">        </span><span class="kt">inteiro</span><span class="w"> </span><span class="n">soma</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">b</span><span class="err">;</span>
+<span class="w">        </span><span class="k">escreva</span><span class="p">(</span><span class="s">&quot;Soma: &quot;</span><span class="o">,</span><span class="w"> </span><span class="n">soma</span><span class="o">,</span><span class="w"> </span><span class="s">&quot;\n&quot;</span><span class="p">)</span><span class="err">;</span>
+<span class="w">    </span><span class="err">}</span>
+<span class="err">}</span>
+</code></pre></div></p>
+<p><strong>Saída Esperada</strong>:
+<div class="highlight"><pre><span></span><code>Soma: 30
+</code></pre></div></p>
+<h4 id="numeros-reais-realpg">Números Reais (<code>real.pg</code>)</h4>
+<p><strong>Objetivo</strong>: Testar operações com números de ponto flutuante</p>
+<p><strong>Código</strong>:
+<div class="highlight"><pre><span></span><code><span class="n">programa</span><span class="w"> </span><span class="err">{</span>
+<span class="w">    </span><span class="k">funcao</span><span class="w"> </span><span class="k">inicio</span><span class="p">()</span><span class="w"> </span><span class="err">{</span>
+<span class="w">        </span><span class="kt">real</span><span class="w"> </span><span class="k">pi</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">3.14159</span><span class="err">;</span>
+<span class="w">        </span><span class="kt">real</span><span class="w"> </span><span class="n">raio</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">5.0</span><span class="err">;</span>
+<span class="w">        </span><span class="kt">real</span><span class="w"> </span><span class="n">area</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">pi</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">raio</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">raio</span><span class="err">;</span>
+<span class="w">        </span><span class="k">escreva</span><span class="p">(</span><span class="s">&quot;Área do círculo: &quot;</span><span class="o">,</span><span class="w"> </span><span class="n">area</span><span class="o">,</span><span class="w"> </span><span class="s">&quot;\n&quot;</span><span class="p">)</span><span class="err">;</span>
+<span class="w">    </span><span class="err">}</span>
+<span class="err">}</span>
+</code></pre></div></p>
+<p><strong>Saída Esperada</strong>:
+<div class="highlight"><pre><span></span><code>Área do círculo: 78.5398
+</code></pre></div></p>
+<h4 id="caracteres-caracterpg">Caracteres (<code>caracter.pg</code>)</h4>
+<p><strong>Objetivo</strong>: Testar manipulação de caracteres</p>
+<p><strong>Código</strong>:
+<div class="highlight"><pre><span></span><code><span class="n">programa</span><span class="w"> </span><span class="err">{</span>
+<span class="w">    </span><span class="k">funcao</span><span class="w"> </span><span class="k">inicio</span><span class="p">()</span><span class="w"> </span><span class="err">{</span>
+<span class="w">        </span><span class="n">caracter</span><span class="w"> </span><span class="n">inicial</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="err">&#39;</span><span class="n">J</span><span class="err">&#39;;</span>
+<span class="w">        </span><span class="n">caracter</span><span class="w"> </span><span class="n">final</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="err">&#39;</span><span class="n">o</span><span class="err">&#39;;</span>
+<span class="w">        </span><span class="k">escreva</span><span class="p">(</span><span class="s">&quot;Iniciais: &quot;</span><span class="o">,</span><span class="w"> </span><span class="n">inicial</span><span class="o">,</span><span class="w"> </span><span class="n">final</span><span class="o">,</span><span class="w"> </span><span class="s">&quot;\n&quot;</span><span class="p">)</span><span class="err">;</span>
+<span class="w">    </span><span class="err">}</span>
+<span class="err">}</span>
+</code></pre></div></p>
+<p><strong>Saída Esperada</strong>:
+<div class="highlight"><pre><span></span><code>Iniciais: Jo
+</code></pre></div></p>
+<h4 id="logicos-logicopg">Lógicos (<code>logico.pg</code>)</h4>
+<p><strong>Objetivo</strong>: Testar valores booleanos</p>
+<p><strong>Código</strong>:
+<div class="highlight"><pre><span></span><code><span class="n">programa</span><span class="w"> </span><span class="err">{</span>
+<span class="w">    </span><span class="k">funcao</span><span class="w"> </span><span class="k">inicio</span><span class="p">()</span><span class="w"> </span><span class="err">{</span>
+<span class="w">        </span><span class="kt">logico</span><span class="w"> </span><span class="n">ativo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">verdadeiro</span><span class="err">;</span>
+<span class="w">        </span><span class="kt">logico</span><span class="w"> </span><span class="n">inativo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">falso</span><span class="err">;</span>
+<span class="w">        </span><span class="k">escreva</span><span class="p">(</span><span class="s">&quot;Ativo: &quot;</span><span class="o">,</span><span class="w"> </span><span class="n">ativo</span><span class="o">,</span><span class="w"> </span><span class="s">&quot;\n&quot;</span><span class="p">)</span><span class="err">;</span>
+<span class="w">        </span><span class="k">escreva</span><span class="p">(</span><span class="s">&quot;Inativo: &quot;</span><span class="o">,</span><span class="w"> </span><span class="n">inativo</span><span class="o">,</span><span class="w"> </span><span class="s">&quot;\n&quot;</span><span class="p">)</span><span class="err">;</span>
+<span class="w">    </span><span class="err">}</span>
+<span class="err">}</span>
+</code></pre></div></p>
+<p><strong>Saída Esperada</strong>:
+<div class="highlight"><pre><span></span><code>Ativo: 1
+Inativo: 0
+</code></pre></div></p>
+<h3 id="3-testes-de-variaveis">3. Testes de Variáveis</h3>
+<h4 id="declaracao-de-variaveis-variavelpg">Declaração de Variáveis (<code>variavel.pg</code>)</h4>
+<p><strong>Objetivo</strong>: Testar declaração e inicialização de variáveis</p>
+<p><strong>Código</strong>:
+<div class="highlight"><pre><span></span><code><span class="n">programa</span><span class="w"> </span><span class="err">{</span>
+<span class="w">    </span><span class="k">funcao</span><span class="w"> </span><span class="k">inicio</span><span class="p">()</span><span class="w"> </span><span class="err">{</span>
+<span class="w">        </span><span class="kt">inteiro</span><span class="w"> </span><span class="n">idade</span><span class="err">;</span>
+<span class="w">        </span><span class="kt">real</span><span class="w"> </span><span class="n">salario</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">350</span><span class="mf">0.50</span><span class="err">;</span>
+<span class="w">        </span><span class="n">caracter</span><span class="w"> </span><span class="n">categoria</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="err">&#39;</span><span class="n">A</span><span class="err">&#39;;</span>
+<span class="w">        </span><span class="kt">logico</span><span class="w"> </span><span class="n">aprovado</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">verdadeiro</span><span class="err">;</span>
+
+<span class="w">        </span><span class="n">idade</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">25</span><span class="err">;</span>
+
+<span class="w">        </span><span class="k">escreva</span><span class="p">(</span><span class="s">&quot;Idade: &quot;</span><span class="o">,</span><span class="w"> </span><span class="n">idade</span><span class="o">,</span><span class="w"> </span><span class="s">&quot;\n&quot;</span><span class="p">)</span><span class="err">;</span>
+<span class="w">        </span><span class="k">escreva</span><span class="p">(</span><span class="s">&quot;Salário: &quot;</span><span class="o">,</span><span class="w"> </span><span class="n">salario</span><span class="o">,</span><span class="w"> </span><span class="s">&quot;\n&quot;</span><span class="p">)</span><span class="err">;</span>
+<span class="w">        </span><span class="k">escreva</span><span class="p">(</span><span class="s">&quot;Categoria: &quot;</span><span class="o">,</span><span class="w"> </span><span class="n">categoria</span><span class="o">,</span><span class="w"> </span><span class="s">&quot;\n&quot;</span><span class="p">)</span><span class="err">;</span>
+<span class="w">        </span><span class="k">escreva</span><span class="p">(</span><span class="s">&quot;Aprovado: &quot;</span><span class="o">,</span><span class="w"> </span><span class="n">aprovado</span><span class="o">,</span><span class="w"> </span><span class="s">&quot;\n&quot;</span><span class="p">)</span><span class="err">;</span>
+<span class="w">    </span><span class="err">}</span>
+<span class="err">}</span>
+</code></pre></div></p>
+<h4 id="atribuicao-direta-atribuicao_diretapg">Atribuição Direta (<code>atribuicao_direta.pg</code>)</h4>
+<p><strong>Objetivo</strong>: Testar diferentes formas de atribuição</p>
+<p><strong>Código</strong>:
+<div class="highlight"><pre><span></span><code><span class="n">programa</span><span class="w"> </span><span class="err">{</span>
+<span class="w">    </span><span class="k">funcao</span><span class="w"> </span><span class="k">inicio</span><span class="p">()</span><span class="w"> </span><span class="err">{</span>
+<span class="w">        </span><span class="kt">inteiro</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">5</span><span class="err">;</span>
+<span class="w">        </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="err">;</span>
+<span class="w">        </span><span class="n">x</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="mi">5</span><span class="err">;</span>
+<span class="w">        </span><span class="n">x</span><span class="w"> </span><span class="o">*=</span><span class="w"> </span><span class="mi">2</span><span class="err">;</span>
+<span class="w">        </span><span class="k">escreva</span><span class="p">(</span><span class="s">&quot;Resultado: &quot;</span><span class="o">,</span><span class="w"> </span><span class="n">x</span><span class="o">,</span><span class="w"> </span><span class="s">&quot;\n&quot;</span><span class="p">)</span><span class="err">;</span>
+<span class="w">    </span><span class="err">}</span>
+<span class="err">}</span>
+</code></pre></div></p>
+<h3 id="4-testes-de-vetores">4. Testes de Vetores</h3>
+<h4 id="vetores-de-inteiros-vetor_inteiropg">Vetores de Inteiros (<code>vetor_inteiro.pg</code>)</h4>
+<p><strong>Objetivo</strong>: Testar declaração, inicialização e acesso a vetores de inteiros</p>
+<p><strong>Código</strong>:
+<div class="highlight"><pre><span></span><code><span class="n">programa</span><span class="w"> </span><span class="err">{</span>
+<span class="w">    </span><span class="k">funcao</span><span class="w"> </span><span class="k">inicio</span><span class="p">()</span><span class="w"> </span><span class="err">{</span>
+<span class="w">        </span><span class="kt">inteiro</span><span class="w"> </span><span class="n">numeros</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="err">{</span><span class="mi">10</span><span class="o">,</span><span class="w"> </span><span class="mi">20</span><span class="o">,</span><span class="w"> </span><span class="mi">30</span><span class="o">,</span><span class="w"> </span><span class="mi">40</span><span class="o">,</span><span class="w"> </span><span class="mi">50</span><span class="err">};</span>
+
+<span class="w">        </span><span class="k">para</span><span class="w"> </span><span class="p">(</span><span class="kt">inteiro</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="err">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">5</span><span class="err">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="err">{</span>
+<span class="w">            </span><span class="k">escreva</span><span class="p">(</span><span class="s">&quot;numeros[&quot;</span><span class="o">,</span><span class="w"> </span><span class="n">i</span><span class="o">,</span><span class="w"> </span><span class="s">&quot;] = &quot;</span><span class="o">,</span><span class="w"> </span><span class="n">numeros</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">,</span><span class="w"> </span><span class="s">&quot;\n&quot;</span><span class="p">)</span><span class="err">;</span>
+<span class="w">        </span><span class="err">}</span>
+<span class="w">    </span><span class="err">}</span>
+<span class="err">}</span>
+</code></pre></div></p>
+<h4 id="vetores-de-reais-vetor_realpg">Vetores de Reais (<code>vetor_real.pg</code>)</h4>
+<p><strong>Objetivo</strong>: Testar vetores com números decimais</p>
+<p><strong>Código</strong>:
+<div class="highlight"><pre><span></span><code><span class="n">programa</span><span class="w"> </span><span class="err">{</span>
+<span class="w">    </span><span class="k">funcao</span><span class="w"> </span><span class="k">inicio</span><span class="p">()</span><span class="w"> </span><span class="err">{</span>
+<span class="w">        </span><span class="kt">real</span><span class="w"> </span><span class="n">temperaturas</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="err">{</span><span class="mi">2</span><span class="mf">5.5</span><span class="o">,</span><span class="w"> </span><span class="mi">3</span><span class="mf">0.0</span><span class="o">,</span><span class="w"> </span><span class="mi">2</span><span class="mf">8.2</span><span class="err">};</span>
+<span class="w">        </span><span class="kt">real</span><span class="w"> </span><span class="n">soma</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="err">;</span>
+
+<span class="w">        </span><span class="k">para</span><span class="w"> </span><span class="p">(</span><span class="kt">inteiro</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="err">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">3</span><span class="err">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="err">{</span>
+<span class="w">            </span><span class="n">soma</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">temperaturas</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="err">;</span>
+<span class="w">        </span><span class="err">}</span>
+
+<span class="w">        </span><span class="kt">real</span><span class="w"> </span><span class="n">media</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">soma</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mf">3.0</span><span class="err">;</span>
+<span class="w">        </span><span class="k">escreva</span><span class="p">(</span><span class="s">&quot;Média: &quot;</span><span class="o">,</span><span class="w"> </span><span class="n">media</span><span class="o">,</span><span class="w"> </span><span class="s">&quot;\n&quot;</span><span class="p">)</span><span class="err">;</span>
+<span class="w">    </span><span class="err">}</span>
+<span class="err">}</span>
+</code></pre></div></p>
+<h4 id="vetores-de-caracteres-vetor_caracterpg">Vetores de Caracteres (<code>vetor_caracter.pg</code>)</h4>
+<p><strong>Objetivo</strong>: Testar strings como vetores de caracteres</p>
+<p><strong>Código</strong>:
+<div class="highlight"><pre><span></span><code><span class="n">programa</span><span class="w"> </span><span class="err">{</span>
+<span class="w">    </span><span class="k">funcao</span><span class="w"> </span><span class="k">inicio</span><span class="p">()</span><span class="w"> </span><span class="err">{</span>
+<span class="w">        </span><span class="n">caracter</span><span class="w"> </span><span class="n">nome</span><span class="p">[</span><span class="mi">8</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="err">{&#39;</span><span class="n">P</span><span class="err">&#39;</span><span class="o">,</span><span class="w"> </span><span class="err">&#39;</span><span class="n">o</span><span class="err">&#39;</span><span class="o">,</span><span class="w"> </span><span class="err">&#39;</span><span class="n">r</span><span class="err">&#39;</span><span class="o">,</span><span class="w"> </span><span class="err">&#39;</span><span class="n">t</span><span class="err">&#39;</span><span class="o">,</span><span class="w"> </span><span class="err">&#39;</span><span class="n">u</span><span class="err">&#39;</span><span class="o">,</span><span class="w"> </span><span class="err">&#39;</span><span class="n">g</span><span class="err">&#39;</span><span class="o">,</span><span class="w"> </span><span class="err">&#39;</span><span class="n">o</span><span class="err">&#39;</span><span class="o">,</span><span class="w"> </span><span class="err">&#39;</span><span class="n">l</span><span class="err">&#39;};</span>
+
+<span class="w">        </span><span class="k">escreva</span><span class="p">(</span><span class="s">&quot;Nome: &quot;</span><span class="p">)</span><span class="err">;</span>
+<span class="w">        </span><span class="k">para</span><span class="w"> </span><span class="p">(</span><span class="kt">inteiro</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="err">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">8</span><span class="err">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="err">{</span>
+<span class="w">            </span><span class="k">escreva</span><span class="p">(</span><span class="n">nome</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="err">;</span>
+<span class="w">        </span><span class="err">}</span>
+<span class="w">        </span><span class="k">escreva</span><span class="p">(</span><span class="s">&quot;\n&quot;</span><span class="p">)</span><span class="err">;</span>
+<span class="w">    </span><span class="err">}</span>
+<span class="err">}</span>
+</code></pre></div></p>
+<h4 id="vetores-logicos-vetor_logicopg">Vetores Lógicos (<code>vetor_logico.pg</code>)</h4>
+<p><strong>Objetivo</strong>: Testar vetores de valores booleanos</p>
+<p><strong>Código</strong>:
+<div class="highlight"><pre><span></span><code><span class="n">programa</span><span class="w"> </span><span class="err">{</span>
+<span class="w">    </span><span class="k">funcao</span><span class="w"> </span><span class="k">inicio</span><span class="p">()</span><span class="w"> </span><span class="err">{</span>
+<span class="w">        </span><span class="kt">logico</span><span class="w"> </span><span class="n">flags</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="err">{</span><span class="k">verdadeiro</span><span class="o">,</span><span class="w"> </span><span class="k">falso</span><span class="o">,</span><span class="w"> </span><span class="k">verdadeiro</span><span class="o">,</span><span class="w"> </span><span class="k">falso</span><span class="err">};</span>
+<span class="w">        </span><span class="kt">inteiro</span><span class="w"> </span><span class="n">contador</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="err">;</span>
+
+<span class="w">        </span><span class="k">para</span><span class="w"> </span><span class="p">(</span><span class="kt">inteiro</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="err">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">4</span><span class="err">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="err">{</span>
+<span class="w">            </span><span class="k">se</span><span class="w"> </span><span class="p">(</span><span class="n">flags</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="k">verdadeiro</span><span class="p">)</span><span class="w"> </span><span class="err">{</span>
+<span class="w">                </span><span class="n">contador</span><span class="o">++</span><span class="err">;</span>
+<span class="w">            </span><span class="err">}</span>
+<span class="w">        </span><span class="err">}</span>
+
+<span class="w">        </span><span class="k">escreva</span><span class="p">(</span><span class="s">&quot;Flags verdadeiras: &quot;</span><span class="o">,</span><span class="w"> </span><span class="n">contador</span><span class="o">,</span><span class="w"> </span><span class="s">&quot;\n&quot;</span><span class="p">)</span><span class="err">;</span>
+<span class="w">    </span><span class="err">}</span>
+<span class="err">}</span>
+</code></pre></div></p>
+<h4 id="leitura-de-vetores-vetor_leiturapg">Leitura de Vetores (<code>vetor_leitura.pg</code>)</h4>
+<p><strong>Objetivo</strong>: Testar entrada de dados em vetores</p>
+<p><strong>Código</strong>:
+<div class="highlight"><pre><span></span><code><span class="n">programa</span><span class="w"> </span><span class="err">{</span>
+<span class="w">    </span><span class="k">funcao</span><span class="w"> </span><span class="k">inicio</span><span class="p">()</span><span class="w"> </span><span class="err">{</span>
+<span class="w">        </span><span class="kt">inteiro</span><span class="w"> </span><span class="n">valores</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="err">;</span>
+
+<span class="w">        </span><span class="k">para</span><span class="w"> </span><span class="p">(</span><span class="kt">inteiro</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="err">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">3</span><span class="err">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="err">{</span>
+<span class="w">            </span><span class="n">valores</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">10</span><span class="err">;</span>
+<span class="w">        </span><span class="err">}</span>
+
+<span class="w">        </span><span class="k">para</span><span class="w"> </span><span class="p">(</span><span class="kt">inteiro</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="err">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">3</span><span class="err">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="err">{</span>
+<span class="w">            </span><span class="k">escreva</span><span class="p">(</span><span class="s">&quot;Valor &quot;</span><span class="o">,</span><span class="w"> </span><span class="n">i</span><span class="o">,</span><span class="w"> </span><span class="s">&quot;: &quot;</span><span class="o">,</span><span class="w"> </span><span class="n">valores</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">,</span><span class="w"> </span><span class="s">&quot;\n&quot;</span><span class="p">)</span><span class="err">;</span>
+<span class="w">        </span><span class="err">}</span>
+<span class="w">    </span><span class="err">}</span>
+<span class="err">}</span>
+</code></pre></div></p>
+<h4 id="operacoes-com-vetores-vetor_operacoespg">Operações com Vetores (<code>vetor_operacoes.pg</code>)</h4>
+<p><strong>Objetivo</strong>: Testar operações complexas com vetores</p>
+<p><strong>Código</strong>:
+<div class="highlight"><pre><span></span><code><span class="n">programa</span><span class="w"> </span><span class="err">{</span>
+<span class="w">    </span><span class="k">funcao</span><span class="w"> </span><span class="k">inicio</span><span class="p">()</span><span class="w"> </span><span class="err">{</span>
+<span class="w">        </span><span class="kt">inteiro</span><span class="w"> </span><span class="n">origem</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="err">{</span><span class="mi">1</span><span class="o">,</span><span class="w"> </span><span class="mi">2</span><span class="o">,</span><span class="w"> </span><span class="mi">3</span><span class="err">};</span>
+<span class="w">        </span><span class="kt">inteiro</span><span class="w"> </span><span class="n">destino</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="err">;</span>
+
+<span class="w">        </span><span class="c1">// Copiar vetor</span>
+<span class="w">        </span><span class="k">para</span><span class="w"> </span><span class="p">(</span><span class="kt">inteiro</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="err">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">3</span><span class="err">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="err">{</span>
+<span class="w">            </span><span class="n">destino</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">origem</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">2</span><span class="err">;</span>
+<span class="w">        </span><span class="err">}</span>
+
+<span class="w">        </span><span class="c1">// Mostrar resultado</span>
+<span class="w">        </span><span class="k">para</span><span class="w"> </span><span class="p">(</span><span class="kt">inteiro</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="err">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">3</span><span class="err">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="err">{</span>
+<span class="w">            </span><span class="k">escreva</span><span class="p">(</span><span class="s">&quot;destino[&quot;</span><span class="o">,</span><span class="w"> </span><span class="n">i</span><span class="o">,</span><span class="w"> </span><span class="s">&quot;] = &quot;</span><span class="o">,</span><span class="w"> </span><span class="n">destino</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">,</span><span class="w"> </span><span class="s">&quot;\n&quot;</span><span class="p">)</span><span class="err">;</span>
+<span class="w">        </span><span class="err">}</span>
+<span class="w">    </span><span class="err">}</span>
+<span class="err">}</span>
+</code></pre></div></p>
+<h3 id="5-testes-de-estruturas-de-controle">5. Testes de Estruturas de Controle</h3>
+<h4 id="estruturas-condicionais-if_aninhadopg">Estruturas Condicionais (<code>If_aninhado.pg</code>)</h4>
+<p><strong>Objetivo</strong>: Testar if-else aninhados</p>
+<p><strong>Código</strong>:
+<div class="highlight"><pre><span></span><code><span class="n">programa</span><span class="w"> </span><span class="err">{</span>
+<span class="w">    </span><span class="k">funcao</span><span class="w"> </span><span class="k">inicio</span><span class="p">()</span><span class="w"> </span><span class="err">{</span>
+<span class="w">        </span><span class="kt">inteiro</span><span class="w"> </span><span class="n">nota</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">85</span><span class="err">;</span>
+
+<span class="w">        </span><span class="k">se</span><span class="w"> </span><span class="p">(</span><span class="n">nota</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">90</span><span class="p">)</span><span class="w"> </span><span class="err">{</span>
+<span class="w">            </span><span class="k">escreva</span><span class="p">(</span><span class="s">&quot;Excelente\n&quot;</span><span class="p">)</span><span class="err">;</span>
+<span class="w">        </span><span class="err">}</span><span class="w"> </span><span class="k">senao</span><span class="w"> </span><span class="k">se</span><span class="w"> </span><span class="p">(</span><span class="n">nota</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">80</span><span class="p">)</span><span class="w"> </span><span class="err">{</span>
+<span class="w">            </span><span class="k">escreva</span><span class="p">(</span><span class="s">&quot;Bom\n&quot;</span><span class="p">)</span><span class="err">;</span>
+<span class="w">        </span><span class="err">}</span><span class="w"> </span><span class="k">senao</span><span class="w"> </span><span class="err">{</span>
+<span class="w">            </span><span class="k">escreva</span><span class="p">(</span><span class="s">&quot;Regular\n&quot;</span><span class="p">)</span><span class="err">;</span>
+<span class="w">        </span><span class="err">}</span>
+<span class="w">    </span><span class="err">}</span>
+<span class="err">}</span>
+</code></pre></div></p>
+<h4 id="loop-para-parapg">Loop Para (<code>para.pg</code>)</h4>
+<p><strong>Objetivo</strong>: Testar estrutura de repetição for</p>
+<p><strong>Código</strong>:
+<div class="highlight"><pre><span></span><code><span class="n">programa</span><span class="w"> </span><span class="err">{</span>
+<span class="w">    </span><span class="k">funcao</span><span class="w"> </span><span class="k">inicio</span><span class="p">()</span><span class="w"> </span><span class="err">{</span>
+<span class="w">        </span><span class="k">para</span><span class="w"> </span><span class="p">(</span><span class="kt">inteiro</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="err">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">3</span><span class="err">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="err">{</span>
+<span class="w">            </span><span class="k">escreva</span><span class="p">(</span><span class="s">&quot;Iteração: &quot;</span><span class="o">,</span><span class="w"> </span><span class="n">i</span><span class="o">,</span><span class="w"> </span><span class="s">&quot;\n&quot;</span><span class="p">)</span><span class="err">;</span>
+<span class="w">        </span><span class="err">}</span>
+<span class="w">    </span><span class="err">}</span>
+<span class="err">}</span>
+</code></pre></div></p>
+<h4 id="loop-enquanto-enquantopg">Loop Enquanto (<code>enquanto.pg</code>)</h4>
+<p><strong>Objetivo</strong>: Testar estrutura de repetição while</p>
+<p><strong>Código</strong>:
+<div class="highlight"><pre><span></span><code><span class="n">programa</span><span class="w"> </span><span class="err">{</span>
+<span class="w">    </span><span class="k">funcao</span><span class="w"> </span><span class="k">inicio</span><span class="p">()</span><span class="w"> </span><span class="err">{</span>
+<span class="w">        </span><span class="kt">inteiro</span><span class="w"> </span><span class="n">contador</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="err">;</span>
+
+<span class="w">        </span><span class="k">enquanto</span><span class="w"> </span><span class="p">(</span><span class="n">contador</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">3</span><span class="p">)</span><span class="w"> </span><span class="err">{</span>
+<span class="w">            </span><span class="k">escreva</span><span class="p">(</span><span class="s">&quot;Contador: &quot;</span><span class="o">,</span><span class="w"> </span><span class="n">contador</span><span class="o">,</span><span class="w"> </span><span class="s">&quot;\n&quot;</span><span class="p">)</span><span class="err">;</span>
+<span class="w">            </span><span class="n">contador</span><span class="o">++</span><span class="err">;</span>
+<span class="w">        </span><span class="err">}</span>
+<span class="w">    </span><span class="err">}</span>
+<span class="err">}</span>
+</code></pre></div></p>
+<h4 id="switch-case-switch_casepg">Switch-Case (<code>switch_case.pg</code>)</h4>
+<p><strong>Objetivo</strong>: Testar estrutura de seleção múltipla</p>
+<p><strong>Código</strong>:
+<div class="highlight"><pre><span></span><code><span class="n">programa</span><span class="w"> </span><span class="err">{</span>
+<span class="w">    </span><span class="k">funcao</span><span class="w"> </span><span class="k">inicio</span><span class="p">()</span><span class="w"> </span><span class="err">{</span>
+<span class="w">        </span><span class="kt">inteiro</span><span class="w"> </span><span class="n">opcao</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="err">;</span>
+
+<span class="w">        </span><span class="k">escolha</span><span class="w"> </span><span class="p">(</span><span class="n">opcao</span><span class="p">)</span><span class="w"> </span><span class="err">{</span>
+<span class="w">            </span><span class="k">caso</span><span class="w"> </span><span class="mi">1</span><span class="o">:</span>
+<span class="w">                </span><span class="k">escreva</span><span class="p">(</span><span class="s">&quot;Opção 1\n&quot;</span><span class="p">)</span><span class="err">;</span>
+<span class="w">                </span><span class="n">pare</span><span class="err">;</span>
+<span class="w">            </span><span class="k">caso</span><span class="w"> </span><span class="mi">2</span><span class="o">:</span>
+<span class="w">                </span><span class="k">escreva</span><span class="p">(</span><span class="s">&quot;Opção 2\n&quot;</span><span class="p">)</span><span class="err">;</span>
+<span class="w">                </span><span class="n">pare</span><span class="err">;</span>
+<span class="w">            </span><span class="n">padrao</span><span class="o">:</span>
+<span class="w">                </span><span class="k">escreva</span><span class="p">(</span><span class="s">&quot;Opção inválida\n&quot;</span><span class="p">)</span><span class="err">;</span>
+<span class="w">        </span><span class="err">}</span>
+<span class="w">    </span><span class="err">}</span>
+<span class="err">}</span>
+</code></pre></div></p>
+<h3 id="6-testes-de-operadores">6. Testes de Operadores</h3>
+<h4 id="operadores-logicos-logicospg">Operadores Lógicos (<code>logicos.pg</code>)</h4>
+<p><strong>Objetivo</strong>: Testar operadores &amp;&amp;, ||, !</p>
+<p><strong>Código</strong>:
+<div class="highlight"><pre><span></span><code><span class="n">programa</span><span class="w"> </span><span class="err">{</span>
+<span class="w">    </span><span class="k">funcao</span><span class="w"> </span><span class="k">inicio</span><span class="p">()</span><span class="w"> </span><span class="err">{</span>
+<span class="w">        </span><span class="kt">logico</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">verdadeiro</span><span class="err">;</span>
+<span class="w">        </span><span class="kt">logico</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">falso</span><span class="err">;</span>
+
+<span class="w">        </span><span class="k">escreva</span><span class="p">(</span><span class="s">&quot;a &amp;&amp; b: &quot;</span><span class="o">,</span><span class="w"> </span><span class="p">(</span><span class="n">a</span><span class="w"> </span><span class="err">&amp;&amp;</span><span class="w"> </span><span class="n">b</span><span class="p">)</span><span class="o">,</span><span class="w"> </span><span class="s">&quot;\n&quot;</span><span class="p">)</span><span class="err">;</span>
+<span class="w">        </span><span class="k">escreva</span><span class="p">(</span><span class="s">&quot;a || b: &quot;</span><span class="o">,</span><span class="w"> </span><span class="p">(</span><span class="n">a</span><span class="w"> </span><span class="err">||</span><span class="w"> </span><span class="n">b</span><span class="p">)</span><span class="o">,</span><span class="w"> </span><span class="s">&quot;\n&quot;</span><span class="p">)</span><span class="err">;</span>
+<span class="w">        </span><span class="k">escreva</span><span class="p">(</span><span class="s">&quot;!a: &quot;</span><span class="o">,</span><span class="w"> </span><span class="p">(</span><span class="err">!</span><span class="n">a</span><span class="p">)</span><span class="o">,</span><span class="w"> </span><span class="s">&quot;\n&quot;</span><span class="p">)</span><span class="err">;</span>
+<span class="w">    </span><span class="err">}</span>
+<span class="err">}</span>
+</code></pre></div></p>
+<h4 id="operadores-bitwise-bitwisepg">Operadores Bitwise (<code>bitwise.pg</code>)</h4>
+<p><strong>Objetivo</strong>: Testar operações bit a bit</p>
+<p><strong>Código</strong>:
+<div class="highlight"><pre><span></span><code><span class="n">programa</span><span class="w"> </span><span class="err">{</span>
+<span class="w">    </span><span class="k">funcao</span><span class="w"> </span><span class="k">inicio</span><span class="p">()</span><span class="w"> </span><span class="err">{</span>
+<span class="w">        </span><span class="kt">inteiro</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">5</span><span class="err">;</span><span class="w">  </span><span class="c1">// 101</span>
+<span class="w">        </span><span class="kt">inteiro</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">3</span><span class="err">;</span><span class="w">  </span><span class="c1">// 011</span>
+
+<span class="w">        </span><span class="k">escreva</span><span class="p">(</span><span class="s">&quot;a &amp; b: &quot;</span><span class="o">,</span><span class="w"> </span><span class="p">(</span><span class="n">a</span><span class="w"> </span><span class="err">&amp;</span><span class="w"> </span><span class="n">b</span><span class="p">)</span><span class="o">,</span><span class="w"> </span><span class="s">&quot;\n&quot;</span><span class="p">)</span><span class="err">;</span><span class="w">  </span><span class="c1">// 1</span>
+<span class="w">        </span><span class="k">escreva</span><span class="p">(</span><span class="s">&quot;a | b: &quot;</span><span class="o">,</span><span class="w"> </span><span class="p">(</span><span class="n">a</span><span class="w"> </span><span class="err">|</span><span class="w"> </span><span class="n">b</span><span class="p">)</span><span class="o">,</span><span class="w"> </span><span class="s">&quot;\n&quot;</span><span class="p">)</span><span class="err">;</span><span class="w">  </span><span class="c1">// 7</span>
+<span class="w">        </span><span class="k">escreva</span><span class="p">(</span><span class="s">&quot;a ^ b: &quot;</span><span class="o">,</span><span class="w"> </span><span class="p">(</span><span class="n">a</span><span class="w"> </span><span class="err">^</span><span class="w"> </span><span class="n">b</span><span class="p">)</span><span class="o">,</span><span class="w"> </span><span class="s">&quot;\n&quot;</span><span class="p">)</span><span class="err">;</span><span class="w">  </span><span class="c1">// 6</span>
+<span class="w">    </span><span class="err">}</span>
+<span class="err">}</span>
+</code></pre></div></p>
+<h4 id="operadores-de-comparacao-diferentepg-menor_igualpg">Operadores de Comparação (<code>diferente.pg</code>, <code>menor_igual.pg</code>)</h4>
+<p><strong>Objetivo</strong>: Testar operadores relacionais</p>
+<p><strong>Códigos</strong>:
+<div class="highlight"><pre><span></span><code><span class="c1">// diferente.pg</span>
+<span class="n">programa</span><span class="w"> </span><span class="err">{</span>
+<span class="w">    </span><span class="k">funcao</span><span class="w"> </span><span class="k">inicio</span><span class="p">()</span><span class="w"> </span><span class="err">{</span>
+<span class="w">        </span><span class="kt">inteiro</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">5</span><span class="err">;</span>
+<span class="w">        </span><span class="kt">inteiro</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="err">;</span>
+<span class="w">        </span><span class="k">escreva</span><span class="p">(</span><span class="s">&quot;a != b: &quot;</span><span class="o">,</span><span class="w"> </span><span class="p">(</span><span class="n">a</span><span class="w"> </span><span class="err">!</span><span class="o">=</span><span class="w"> </span><span class="n">b</span><span class="p">)</span><span class="o">,</span><span class="w"> </span><span class="s">&quot;\n&quot;</span><span class="p">)</span><span class="err">;</span>
+<span class="w">    </span><span class="err">}</span>
+<span class="err">}</span>
+<span class="c1">// menor_igual.pg</span>
+<span class="n">programa</span><span class="w"> </span><span class="err">{</span>
+<span class="w">    </span><span class="k">funcao</span><span class="w"> </span><span class="k">inicio</span><span class="p">()</span><span class="w"> </span><span class="err">{</span>
+<span class="w">        </span><span class="kt">inteiro</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">5</span><span class="err">;</span>
+<span class="w">        </span><span class="kt">inteiro</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">5</span><span class="err">;</span>
+<span class="w">        </span><span class="k">escreva</span><span class="p">(</span><span class="s">&quot;x &lt;= y: &quot;</span><span class="o">,</span><span class="w"> </span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">y</span><span class="p">)</span><span class="o">,</span><span class="w"> </span><span class="s">&quot;\n&quot;</span><span class="p">)</span><span class="err">;</span>
+<span class="w">    </span><span class="err">}</span>
+<span class="err">}</span>
+</code></pre></div></p>
+<h4 id="modulo-modulopg">Módulo (<code>modulo.pg</code>)</h4>
+<p><strong>Objetivo</strong>: Testar operador de resto da divisão</p>
+<p><strong>Código</strong>:
+<div class="highlight"><pre><span></span><code><span class="n">programa</span><span class="w"> </span><span class="err">{</span>
+<span class="w">    </span><span class="k">funcao</span><span class="w"> </span><span class="k">inicio</span><span class="p">()</span><span class="w"> </span><span class="err">{</span>
+<span class="w">        </span><span class="kt">inteiro</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">17</span><span class="err">;</span>
+<span class="w">        </span><span class="kt">inteiro</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">5</span><span class="err">;</span>
+<span class="w">        </span><span class="k">escreva</span><span class="p">(</span><span class="s">&quot;17 % 5 = &quot;</span><span class="o">,</span><span class="w"> </span><span class="p">(</span><span class="n">a</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="n">b</span><span class="p">)</span><span class="o">,</span><span class="w"> </span><span class="s">&quot;\n&quot;</span><span class="p">)</span><span class="err">;</span>
+<span class="w">    </span><span class="err">}</span>
+<span class="err">}</span>
+</code></pre></div></p>
+<h4 id="incremento-e-decremento-incremento_e_decrementopg">Incremento e Decremento (<code>incremento_e_decremento.pg</code>)</h4>
+<p><strong>Objetivo</strong>: Testar operadores ++ e --</p>
+<p><strong>Código</strong>:
+<div class="highlight"><pre><span></span><code><span class="n">programa</span><span class="w"> </span><span class="err">{</span>
+<span class="w">    </span><span class="k">funcao</span><span class="w"> </span><span class="k">inicio</span><span class="p">()</span><span class="w"> </span><span class="err">{</span>
+<span class="w">        </span><span class="kt">inteiro</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">5</span><span class="err">;</span>
+
+<span class="w">        </span><span class="k">escreva</span><span class="p">(</span><span class="s">&quot;x inicial: &quot;</span><span class="o">,</span><span class="w"> </span><span class="n">x</span><span class="o">,</span><span class="w"> </span><span class="s">&quot;\n&quot;</span><span class="p">)</span><span class="err">;</span>
+<span class="w">        </span><span class="k">escreva</span><span class="p">(</span><span class="s">&quot;x++: &quot;</span><span class="o">,</span><span class="w"> </span><span class="n">x</span><span class="o">++,</span><span class="w"> </span><span class="s">&quot;\n&quot;</span><span class="p">)</span><span class="err">;</span>
+<span class="w">        </span><span class="k">escreva</span><span class="p">(</span><span class="s">&quot;x após ++: &quot;</span><span class="o">,</span><span class="w"> </span><span class="n">x</span><span class="o">,</span><span class="w"> </span><span class="s">&quot;\n&quot;</span><span class="p">)</span><span class="err">;</span>
+<span class="w">        </span><span class="k">escreva</span><span class="p">(</span><span class="s">&quot;--x: &quot;</span><span class="o">,</span><span class="w"> </span><span class="o">--</span><span class="n">x</span><span class="o">,</span><span class="w"> </span><span class="s">&quot;\n&quot;</span><span class="p">)</span><span class="err">;</span>
+<span class="w">    </span><span class="err">}</span>
+<span class="err">}</span>
+</code></pre></div></p>
+<h3 id="7-testes-de-funcoes">7. Testes de Funções</h3>
+<h4 id="funcao-sem-parametros-funcao_sem_parametropg">Função Sem Parâmetros (<code>funcao_sem_parametro.pg</code>)</h4>
+<p><strong>Objetivo</strong>: Testar funções sem parâmetros</p>
+<p><strong>Código</strong>:
+<div class="highlight"><pre><span></span><code><span class="n">programa</span><span class="w"> </span><span class="err">{</span>
+<span class="w">    </span><span class="k">funcao</span><span class="w"> </span><span class="nf">saudar</span><span class="p">()</span><span class="w"> </span><span class="err">{</span>
+<span class="w">        </span><span class="k">escreva</span><span class="p">(</span><span class="s">&quot;Olá!\n&quot;</span><span class="p">)</span><span class="err">;</span>
+<span class="w">    </span><span class="err">}</span>
+
+<span class="w">    </span><span class="k">funcao</span><span class="w"> </span><span class="k">inicio</span><span class="p">()</span><span class="w"> </span><span class="err">{</span>
+<span class="w">        </span><span class="nl">saudar</span><span class="p">()</span><span class="err">;</span>
+<span class="w">    </span><span class="err">}</span>
+<span class="err">}</span>
+</code></pre></div></p>
+<h4 id="funcao-sem-tipo-de-retorno-funcao_sem_tipopg">Função Sem Tipo de Retorno (<code>funcao_sem_tipo.pg</code>)</h4>
+<p><strong>Objetivo</strong>: Testar funções void</p>
+<p><strong>Código</strong>:
+<div class="highlight"><pre><span></span><code><span class="n">programa</span><span class="w"> </span><span class="err">{</span>
+<span class="w">    </span><span class="k">funcao</span><span class="w"> </span><span class="nf">processar</span><span class="p">()</span><span class="w"> </span><span class="err">{</span>
+<span class="w">        </span><span class="k">escreva</span><span class="p">(</span><span class="s">&quot;Processando...\n&quot;</span><span class="p">)</span><span class="err">;</span>
+<span class="w">    </span><span class="err">}</span>
+
+<span class="w">    </span><span class="k">funcao</span><span class="w"> </span><span class="k">inicio</span><span class="p">()</span><span class="w"> </span><span class="err">{</span>
+<span class="w">        </span><span class="nl">processar</span><span class="p">()</span><span class="err">;</span>
+<span class="w">    </span><span class="err">}</span>
+<span class="err">}</span>
+</code></pre></div></p>
+<h4 id="fatorial-fatorialpg">Fatorial (<code>fatorial.pg</code>)</h4>
+<p><strong>Objetivo</strong>: Testar função recursiva</p>
+<p><strong>Código</strong>:
+<div class="highlight"><pre><span></span><code><span class="n">programa</span><span class="w"> </span><span class="err">{</span>
+<span class="w">    </span><span class="kt">inteiro</span><span class="w"> </span><span class="n">fatorial</span><span class="p">(</span><span class="kt">inteiro</span><span class="w"> </span><span class="n">n</span><span class="p">)</span><span class="w"> </span><span class="err">{</span>
+<span class="w">        </span><span class="k">se</span><span class="w"> </span><span class="p">(</span><span class="n">n</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="err">{</span>
+<span class="w">            </span><span class="k">retorne</span><span class="w"> </span><span class="mi">1</span><span class="err">;</span>
+<span class="w">        </span><span class="err">}</span><span class="w"> </span><span class="k">senao</span><span class="w"> </span><span class="err">{</span>
+<span class="w">            </span><span class="k">retorne</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">fatorial</span><span class="p">(</span><span class="n">n</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="err">;</span>
+<span class="w">        </span><span class="err">}</span>
+<span class="w">    </span><span class="err">}</span>
+
+<span class="w">    </span><span class="k">funcao</span><span class="w"> </span><span class="k">inicio</span><span class="p">()</span><span class="w"> </span><span class="err">{</span>
+<span class="w">        </span><span class="kt">inteiro</span><span class="w"> </span><span class="n">num</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">5</span><span class="err">;</span>
+<span class="w">        </span><span class="k">escreva</span><span class="p">(</span><span class="s">&quot;Fatorial de &quot;</span><span class="o">,</span><span class="w"> </span><span class="n">num</span><span class="o">,</span><span class="w"> </span><span class="s">&quot;: &quot;</span><span class="o">,</span><span class="w"> </span><span class="n">fatorial</span><span class="p">(</span><span class="n">num</span><span class="p">)</span><span class="o">,</span><span class="w"> </span><span class="s">&quot;\n&quot;</span><span class="p">)</span><span class="err">;</span>
+<span class="w">    </span><span class="err">}</span>
+<span class="err">}</span>
+</code></pre></div></p>
+<h3 id="8-testes-de-entrada-e-saida">8. Testes de Entrada e Saída</h3>
+<h4 id="escrita-de-diversos-tipos-escreva_diversospg">Escrita de Diversos Tipos (<code>escreva_diversos.pg</code>)</h4>
+<p><strong>Objetivo</strong>: Testar saída de diferentes tipos de dados</p>
+<p><strong>Código</strong>:
+<div class="highlight"><pre><span></span><code><span class="n">programa</span><span class="w"> </span><span class="err">{</span>
+<span class="w">    </span><span class="k">funcao</span><span class="w"> </span><span class="k">inicio</span><span class="p">()</span><span class="w"> </span><span class="err">{</span>
+<span class="w">        </span><span class="kt">inteiro</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">42</span><span class="err">;</span>
+<span class="w">        </span><span class="kt">real</span><span class="w"> </span><span class="n">r</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">3.14</span><span class="err">;</span>
+<span class="w">        </span><span class="n">caracter</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="err">&#39;</span><span class="n">A</span><span class="err">&#39;;</span>
+<span class="w">        </span><span class="kt">logico</span><span class="w"> </span><span class="n">l</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">verdadeiro</span><span class="err">;</span>
+
+<span class="w">        </span><span class="k">escreva</span><span class="p">(</span><span class="s">&quot;Inteiro: &quot;</span><span class="o">,</span><span class="w"> </span><span class="n">i</span><span class="o">,</span><span class="w"> </span><span class="s">&quot;\n&quot;</span><span class="p">)</span><span class="err">;</span>
+<span class="w">        </span><span class="k">escreva</span><span class="p">(</span><span class="s">&quot;Real: &quot;</span><span class="o">,</span><span class="w"> </span><span class="n">r</span><span class="o">,</span><span class="w"> </span><span class="s">&quot;\n&quot;</span><span class="p">)</span><span class="err">;</span>
+<span class="w">        </span><span class="k">escreva</span><span class="p">(</span><span class="s">&quot;Caracter: &quot;</span><span class="o">,</span><span class="w"> </span><span class="n">c</span><span class="o">,</span><span class="w"> </span><span class="s">&quot;\n&quot;</span><span class="p">)</span><span class="err">;</span>
+<span class="w">        </span><span class="k">escreva</span><span class="p">(</span><span class="s">&quot;Lógico: &quot;</span><span class="o">,</span><span class="w"> </span><span class="n">l</span><span class="o">,</span><span class="w"> </span><span class="s">&quot;\n&quot;</span><span class="p">)</span><span class="err">;</span>
+<span class="w">    </span><span class="err">}</span>
+<span class="err">}</span>
+</code></pre></div></p>
+<h4 id="escrita-de-variaveis-escreva_variaveispg">Escrita de Variáveis (<code>escreva_variaveis.pg</code>)</h4>
+<p><strong>Objetivo</strong>: Testar saída de variáveis</p>
+<p><strong>Código</strong>:
+<div class="highlight"><pre><span></span><code><span class="n">programa</span><span class="w"> </span><span class="err">{</span>
+<span class="w">    </span><span class="k">funcao</span><span class="w"> </span><span class="k">inicio</span><span class="p">()</span><span class="w"> </span><span class="err">{</span>
+<span class="w">        </span><span class="kt">inteiro</span><span class="w"> </span><span class="n">idade</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">25</span><span class="err">;</span>
+<span class="w">        </span><span class="n">caracter</span><span class="w"> </span><span class="n">inicial</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="err">&#39;</span><span class="n">J</span><span class="err">&#39;;</span>
+
+<span class="w">        </span><span class="k">escreva</span><span class="p">(</span><span class="s">&quot;Nome: João\n&quot;</span><span class="p">)</span><span class="err">;</span>
+<span class="w">        </span><span class="k">escreva</span><span class="p">(</span><span class="s">&quot;Idade: &quot;</span><span class="o">,</span><span class="w"> </span><span class="n">idade</span><span class="o">,</span><span class="w"> </span><span class="s">&quot;\n&quot;</span><span class="p">)</span><span class="err">;</span>
+<span class="w">        </span><span class="k">escreva</span><span class="p">(</span><span class="s">&quot;Inicial: &quot;</span><span class="o">,</span><span class="w"> </span><span class="n">inicial</span><span class="o">,</span><span class="w"> </span><span class="s">&quot;\n&quot;</span><span class="p">)</span><span class="err">;</span>
+<span class="w">    </span><span class="err">}</span>
+<span class="err">}</span>
+</code></pre></div></p>
+<h3 id="9-testes-de-casos-especiais">9. Testes de Casos Especiais</h3>
+<h4 id="numeros-negativos-num_negativopg">Números Negativos (<code>num_negativo.pg</code>)</h4>
+<p><strong>Objetivo</strong>: Testar números negativos</p>
+<p><strong>Código</strong>:
+<div class="highlight"><pre><span></span><code><span class="n">programa</span><span class="w"> </span><span class="err">{</span>
+<span class="w">    </span><span class="k">funcao</span><span class="w"> </span><span class="k">inicio</span><span class="p">()</span><span class="w"> </span><span class="err">{</span>
+<span class="w">        </span><span class="kt">inteiro</span><span class="w"> </span><span class="n">negativo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">-</span><span class="mi">42</span><span class="err">;</span>
+<span class="w">        </span><span class="kt">real</span><span class="w"> </span><span class="n">decimal_negativo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">-</span><span class="mf">3.14</span><span class="err">;</span>
+
+<span class="w">        </span><span class="k">escreva</span><span class="p">(</span><span class="s">&quot;Negativo: &quot;</span><span class="o">,</span><span class="w"> </span><span class="n">negativo</span><span class="o">,</span><span class="w"> </span><span class="s">&quot;\n&quot;</span><span class="p">)</span><span class="err">;</span>
+<span class="w">        </span><span class="k">escreva</span><span class="p">(</span><span class="s">&quot;Decimal negativo: &quot;</span><span class="o">,</span><span class="w"> </span><span class="n">decimal_negativo</span><span class="o">,</span><span class="w"> </span><span class="s">&quot;\n&quot;</span><span class="p">)</span><span class="err">;</span>
+<span class="w">    </span><span class="err">}</span>
+<span class="err">}</span>
+</code></pre></div></p>
+<h3 id="10-testes-de-otimizacao">10. Testes de Otimização</h3>
+<h4 id="codigo-morto-otimizacao_codigo_mortoexpected">Código Morto (<code>otimizacao_codigo_morto.expected</code>)</h4>
+<p><strong>Objetivo</strong>: Verificar se código inacessível é tratado</p>
+<h4 id="propagacao-de-constantes-otimizacao_propagacao_de_contanteexpected">Propagação de Constantes (<code>otimizacao_propagacao_de_contante.expected</code>)</h4>
+<p><strong>Objetivo</strong>: Verificar otimização de constantes</p>
+<h2 id="execucao-dos-testes">Execução dos Testes</h2>
+<h3 id="script-de-execucao-run_testssh">Script de Execução (<code>run_tests.sh</code>)</h3>
+<p>O script automatizado executa todos os testes:</p>
+<div class="highlight"><pre><span></span><code><span class="ch">#!/bin/bash</span>
+
+<span class="nb">cd</span><span class="w"> </span><span class="s2">&quot;</span><span class="k">$(</span>dirname<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$0</span><span class="s2">&quot;</span><span class="k">)</span><span class="s2">&quot;</span>
+<span class="nv">PASSED</span><span class="o">=</span><span class="m">0</span>
+<span class="nv">FAILED</span><span class="o">=</span><span class="m">0</span>
+<span class="nv">TOTAL</span><span class="o">=</span><span class="m">0</span>
+
+<span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Executando testes do compilador Portugol-C...&quot;</span>
+
+<span class="k">for</span><span class="w"> </span>input_file<span class="w"> </span><span class="k">in</span><span class="w"> </span>inputs/*.pg<span class="p">;</span><span class="w"> </span><span class="k">do</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span>-f<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$input_file</span><span class="s2">&quot;</span><span class="w"> </span><span class="o">]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="w">        </span><span class="nv">filename</span><span class="o">=</span><span class="k">$(</span>basename<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$input_file</span><span class="s2">&quot;</span><span class="w"> </span>.pg<span class="k">)</span>
+<span class="w">        </span><span class="nv">expected_file</span><span class="o">=</span><span class="s2">&quot;expected/</span><span class="si">${</span><span class="nv">filename</span><span class="si">}</span><span class="s2">.expected&quot;</span>
+
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span>-f<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$expected_file</span><span class="s2">&quot;</span><span class="w"> </span><span class="o">]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="w">            </span><span class="nv">TOTAL</span><span class="o">=</span><span class="k">$((</span><span class="nv">TOTAL</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="m">1</span><span class="k">))</span>
+
+<span class="w">            </span><span class="c1"># Compilar e executar</span>
+<span class="w">            </span>../build/compilador<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$input_file</span><span class="s2">&quot;</span><span class="w"> </span>&gt;<span class="w"> </span>/tmp/output.c<span class="w"> </span><span class="m">2</span>&gt;/dev/null
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span><span class="nv">$?</span><span class="w"> </span>-eq<span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="o">]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="w">                </span>gcc<span class="w"> </span>/tmp/output.c<span class="w"> </span>-o<span class="w"> </span>/tmp/programa<span class="w"> </span><span class="m">2</span>&gt;/dev/null
+<span class="w">                </span><span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span><span class="nv">$?</span><span class="w"> </span>-eq<span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="o">]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="w">                    </span>/tmp/programa<span class="w"> </span>&gt;<span class="w"> </span>/tmp/actual_output.txt<span class="w"> </span><span class="m">2</span>&gt;/dev/null
+
+<span class="w">                    </span><span class="c1"># Comparar saídas</span>
+<span class="w">                    </span><span class="k">if</span><span class="w"> </span>diff<span class="w"> </span>-q<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$expected_file</span><span class="s2">&quot;</span><span class="w"> </span>/tmp/actual_output.txt<span class="w"> </span>&gt;/dev/null<span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="w">                        </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;✓ </span><span class="nv">$filename</span><span class="s2">&quot;</span>
+<span class="w">                        </span><span class="nv">PASSED</span><span class="o">=</span><span class="k">$((</span><span class="nv">PASSED</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="m">1</span><span class="k">))</span>
+<span class="w">                    </span><span class="k">else</span>
+<span class="w">                        </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;✗ </span><span class="nv">$filename</span><span class="s2">&quot;</span>
+<span class="w">                        </span><span class="nv">FAILED</span><span class="o">=</span><span class="k">$((</span><span class="nv">FAILED</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="m">1</span><span class="k">))</span>
+<span class="w">                    </span><span class="k">fi</span>
+<span class="w">                </span><span class="k">else</span>
+<span class="w">                    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;✗ </span><span class="nv">$filename</span><span class="s2"> (erro de compilação C)&quot;</span>
+<span class="w">                    </span><span class="nv">FAILED</span><span class="o">=</span><span class="k">$((</span><span class="nv">FAILED</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="m">1</span><span class="k">))</span>
+<span class="w">                </span><span class="k">fi</span>
+<span class="w">            </span><span class="k">else</span>
+<span class="w">                </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;✗ </span><span class="nv">$filename</span><span class="s2"> (erro de compilação Portugol)&quot;</span>
+<span class="w">                </span><span class="nv">FAILED</span><span class="o">=</span><span class="k">$((</span><span class="nv">FAILED</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="m">1</span><span class="k">))</span>
+<span class="w">            </span><span class="k">fi</span>
+<span class="w">        </span><span class="k">fi</span>
+<span class="w">    </span><span class="k">fi</span>
+<span class="k">done</span>
+
+<span class="nb">echo</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Resultados: </span><span class="nv">$PASSED</span><span class="s2">/</span><span class="nv">$TOTAL</span><span class="s2"> testes passaram&quot;</span>
+<span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span><span class="nv">$FAILED</span><span class="w"> </span>-gt<span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="o">]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;</span><span class="nv">$FAILED</span><span class="s2"> testes falharam&quot;</span>
+<span class="w">    </span><span class="nb">exit</span><span class="w"> </span><span class="m">1</span>
+<span class="k">else</span>
+<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Todos os testes passaram!&quot;</span>
+<span class="w">    </span><span class="nb">exit</span><span class="w"> </span><span class="m">0</span>
+<span class="k">fi</span>
+</code></pre></div>
+<h3 id="como-executar">Como Executar</h3>
+<div class="highlight"><pre><span></span><code><span class="c1"># No diretório do projeto</span>
+<span class="nb">cd</span><span class="w"> </span>portugol_compilador
+
+<span class="c1"># Compilar o compilador</span>
+make
+
+<span class="c1"># Executar todos os testes</span>
+make<span class="w"> </span><span class="nb">test</span>
+
+<span class="c1"># Ou executar diretamente</span>
+<span class="nb">cd</span><span class="w"> </span>testes
+./run_tests.sh
+</code></pre></div>
+<h2 id="cobertura-de-testes">Cobertura de Testes</h2>
+<h3 id="funcionalidades-testadas">Funcionalidades Testadas</h3>
+<ul>
+<li>✅ <strong>Tipos básicos</strong>: inteiro, real, caracter, logico</li>
+<li>✅ <strong>Vetores</strong>: Todos os tipos, inicialização, acesso</li>
+<li>✅ <strong>Operadores</strong>: Aritméticos, lógicos, relacionais, bitwise</li>
+<li>✅ <strong>Estruturas de controle</strong>: if-else, for, while, switch</li>
+<li>✅ <strong>Funções</strong>: Declaração, chamada, recursão, parâmetros</li>
+<li>✅ <strong>Entrada/Saída</strong>: escreva, leia (simulado)</li>
+<li>✅ <strong>Casos especiais</strong>: Números negativos, comentários</li>
+</ul>
+<h3 id="metricas-de-cobertura">Métricas de Cobertura</h3>
+<ul>
+<li><strong>Total de testes</strong>: 32</li>
+<li><strong>Taxa de sucesso</strong>: 100% (32/32)</li>
+<li><strong>Linhas de código testadas</strong>: &gt;95%</li>
+<li><strong>Funcionalidades cobertas</strong>: 100%</li>
+</ul>
+<h2 id="adicao-de-novos-testes">Adição de Novos Testes</h2>
+<h3 id="processo">Processo</h3>
+<ol>
+<li><strong>Criar arquivo de entrada</strong>: <code>inputs/novo_teste.pg</code></li>
+<li><strong>Definir saída esperada</strong>: <code>expected/novo_teste.expected</code></li>
+<li><strong>Executar teste</strong>: <code>./run_tests.sh</code></li>
+<li><strong>Verificar resultado</strong>: Deve passar automaticamente</li>
+</ol>
+<h3 id="template-de-teste">Template de Teste</h3>
+<div class="highlight"><pre><span></span><code><span class="c1">// inputs/novo_teste.pg</span>
+<span class="n">programa</span><span class="w"> </span><span class="err">{</span>
+<span class="w">    </span><span class="k">funcao</span><span class="w"> </span><span class="k">inicio</span><span class="p">()</span><span class="w"> </span><span class="err">{</span>
+<span class="w">        </span><span class="c1">// Seu código de teste aqui</span>
+<span class="w">        </span><span class="k">escreva</span><span class="p">(</span><span class="s">&quot;Resultado esperado\n&quot;</span><span class="p">)</span><span class="err">;</span>
+<span class="w">    </span><span class="err">}</span>
+<span class="err">}</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>&lt;!-- expected/novo_teste.expected --&gt;
+Resultado esperado
+</code></pre></div>
+<h3 id="boas-praticas">Boas Práticas</h3>
+<ol>
+<li><strong>Testes atômicos</strong>: Cada teste deve verificar uma funcionalidade específica</li>
+<li><strong>Nomes descritivos</strong>: Use nomes que indiquem o que está sendo testado</li>
+<li><strong>Saídas determinísticas</strong>: Evite valores aleatórios ou dependentes de tempo</li>
+<li><strong>Cobertura completa</strong>: Teste casos normais, extremos e de erro</li>
+<li><strong>Documentação</strong>: Documente o objetivo de cada teste</li>
+</ol>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Voltar para o topo
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs", "navigation.top"], "search": "../../assets/javascripts/workers/search.d50fe291.min.js", "tags": null, "translations": {"clipboard.copied": "Copiado para \u00e1rea de transfer\u00eancia", "clipboard.copy": "Copiar para \u00e1rea de transfer\u00eancia", "search.result.more.one": "mais 1 nesta p\u00e1gina", "search.result.more.other": "# mais nesta p\u00e1gina", "search.result.none": "Nenhum documento encontrado", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Digite para iniciar a busca", "search.result.term.missing": "Ausente", "select.version": "Selecione a vers\u00e3o"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.13a4f30d.min.js"></script>
+      
+    
+  </body>
+</html>

@@ -1,0 +1,2023 @@
+
+<!doctype html>
+<html lang="pt" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://johnnylopess.github.io/Portugol-C/funcionalidades/estrutura-controle/">
+      
+      
+      
+      
+      <link rel="icon" href="../../assets/logo.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.14">
+    
+    
+      
+        <title>Estruturas de Controle - Compilador Portugol-C</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.342714a4.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="green" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#estruturas-de-controle" class="md-skip">
+          Pular para conteúdo
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Cabeçalho">
+    <a href="../.." title="Compilador Portugol-C" class="md-header__button md-logo" aria-label="Compilador Portugol-C" data-md-component="logo">
+      
+  <img src="../../assets/logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Compilador Portugol-C
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Estruturas de Controle
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="green" data-md-color-accent="indigo"  aria-label="Mudar para o modo escuro"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Mudar para o modo escuro" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2m0 2a8 8 0 0 1 8 8 8 8 0 0 1-8 8z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="green" data-md-color-accent="indigo"  aria-label="Mudar para o modo claro"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Mudar para o modo claro" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2m0 2a8 8 0 0 1 8 8 8 8 0 0 1-8 8z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Buscar" placeholder="Buscar" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Pesquisar">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Limpar" aria-label="Limpar" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Inicializando busca
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/JohnnyLopess/Portugol-C" title="Ir para repositório" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Compilador Portugol-C
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Abas" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Início
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../guia-usuario/instalacao/" class="md-tabs__link">
+          
+  
+  
+  Guia do Usuário
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../visao-geral/" class="md-tabs__link">
+          
+  
+  
+  Funcionalidades
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../testes/sistema-testes/" class="md-tabs__link">
+          
+  
+  
+  Testes
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../tecnica/arquitetura/" class="md-tabs__link">
+          
+  
+  
+  Documentação Técnica
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../visao-projeto/visaoProduto/" class="md-tabs__link">
+          
+  
+  
+  Visão Projeto
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../resultados/sprint1/" class="md-tabs__link">
+          
+  
+  
+  Resultados
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navegação" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Compilador Portugol-C" class="md-nav__button md-logo" aria-label="Compilador Portugol-C" data-md-component="logo">
+      
+  <img src="../../assets/logo.png" alt="logo">
+
+    </a>
+    Compilador Portugol-C
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/JohnnyLopess/Portugol-C" title="Ir para repositório" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Compilador Portugol-C
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Início
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Guia do Usuário
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Guia do Usuário
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guia-usuario/instalacao/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Instalação
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guia-usuario/como-usar/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Como Usar
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guia-usuario/exemplos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Exemplos
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Funcionalidades
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Funcionalidades
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../visao-geral/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Visão Geral
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tipos-dados/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Tipos de Dados
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../estruturas-controle.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Estruturas de Controle
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../funcoes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Funções
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../vetores/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Vetores
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../operadores/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Operadores
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Testes
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Testes
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../testes/sistema-testes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Sistema de Testes
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../testes/casos-teste/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Casos de Teste
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../testes/cobertura/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Cobertura
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Documentação Técnica
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Documentação Técnica
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tecnica/arquitetura/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Arquitetura
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tecnica/analise-lexica/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Análise Léxica
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tecnica/analise-sintatica/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Análise Sintática
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tecnica/geracao-codigo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Geração de Código
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Visão Projeto
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            Visão Projeto
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../visao-projeto/visaoProduto/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Projeto
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../visao-projeto/escopo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Escopo Portugol
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../visao-projeto/sprints/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Sprints
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Resultados
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            Resultados
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../resultados/sprint1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Sprint 1
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../resultados/sprint2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Sprint 2
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../resultados/sprint3/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Sprint 3
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../resultados/sprint4/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Sprint 4
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../resultados/sprint5/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Sprint 5
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../resultados/sprint6/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Sprint 6
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../resultados/sprint7/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Sprint 7
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../resultados/sprint8/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Sprint 8
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../resultados/sprint9/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Sprint 9
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Índice">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Índice
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#estruturas-condicionais" class="md-nav__link">
+    <span class="md-ellipsis">
+      Estruturas Condicionais
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Estruturas Condicionais">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#se-if" class="md-nav__link">
+    <span class="md-ellipsis">
+      Se (if)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Se (if)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sintaxe" class="md-nav__link">
+    <span class="md-ellipsis">
+      Sintaxe
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#se-senao-if-else" class="md-nav__link">
+    <span class="md-ellipsis">
+      Se-Senão (if-else)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#se-senao-se-if-else-if" class="md-nav__link">
+    <span class="md-ellipsis">
+      Se-Senão Se (if-else if)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exemplos" class="md-nav__link">
+    <span class="md-ellipsis">
+      Exemplos
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#estruturas-de-repeticao" class="md-nav__link">
+    <span class="md-ellipsis">
+      Estruturas de Repetição
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Estruturas de Repetição">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#para-for" class="md-nav__link">
+    <span class="md-ellipsis">
+      Para (for)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Para (for)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sintaxe_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Sintaxe
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exemplos_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Exemplos
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#enquanto-while" class="md-nav__link">
+    <span class="md-ellipsis">
+      Enquanto (while)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Enquanto (while)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sintaxe_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Sintaxe
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exemplos_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Exemplos
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#estrutura-de-selecao-multipla" class="md-nav__link">
+    <span class="md-ellipsis">
+      Estrutura de Seleção Múltipla
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Estrutura de Seleção Múltipla">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#escolha-caso-switch-case" class="md-nav__link">
+    <span class="md-ellipsis">
+      Escolha-Caso (switch-case)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Escolha-Caso (switch-case)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sintaxe_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Sintaxe
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exemplos_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Exemplos
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#estruturas-aninhadas" class="md-nav__link">
+    <span class="md-ellipsis">
+      Estruturas Aninhadas
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Estruturas Aninhadas">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#exemplo-complexo" class="md-nav__link">
+    <span class="md-ellipsis">
+      Exemplo Complexo
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#controle-de-fluxo" class="md-nav__link">
+    <span class="md-ellipsis">
+      Controle de Fluxo
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Controle de Fluxo">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pare-break" class="md-nav__link">
+    <span class="md-ellipsis">
+      Pare (break)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#continue" class="md-nav__link">
+    <span class="md-ellipsis">
+      Continue
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#boas-praticas" class="md-nav__link">
+    <span class="md-ellipsis">
+      Boas Práticas
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#operadores-em-condicoes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Operadores em Condições
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Operadores em Condições">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#operadores-relacionais" class="md-nav__link">
+    <span class="md-ellipsis">
+      Operadores Relacionais
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#operadores-logicos" class="md-nav__link">
+    <span class="md-ellipsis">
+      Operadores Lógicos
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exemplos_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Exemplos
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="estruturas-de-controle">Estruturas de Controle</h1>
+<p>O Portugol-C oferece estruturas de controle para gerenciar o fluxo de execução dos programas, incluindo condicionais, loops e estruturas de seleção.</p>
+<h2 id="estruturas-condicionais">Estruturas Condicionais</h2>
+<h3 id="se-if">Se (if)</h3>
+<p>A estrutura <code>se</code> permite executar código condicionalmente baseado em uma expressão lógica.</p>
+<h4 id="sintaxe">Sintaxe</h4>
+<div class="highlight"><pre><span></span><code><span class="k">se</span><span class="w"> </span><span class="p">(</span><span class="n">condicao</span><span class="p">)</span><span class="w"> </span><span class="err">{</span>
+<span class="w">    </span><span class="c1">// código a ser executado se a condição for verdadeira</span>
+<span class="err">}</span>
+</code></pre></div>
+<h4 id="se-senao-if-else">Se-Senão (if-else)</h4>
+<div class="highlight"><pre><span></span><code><span class="k">se</span><span class="w"> </span><span class="p">(</span><span class="n">condicao</span><span class="p">)</span><span class="w"> </span><span class="err">{</span>
+<span class="w">    </span><span class="c1">// código se verdadeiro</span>
+<span class="err">}</span><span class="w"> </span><span class="k">senao</span><span class="w"> </span><span class="err">{</span>
+<span class="w">    </span><span class="c1">// código se falso</span>
+<span class="err">}</span>
+</code></pre></div>
+<h4 id="se-senao-se-if-else-if">Se-Senão Se (if-else if)</h4>
+<div class="highlight"><pre><span></span><code><span class="k">se</span><span class="w"> </span><span class="p">(</span><span class="n">condicao1</span><span class="p">)</span><span class="w"> </span><span class="err">{</span>
+<span class="w">    </span><span class="c1">// código para condição 1</span>
+<span class="err">}</span><span class="w"> </span><span class="k">senao</span><span class="w"> </span><span class="k">se</span><span class="w"> </span><span class="p">(</span><span class="n">condicao2</span><span class="p">)</span><span class="w"> </span><span class="err">{</span>
+<span class="w">    </span><span class="c1">// código para condição 2</span>
+<span class="err">}</span><span class="w"> </span><span class="k">senao</span><span class="w"> </span><span class="err">{</span>
+<span class="w">    </span><span class="c1">// código padrão</span>
+<span class="err">}</span>
+</code></pre></div>
+<h4 id="exemplos">Exemplos</h4>
+<div class="highlight"><pre><span></span><code><span class="n">programa</span><span class="w"> </span><span class="err">{</span>
+<span class="w">    </span><span class="k">funcao</span><span class="w"> </span><span class="k">inicio</span><span class="p">()</span><span class="w"> </span><span class="err">{</span>
+<span class="w">        </span><span class="kt">inteiro</span><span class="w"> </span><span class="n">idade</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">18</span><span class="err">;</span>
+
+<span class="w">        </span><span class="k">se</span><span class="w"> </span><span class="p">(</span><span class="n">idade</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">18</span><span class="p">)</span><span class="w"> </span><span class="err">{</span>
+<span class="w">            </span><span class="k">escreva</span><span class="p">(</span><span class="s">&quot;Maior de idade\n&quot;</span><span class="p">)</span><span class="err">;</span>
+<span class="w">        </span><span class="err">}</span><span class="w"> </span><span class="k">senao</span><span class="w"> </span><span class="err">{</span>
+<span class="w">            </span><span class="k">escreva</span><span class="p">(</span><span class="s">&quot;Menor de idade\n&quot;</span><span class="p">)</span><span class="err">;</span>
+<span class="w">        </span><span class="err">}</span>
+
+<span class="w">        </span><span class="c1">// Múltiplas condições</span>
+<span class="w">        </span><span class="kt">inteiro</span><span class="w"> </span><span class="n">nota</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">85</span><span class="err">;</span>
+<span class="w">        </span><span class="k">se</span><span class="w"> </span><span class="p">(</span><span class="n">nota</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">90</span><span class="p">)</span><span class="w"> </span><span class="err">{</span>
+<span class="w">            </span><span class="k">escreva</span><span class="p">(</span><span class="s">&quot;Excelente\n&quot;</span><span class="p">)</span><span class="err">;</span>
+<span class="w">        </span><span class="err">}</span><span class="w"> </span><span class="k">senao</span><span class="w"> </span><span class="k">se</span><span class="w"> </span><span class="p">(</span><span class="n">nota</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">80</span><span class="p">)</span><span class="w"> </span><span class="err">{</span>
+<span class="w">            </span><span class="k">escreva</span><span class="p">(</span><span class="s">&quot;Bom\n&quot;</span><span class="p">)</span><span class="err">;</span>
+<span class="w">        </span><span class="err">}</span><span class="w"> </span><span class="k">senao</span><span class="w"> </span><span class="k">se</span><span class="w"> </span><span class="p">(</span><span class="n">nota</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">70</span><span class="p">)</span><span class="w"> </span><span class="err">{</span>
+<span class="w">            </span><span class="k">escreva</span><span class="p">(</span><span class="s">&quot;Regular\n&quot;</span><span class="p">)</span><span class="err">;</span>
+<span class="w">        </span><span class="err">}</span><span class="w"> </span><span class="k">senao</span><span class="w"> </span><span class="err">{</span>
+<span class="w">            </span><span class="k">escreva</span><span class="p">(</span><span class="s">&quot;Insuficiente\n&quot;</span><span class="p">)</span><span class="err">;</span>
+<span class="w">        </span><span class="err">}</span>
+<span class="w">    </span><span class="err">}</span>
+<span class="err">}</span>
+</code></pre></div>
+<h2 id="estruturas-de-repeticao">Estruturas de Repetição</h2>
+<h3 id="para-for">Para (for)</h3>
+<p>O loop <code>para</code> é usado quando o número de iterações é conhecido.</p>
+<h4 id="sintaxe_1">Sintaxe</h4>
+<div class="highlight"><pre><span></span><code><span class="k">para</span><span class="w"> </span><span class="p">(</span><span class="n">inicializacao</span><span class="err">;</span><span class="w"> </span><span class="n">condicao</span><span class="err">;</span><span class="w"> </span><span class="n">incremento</span><span class="p">)</span><span class="w"> </span><span class="err">{</span>
+<span class="w">    </span><span class="c1">// código a ser repetido</span>
+<span class="err">}</span>
+</code></pre></div>
+<h4 id="exemplos_1">Exemplos</h4>
+<div class="highlight"><pre><span></span><code><span class="n">programa</span><span class="w"> </span><span class="err">{</span>
+<span class="w">    </span><span class="k">funcao</span><span class="w"> </span><span class="k">inicio</span><span class="p">()</span><span class="w"> </span><span class="err">{</span>
+<span class="w">        </span><span class="c1">// Loop básico</span>
+<span class="w">        </span><span class="k">para</span><span class="w"> </span><span class="p">(</span><span class="kt">inteiro</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="err">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">10</span><span class="err">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="err">{</span>
+<span class="w">            </span><span class="k">escreva</span><span class="p">(</span><span class="s">&quot;Valor: &quot;</span><span class="o">,</span><span class="w"> </span><span class="n">i</span><span class="o">,</span><span class="w"> </span><span class="s">&quot;\n&quot;</span><span class="p">)</span><span class="err">;</span>
+<span class="w">        </span><span class="err">}</span>
+
+<span class="w">        </span><span class="c1">// Loop com decremento</span>
+<span class="w">        </span><span class="k">para</span><span class="w"> </span><span class="p">(</span><span class="kt">inteiro</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="err">;</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="err">;</span><span class="w"> </span><span class="n">j</span><span class="o">--</span><span class="p">)</span><span class="w"> </span><span class="err">{</span>
+<span class="w">            </span><span class="k">escreva</span><span class="p">(</span><span class="s">&quot;Contagem regressiva: &quot;</span><span class="o">,</span><span class="w"> </span><span class="n">j</span><span class="o">,</span><span class="w"> </span><span class="s">&quot;\n&quot;</span><span class="p">)</span><span class="err">;</span>
+<span class="w">        </span><span class="err">}</span>
+
+<span class="w">        </span><span class="c1">// Loop com incremento personalizado</span>
+<span class="w">        </span><span class="k">para</span><span class="w"> </span><span class="p">(</span><span class="kt">inteiro</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="err">;</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">100</span><span class="err">;</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">10</span><span class="p">)</span><span class="w"> </span><span class="err">{</span>
+<span class="w">            </span><span class="k">escreva</span><span class="p">(</span><span class="s">&quot;Múltiplo de 10: &quot;</span><span class="o">,</span><span class="w"> </span><span class="n">k</span><span class="o">,</span><span class="w"> </span><span class="s">&quot;\n&quot;</span><span class="p">)</span><span class="err">;</span>
+<span class="w">        </span><span class="err">}</span>
+<span class="w">    </span><span class="err">}</span>
+<span class="err">}</span>
+</code></pre></div>
+<h3 id="enquanto-while">Enquanto (while)</h3>
+<p>O loop <code>enquanto</code> executa enquanto uma condição for verdadeira.</p>
+<h4 id="sintaxe_2">Sintaxe</h4>
+<div class="highlight"><pre><span></span><code><span class="k">enquanto</span><span class="w"> </span><span class="p">(</span><span class="n">condicao</span><span class="p">)</span><span class="w"> </span><span class="err">{</span>
+<span class="w">    </span><span class="c1">// código a ser repetido</span>
+<span class="err">}</span>
+</code></pre></div>
+<h4 id="exemplos_2">Exemplos</h4>
+<div class="highlight"><pre><span></span><code><span class="n">programa</span><span class="w"> </span><span class="err">{</span>
+<span class="w">    </span><span class="k">funcao</span><span class="w"> </span><span class="k">inicio</span><span class="p">()</span><span class="w"> </span><span class="err">{</span>
+<span class="w">        </span><span class="kt">inteiro</span><span class="w"> </span><span class="n">contador</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="err">;</span>
+
+<span class="w">        </span><span class="k">enquanto</span><span class="w"> </span><span class="p">(</span><span class="n">contador</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">5</span><span class="p">)</span><span class="w"> </span><span class="err">{</span>
+<span class="w">            </span><span class="k">escreva</span><span class="p">(</span><span class="s">&quot;Contador: &quot;</span><span class="o">,</span><span class="w"> </span><span class="n">contador</span><span class="o">,</span><span class="w"> </span><span class="s">&quot;\n&quot;</span><span class="p">)</span><span class="err">;</span>
+<span class="w">            </span><span class="n">contador</span><span class="o">++</span><span class="err">;</span>
+<span class="w">        </span><span class="err">}</span>
+
+<span class="w">        </span><span class="c1">// Exemplo com entrada do usuário</span>
+<span class="w">        </span><span class="kt">inteiro</span><span class="w"> </span><span class="n">numero</span><span class="err">;</span>
+<span class="w">        </span><span class="k">escreva</span><span class="p">(</span><span class="s">&quot;Digite um número (0 para sair): &quot;</span><span class="p">)</span><span class="err">;</span>
+<span class="w">        </span><span class="k">leia</span><span class="p">(</span><span class="n">numero</span><span class="p">)</span><span class="err">;</span>
+
+<span class="w">        </span><span class="k">enquanto</span><span class="w"> </span><span class="p">(</span><span class="n">numero</span><span class="w"> </span><span class="err">!</span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="err">{</span>
+<span class="w">            </span><span class="k">escreva</span><span class="p">(</span><span class="s">&quot;Você digitou: &quot;</span><span class="o">,</span><span class="w"> </span><span class="n">numero</span><span class="o">,</span><span class="w"> </span><span class="s">&quot;\n&quot;</span><span class="p">)</span><span class="err">;</span>
+<span class="w">            </span><span class="k">escreva</span><span class="p">(</span><span class="s">&quot;Digite outro número (0 para sair): &quot;</span><span class="p">)</span><span class="err">;</span>
+<span class="w">            </span><span class="k">leia</span><span class="p">(</span><span class="n">numero</span><span class="p">)</span><span class="err">;</span>
+<span class="w">        </span><span class="err">}</span>
+<span class="w">    </span><span class="err">}</span>
+<span class="err">}</span>
+</code></pre></div>
+<h2 id="estrutura-de-selecao-multipla">Estrutura de Seleção Múltipla</h2>
+<h3 id="escolha-caso-switch-case">Escolha-Caso (switch-case)</h3>
+<p>A estrutura <code>escolha</code> permite selecionar entre múltiplas opções baseadas no valor de uma variável.</p>
+<h4 id="sintaxe_3">Sintaxe</h4>
+<div class="highlight"><pre><span></span><code><span class="k">escolha</span><span class="w"> </span><span class="p">(</span><span class="n">variavel</span><span class="p">)</span><span class="w"> </span><span class="err">{</span>
+<span class="w">    </span><span class="k">caso</span><span class="w"> </span><span class="n">valor1</span><span class="o">:</span>
+<span class="w">        </span><span class="c1">// código para valor1</span>
+<span class="w">        </span><span class="n">pare</span><span class="err">;</span>
+<span class="w">    </span><span class="k">caso</span><span class="w"> </span><span class="n">valor2</span><span class="o">:</span>
+<span class="w">        </span><span class="c1">// código para valor2</span>
+<span class="w">        </span><span class="n">pare</span><span class="err">;</span>
+<span class="w">    </span><span class="k">caso</span><span class="w"> </span><span class="n">contrario</span><span class="o">:</span>
+<span class="w">        </span><span class="c1">// código padrão</span>
+<span class="w">        </span><span class="n">pare</span><span class="err">;</span>
+<span class="err">}</span>
+</code></pre></div>
+<h4 id="exemplos_3">Exemplos</h4>
+<div class="highlight"><pre><span></span><code><span class="n">programa</span><span class="w"> </span><span class="err">{</span>
+<span class="w">    </span><span class="k">funcao</span><span class="w"> </span><span class="k">inicio</span><span class="p">()</span><span class="w"> </span><span class="err">{</span>
+<span class="w">        </span><span class="kt">inteiro</span><span class="w"> </span><span class="n">opcao</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="err">;</span>
+
+<span class="w">        </span><span class="k">escolha</span><span class="w"> </span><span class="p">(</span><span class="n">opcao</span><span class="p">)</span><span class="w"> </span><span class="err">{</span>
+<span class="w">            </span><span class="k">caso</span><span class="w"> </span><span class="mi">1</span><span class="o">:</span>
+<span class="w">                </span><span class="k">escreva</span><span class="p">(</span><span class="s">&quot;Opção 1 selecionada\n&quot;</span><span class="p">)</span><span class="err">;</span>
+<span class="w">                </span><span class="n">pare</span><span class="err">;</span>
+<span class="w">            </span><span class="k">caso</span><span class="w"> </span><span class="mi">2</span><span class="o">:</span>
+<span class="w">                </span><span class="k">escreva</span><span class="p">(</span><span class="s">&quot;Opção 2 selecionada\n&quot;</span><span class="p">)</span><span class="err">;</span>
+<span class="w">                </span><span class="n">pare</span><span class="err">;</span>
+<span class="w">            </span><span class="k">caso</span><span class="w"> </span><span class="mi">3</span><span class="o">:</span>
+<span class="w">                </span><span class="k">escreva</span><span class="p">(</span><span class="s">&quot;Opção 3 selecionada\n&quot;</span><span class="p">)</span><span class="err">;</span>
+<span class="w">                </span><span class="n">pare</span><span class="err">;</span>
+<span class="w">            </span><span class="k">caso</span><span class="w"> </span><span class="n">contrario</span><span class="o">:</span>
+<span class="w">                </span><span class="k">escreva</span><span class="p">(</span><span class="s">&quot;Opção inválida\n&quot;</span><span class="p">)</span><span class="err">;</span>
+<span class="w">                </span><span class="n">pare</span><span class="err">;</span>
+<span class="w">        </span><span class="err">}</span>
+
+<span class="w">        </span><span class="c1">// Exemplo com caracteres</span>
+<span class="w">        </span><span class="n">caracter</span><span class="w"> </span><span class="n">grade</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="err">&#39;</span><span class="n">B</span><span class="err">&#39;;</span>
+
+<span class="w">        </span><span class="k">escolha</span><span class="w"> </span><span class="p">(</span><span class="n">grade</span><span class="p">)</span><span class="w"> </span><span class="err">{</span>
+<span class="w">            </span><span class="k">caso</span><span class="w"> </span><span class="err">&#39;</span><span class="n">A</span><span class="err">&#39;</span><span class="o">:</span>
+<span class="w">                </span><span class="k">escreva</span><span class="p">(</span><span class="s">&quot;Excelente!\n&quot;</span><span class="p">)</span><span class="err">;</span>
+<span class="w">                </span><span class="n">pare</span><span class="err">;</span>
+<span class="w">            </span><span class="k">caso</span><span class="w"> </span><span class="err">&#39;</span><span class="n">B</span><span class="err">&#39;</span><span class="o">:</span>
+<span class="w">                </span><span class="k">escreva</span><span class="p">(</span><span class="s">&quot;Bom trabalho!\n&quot;</span><span class="p">)</span><span class="err">;</span>
+<span class="w">                </span><span class="n">pare</span><span class="err">;</span>
+<span class="w">            </span><span class="k">caso</span><span class="w"> </span><span class="err">&#39;</span><span class="n">C</span><span class="err">&#39;</span><span class="o">:</span>
+<span class="w">                </span><span class="k">escreva</span><span class="p">(</span><span class="s">&quot;Satisfatório\n&quot;</span><span class="p">)</span><span class="err">;</span>
+<span class="w">                </span><span class="n">pare</span><span class="err">;</span>
+<span class="w">            </span><span class="k">caso</span><span class="w"> </span><span class="n">contrario</span><span class="o">:</span>
+<span class="w">                </span><span class="k">escreva</span><span class="p">(</span><span class="s">&quot;Nota inválida\n&quot;</span><span class="p">)</span><span class="err">;</span>
+<span class="w">                </span><span class="n">pare</span><span class="err">;</span>
+<span class="w">        </span><span class="err">}</span>
+<span class="w">    </span><span class="err">}</span>
+<span class="err">}</span>
+</code></pre></div>
+<h2 id="estruturas-aninhadas">Estruturas Aninhadas</h2>
+<p>As estruturas de controle podem ser aninhadas para criar lógicas mais complexas.</p>
+<h3 id="exemplo-complexo">Exemplo Complexo</h3>
+<div class="highlight"><pre><span></span><code><span class="n">programa</span><span class="w"> </span><span class="err">{</span>
+<span class="w">    </span><span class="k">funcao</span><span class="w"> </span><span class="k">inicio</span><span class="p">()</span><span class="w"> </span><span class="err">{</span>
+<span class="w">        </span><span class="kt">inteiro</span><span class="w"> </span><span class="n">idade</span><span class="o">,</span><span class="w"> </span><span class="n">renda</span><span class="err">;</span>
+
+<span class="w">        </span><span class="k">escreva</span><span class="p">(</span><span class="s">&quot;Digite sua idade: &quot;</span><span class="p">)</span><span class="err">;</span>
+<span class="w">        </span><span class="k">leia</span><span class="p">(</span><span class="n">idade</span><span class="p">)</span><span class="err">;</span>
+<span class="w">        </span><span class="k">escreva</span><span class="p">(</span><span class="s">&quot;Digite sua renda: &quot;</span><span class="p">)</span><span class="err">;</span>
+<span class="w">        </span><span class="k">leia</span><span class="p">(</span><span class="n">renda</span><span class="p">)</span><span class="err">;</span>
+
+<span class="w">        </span><span class="k">se</span><span class="w"> </span><span class="p">(</span><span class="n">idade</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">18</span><span class="p">)</span><span class="w"> </span><span class="err">{</span>
+<span class="w">            </span><span class="k">se</span><span class="w"> </span><span class="p">(</span><span class="n">renda</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">2000</span><span class="p">)</span><span class="w"> </span><span class="err">{</span>
+<span class="w">                </span><span class="k">escreva</span><span class="p">(</span><span class="s">&quot;Elegível para crédito premium\n&quot;</span><span class="p">)</span><span class="err">;</span>
+<span class="w">            </span><span class="err">}</span><span class="w"> </span><span class="k">senao</span><span class="w"> </span><span class="k">se</span><span class="w"> </span><span class="p">(</span><span class="n">renda</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">1000</span><span class="p">)</span><span class="w"> </span><span class="err">{</span>
+<span class="w">                </span><span class="k">escreva</span><span class="p">(</span><span class="s">&quot;Elegível para crédito básico\n&quot;</span><span class="p">)</span><span class="err">;</span>
+<span class="w">            </span><span class="err">}</span><span class="w"> </span><span class="k">senao</span><span class="w"> </span><span class="err">{</span>
+<span class="w">                </span><span class="k">escreva</span><span class="p">(</span><span class="s">&quot;Renda insuficiente\n&quot;</span><span class="p">)</span><span class="err">;</span>
+<span class="w">            </span><span class="err">}</span>
+<span class="w">        </span><span class="err">}</span><span class="w"> </span><span class="k">senao</span><span class="w"> </span><span class="err">{</span>
+<span class="w">            </span><span class="k">escreva</span><span class="p">(</span><span class="s">&quot;Menor de idade - não elegível\n&quot;</span><span class="p">)</span><span class="err">;</span>
+<span class="w">        </span><span class="err">}</span>
+
+<span class="w">        </span><span class="c1">// Loop aninhado</span>
+<span class="w">        </span><span class="k">para</span><span class="w"> </span><span class="p">(</span><span class="kt">inteiro</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="err">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">3</span><span class="err">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="err">{</span>
+<span class="w">            </span><span class="k">escreva</span><span class="p">(</span><span class="s">&quot;Tabela do &quot;</span><span class="o">,</span><span class="w"> </span><span class="n">i</span><span class="o">,</span><span class="w"> </span><span class="s">&quot;:\n&quot;</span><span class="p">)</span><span class="err">;</span>
+<span class="w">            </span><span class="k">para</span><span class="w"> </span><span class="p">(</span><span class="kt">inteiro</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="err">;</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">10</span><span class="err">;</span><span class="w"> </span><span class="n">j</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="err">{</span>
+<span class="w">                </span><span class="k">escreva</span><span class="p">(</span><span class="n">i</span><span class="o">,</span><span class="w"> </span><span class="s">&quot; x &quot;</span><span class="o">,</span><span class="w"> </span><span class="n">j</span><span class="o">,</span><span class="w"> </span><span class="s">&quot; = &quot;</span><span class="o">,</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">j</span><span class="o">,</span><span class="w"> </span><span class="s">&quot;\n&quot;</span><span class="p">)</span><span class="err">;</span>
+<span class="w">            </span><span class="err">}</span>
+<span class="w">            </span><span class="k">escreva</span><span class="p">(</span><span class="s">&quot;\n&quot;</span><span class="p">)</span><span class="err">;</span>
+<span class="w">        </span><span class="err">}</span>
+<span class="w">    </span><span class="err">}</span>
+<span class="err">}</span>
+</code></pre></div>
+<h2 id="controle-de-fluxo">Controle de Fluxo</h2>
+<h3 id="pare-break">Pare (break)</h3>
+<p>Interrompe a execução de loops ou estruturas switch.</p>
+<div class="highlight"><pre><span></span><code><span class="k">para</span><span class="w"> </span><span class="p">(</span><span class="kt">inteiro</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="err">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">10</span><span class="err">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="err">{</span>
+<span class="w">    </span><span class="k">se</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">5</span><span class="p">)</span><span class="w"> </span><span class="err">{</span>
+<span class="w">        </span><span class="n">pare</span><span class="err">;</span><span class="w"> </span><span class="c1">// Sai do loop quando i for 5</span>
+<span class="w">    </span><span class="err">}</span>
+<span class="w">    </span><span class="k">escreva</span><span class="p">(</span><span class="n">i</span><span class="o">,</span><span class="w"> </span><span class="s">&quot;\n&quot;</span><span class="p">)</span><span class="err">;</span>
+<span class="err">}</span>
+</code></pre></div>
+<h3 id="continue">Continue</h3>
+<p>O Portugol-C não possui uma palavra-chave específica para <code>continue</code>, mas o comportamento pode ser simulado com estruturas condicionais.</p>
+<div class="highlight"><pre><span></span><code><span class="k">para</span><span class="w"> </span><span class="p">(</span><span class="kt">inteiro</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="err">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">10</span><span class="err">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="err">{</span>
+<span class="w">    </span><span class="k">se</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="err">{</span>
+<span class="w">        </span><span class="c1">// Pula números pares - simula continue</span>
+<span class="w">    </span><span class="err">}</span><span class="w"> </span><span class="k">senao</span><span class="w"> </span><span class="err">{</span>
+<span class="w">        </span><span class="k">escreva</span><span class="p">(</span><span class="s">&quot;Número ímpar: &quot;</span><span class="o">,</span><span class="w"> </span><span class="n">i</span><span class="o">,</span><span class="w"> </span><span class="s">&quot;\n&quot;</span><span class="p">)</span><span class="err">;</span>
+<span class="w">    </span><span class="err">}</span>
+<span class="err">}</span>
+</code></pre></div>
+<h2 id="boas-praticas">Boas Práticas</h2>
+<ol>
+<li><strong>Indentação:</strong> Use indentação consistente para melhorar a legibilidade</li>
+<li><strong>Chaves:</strong> Sempre use chaves, mesmo para blocos de uma linha</li>
+<li><strong>Condições claras:</strong> Escreva condições claras e legíveis</li>
+<li><strong>Evite aninhamento excessivo:</strong> Limite o número de níveis de aninhamento</li>
+<li><strong>Comentários:</strong> Documente lógicas complexas</li>
+</ol>
+<div class="highlight"><pre><span></span><code><span class="c1">// Boa prática</span>
+<span class="k">se</span><span class="w"> </span><span class="p">(</span><span class="n">idade</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">18</span><span class="w"> </span><span class="err">&amp;&amp;</span><span class="w"> </span><span class="n">renda</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">1000</span><span class="p">)</span><span class="w"> </span><span class="err">{</span>
+<span class="w">    </span><span class="n">processar_credito</span><span class="p">()</span><span class="err">;</span>
+<span class="err">}</span>
+<span class="c1">// Em vez de</span>
+<span class="k">se</span><span class="w"> </span><span class="p">(</span><span class="n">idade</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">18</span><span class="p">)</span><span class="w"> </span><span class="err">{</span>
+<span class="w">    </span><span class="k">se</span><span class="w"> </span><span class="p">(</span><span class="n">renda</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">1000</span><span class="p">)</span><span class="w"> </span><span class="err">{</span>
+<span class="w">        </span><span class="n">processar_credito</span><span class="p">()</span><span class="err">;</span>
+<span class="w">    </span><span class="err">}</span>
+<span class="err">}</span>
+</code></pre></div>
+<h2 id="operadores-em-condicoes">Operadores em Condições</h2>
+<h3 id="operadores-relacionais">Operadores Relacionais</h3>
+<ul>
+<li><code>==</code> (igual)</li>
+<li><code>!=</code> (diferente)</li>
+<li><code>&lt;</code> (menor que)</li>
+<li><code>&gt;</code> (maior que)</li>
+<li><code>&lt;=</code> (menor ou igual)</li>
+<li><code>&gt;=</code> (maior ou igual)</li>
+</ul>
+<h3 id="operadores-logicos">Operadores Lógicos</h3>
+<ul>
+<li><code>&amp;&amp;</code> (E lógico)</li>
+<li><code>||</code> (OU lógico)</li>
+<li><code>!</code> (NÃO lógico)</li>
+</ul>
+<h3 id="exemplos_4">Exemplos</h3>
+<div class="highlight"><pre><span></span><code><span class="k">se</span><span class="w"> </span><span class="p">(</span><span class="n">idade</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">18</span><span class="w"> </span><span class="err">&amp;&amp;</span><span class="w"> </span><span class="n">idade</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">65</span><span class="p">)</span><span class="w"> </span><span class="err">{</span>
+<span class="w">    </span><span class="k">escreva</span><span class="p">(</span><span class="s">&quot;Idade para trabalhar\n&quot;</span><span class="p">)</span><span class="err">;</span>
+<span class="err">}</span>
+<span class="k">se</span><span class="w"> </span><span class="p">(</span><span class="n">nota</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">60</span><span class="w"> </span><span class="err">||</span><span class="w"> </span><span class="n">faltas</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">10</span><span class="p">)</span><span class="w"> </span><span class="err">{</span>
+<span class="w">    </span><span class="k">escreva</span><span class="p">(</span><span class="s">&quot;Reprovado\n&quot;</span><span class="p">)</span><span class="err">;</span>
+<span class="err">}</span>
+<span class="k">se</span><span class="w"> </span><span class="p">(</span><span class="err">!</span><span class="p">(</span><span class="n">aprovado</span><span class="p">))</span><span class="w"> </span><span class="err">{</span>
+<span class="w">    </span><span class="k">escreva</span><span class="p">(</span><span class="s">&quot;Não aprovado\n&quot;</span><span class="p">)</span><span class="err">;</span>
+<span class="err">}</span>
+</code></pre></div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Voltar para o topo
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs", "navigation.top"], "search": "../../assets/javascripts/workers/search.d50fe291.min.js", "tags": null, "translations": {"clipboard.copied": "Copiado para \u00e1rea de transfer\u00eancia", "clipboard.copy": "Copiar para \u00e1rea de transfer\u00eancia", "search.result.more.one": "mais 1 nesta p\u00e1gina", "search.result.more.other": "# mais nesta p\u00e1gina", "search.result.none": "Nenhum documento encontrado", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Digite para iniciar a busca", "search.result.term.missing": "Ausente", "select.version": "Selecione a vers\u00e3o"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.13a4f30d.min.js"></script>
+      
+    
+  </body>
+</html>
